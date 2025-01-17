@@ -20,7 +20,6 @@ return new class extends Migration
             $table->date('dob')->nullable();
             $table->string('email', 255)->unique();
             $table->string('password', 255);
-            $table->string('confirm_password', 255);
             $table->text('description')->nullable();
             $table->string('address', 255)->nullable();
             $table->string('zip_code', 20)->nullable();
