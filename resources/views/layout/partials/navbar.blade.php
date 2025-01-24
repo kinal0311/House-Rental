@@ -20,9 +20,10 @@
 
     <li class="dropdown notification-list">
         <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-            <img src="assets/images/users/user-1.jpg" alt="user-image" class="rounded-circle">
+            <img src="{{ Auth::user()->img ? asset(Auth::user()->img) : '' }}" alt="user-image" class="rounded-circle">
             <span class="pro-user-name ml-1">
-                Geneva <i class="mdi mdi-chevron-down"></i>
+               {{Auth::user()->name ?? ""}}<i class="mdi mdi-chevron-down"></i>
+               {{-- @dd(Auth::user()->email) --}}
             </span>
         </a>
         <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
@@ -32,7 +33,7 @@
             </div>
 
             <!-- item-->
-            <a href="javascript:void(0);" class="dropdown-item notify-item">
+            <a href="{{ route('account') }}" class="dropdown-item notify-item">
                 <i class="fe-user"></i>
                 <span>My Account</span>
             </a>
@@ -65,12 +66,12 @@
 <div class="logo-box">
     <a href="index.html" class="logo text-center">
         <span class="logo-lg">
-            <img src="assets/images/logo-light.png" alt="" height="18">
+            <img src="{{ URL::asset('assets/images/logo-light.png')}}" alt="" height="18">
             <!-- <span class="logo-lg-text-light">UBold</span> -->
         </span>
         <span class="logo-sm">
             <!-- <span class="logo-sm-text-dark">U</span> -->
-            <img src="assets/images/logo-sm.png" alt="" height="24">
+            <img src="{{ URL::asset('assets/images/logo-sm.png')}}" alt="" height="24">
         </span>
     </a>
 </div>

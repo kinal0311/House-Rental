@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
+
+            $table->unsignedBigInteger('agent_id');
+            // Foreign key for agent_id
+            $table->foreign('agent_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->string('property_type', 255);
             $table->enum('status', ['Sale', 'Sold', 'Rent']);
             $table->decimal('price', 10, 2);
@@ -24,7 +29,6 @@ return new class extends Migration
             $table->string('address', 255);
             $table->string('zip_code', 20);
             $table->string('city', 255);
-            $table->text('media')->nullable();
             $table->text('additional_features')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -36,6 +40,12 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('properties', function (Blueprint $table) {
+            // Drop foreign keys
+            $table->dropForeign(['image_id']);
+            $table->dropForeign(['agent_id']);
+        });
+
         Schema::dropIfExists('properties');
     }
 };

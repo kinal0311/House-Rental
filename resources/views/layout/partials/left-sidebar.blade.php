@@ -20,6 +20,20 @@
 
             <li>
                 <a href="javascript: void(0);">
+                    <i class="fe-users"></i>
+                    <span> Admins </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <ul class="nav-second-level" aria-expanded="false">
+                    <li>
+                        <a href="{{ route('admin.admin.index') }}">Admin</a>
+                        {{-- <a href="{{ route('admin.admin.index') }}">Admin</a> --}}
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="{{ route('admin.properties.index')}}">
                     <i class="fe-pocket"></i>
                     <span> Property Management </span>
                     {{-- <span class="menu-arrow"></span> --}}
@@ -47,7 +61,7 @@
             </li>
 
             <li>
-                <a href="javascript: void(0);">
+                <a href="{{ route('admin.user.index')}}">
                     <i class="fe-users"></i>
                     <span> User Management </span>
                 </a>
@@ -61,7 +75,7 @@
             </li>
 
             <li>
-                <a href="javascript: void(0);">
+                <a href="{{ route('admin.agent.index')}}">
                     <i class="fe-mail"></i>
                     <span> Agent Management </span>
                 </a>
