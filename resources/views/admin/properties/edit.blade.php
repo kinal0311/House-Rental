@@ -1,4 +1,4 @@
-@extends('layout.partials.dashboard')
+@extends('layout.partials.master')
 
 @section('content')
 <div class="container-fluid">
@@ -13,7 +13,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('admin.properties.update', $property->id) }}" id="propertyForm" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.properties.update', $property->id) }}" id="editPropertyForm" method="POST" enctype="multipart/form-data">
                         @csrf
                         {{-- @method('PUT') <!-- To indicate this is an update operation --> --}}
                         <div class="row">
@@ -92,8 +92,8 @@
                                                    type="radio"
                                                    name="status"
                                                    id="status_sale"
-                                                   value="sale"
-                                                   {{ (old('status') ?? $property->status) === 'sale' ? 'checked' : '' }}>
+                                                   value="Sale"
+                                                   {{ (old('status') ?? $property->status) === 'Sale' ? 'checked' : '' }}>
                                             <label class="form-check-label" for="status_sale">Sale</label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -101,8 +101,8 @@
                                                    type="radio"
                                                    name="status"
                                                    id="status_sold"
-                                                   value="sold"
-                                                   {{ (old('status') ?? $property->status) === 'sold' ? 'checked' : '' }}>
+                                                   value="Sold"
+                                                   {{ (old('status') ?? $property->status) === 'Sold' ? 'checked' : '' }}>
                                             <label class="form-check-label" for="status_sold">Sold</label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -110,8 +110,8 @@
                                                    type="radio"
                                                    name="status"
                                                    id="status_rent"
-                                                   value="rent"
-                                                   {{ (old('status') ?? $property->status) === 'rent' ? 'checked' : '' }}>
+                                                   value="Rent"
+                                                   {{ (old('status') ?? $property->status) === 'Rent' ? 'checked' : '' }}>
                                             <label class="form-check-label" for="status_rent">Rent</label>
                                         </div>
                                     </div>
@@ -245,12 +245,14 @@
         </div>
     </div>
 </div>
+
 @endsection
 
-@section('scripts')
+@section('script')
     <script>
         $(document).ready(function() {
-            $('#propertyForm').parsley();
+            $('#editPropertyForm').parsley();
         });
     </script>
+
 @endsection

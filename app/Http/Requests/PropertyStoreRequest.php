@@ -39,6 +39,17 @@ class PropertyStoreRequest extends FormRequest
         // 'additional_features.*' => 'string', // Validate that each feature is a string
         ];
     }
+
+    // public function status()
+    // {
+    //     $rules = [
+    //         'status' => 'required|in:sale,sold,rent', // Only validate the status field
+    //     ];
+
+    //     // Add any additional conditions based on your needs
+    //     return $rules;
+    // }
+
 }
 
 ?>

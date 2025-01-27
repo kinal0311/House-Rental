@@ -20,6 +20,8 @@
 
             <!-- Parsley CSS -->
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/parsleyjs/src/parsley.css">
+            <!-- Plugin js-->
+            <script src="{{ URL::asset('assets/libs/parsleyjs/parsley.css')}}"></script>
 
             <!-- Notiflix -->
             <link href="{{asset('assets\libs\notiflix\notiflix-2.1.2.css')}}" rel="stylesheet" type="text/css" />
@@ -30,6 +32,9 @@
             <link href="{{asset('assets/libs/datatables/responsive.bootstrap4.css')}}" rel="stylesheet" type="text/css" />
             <link href="{{asset('assets/libs/datatables/buttons.bootstrap4.css')}}" rel="stylesheet" type="text/css" />
             <link href="{{asset('assets/libs/datatables/select.bootstrap4.css')}}" rel="stylesheet" type="text/css" />
+
+
+
     </head>
 
     <body>
@@ -88,9 +93,6 @@
         <script src="{{ URL::asset('assets/libs/jquery-knob/jquery.knob.min.js')}}"></script>
         <script src="{{ URL::asset('assets/libs/jquery-sparkline/jquery.sparkline.min.js')}}"></script>
 
-        <!-- Dashboar 1 init js-->
-        {{-- <script src="{{ URL::asset('assets/js/pages/dashboard-1.init.js')}}"></script> --}}
-
         <!-- App js-->
         <script src="{{ URL::asset('assets/js/app.min.js')}}"></script>
 
@@ -99,6 +101,12 @@
 
         <!-- Notiflix -->
         <script src="{{ URL::asset('assets\libs\notiflix\notiflix-2.1.2.js')}}"></script>
+
+        <!-- Plugin js-->
+        <script src="{{ URL::asset('assets/libs/parsleyjs/parsley.min.js')}}"></script>
+
+        <!-- Validation init js-->
+        <script src="{{ URL::asset('assets/js/pages/form-validation.init.js')}}"></script>
 
         <!--DataTable JS-->
         <script src="{{asset('assets/libs/datatables/jquery.dataTables.min.js')}}"></script>

@@ -53,7 +53,7 @@
             <div class="dropdown-divider"></div>
 
             <!-- item-->
-            <a href="javascript:void(0);" class="dropdown-item notify-item">
+            <a href="{{ route('logout') }}" class="dropdown-item notify-item">
                 <i class="fe-log-out"></i>
                 <span>Logout</span>
             </a>
@@ -66,12 +66,12 @@
 <div class="logo-box">
     <a href="index.html" class="logo text-center">
         <span class="logo-lg">
-            <img src="{{ URL::asset('assets/images/logo-light.png')}}" alt="" height="18">
+            <img src="{{ URL::asset('assets/images/logo-light.png')}}" alt="" height="18" >
             <!-- <span class="logo-lg-text-light">UBold</span> -->
         </span>
         <span class="logo-sm">
             <!-- <span class="logo-sm-text-dark">U</span> -->
-            <img src="{{ URL::asset('assets/images/logo-sm.png')}}" alt="" height="24">
+            <img src="{{ URL::asset('assets/images/logo-sm.png')}}" alt="" height="24" >
         </span>
     </a>
 </div>

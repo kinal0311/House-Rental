@@ -1,4 +1,4 @@
-@extends('layout.partials.dashboard')
+@extends('layout.partials.master')
 
 @section('content')
 <div class="container-fluid">
@@ -61,7 +61,7 @@
                                     <input type="email" name="email" id="email" class="form-control"
                                            value="{{ $user->email }}"
                                            {{ $user->trashed() ? 'readonly' : '' }}
-                                           required>
+                                           readonly required>
                                     @error('email')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -73,6 +73,10 @@
                                 <div class="form-group">
                                     <label for="password">Password (Leave blank to keep current password)</label>
                                     <input type="password" name="password" id="password" class="form-control">
+                                    <button type="button" id="togglePassword" class="btn btn-link position-absolute"
+                                            style="top: 55%; right: 10px; transform: translateY(-50%);" >
+                                        <i class="fa fa-eye"></i>
+                                    </button>
                                     @error('password')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -88,7 +92,7 @@
                                 <div class="form-group">
                                     <label for="phone_number">Phone Number</label>
                                     <input type="text" name="phone_number" id="phone_number" class="form-control"
-                                           value="{{ $user->phone_number }}"
+                                           value="{{ $user->phone_number }}" readonly
                                            {{ $user->trashed() ? 'readonly' : '' }}
                                            data-parsley-type="digits" data-parsley-length="[10, 15]">
                                     @error('phone_number')
@@ -119,7 +123,7 @@
                                     <label for="address">Address</label>
                                     <input type="text" name="address" id="address" class="form-control"
                                            value="{{ $user->address }}"
-                                           {{ $user->trashed() ? 'readonly' : '' }}>
+                                           {{ $user->trashed() ? 'readonly' : '' }} required>
                                     @error('address')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -133,7 +137,7 @@
                                     <input type="text" name="zip_code" id="zip_code" class="form-control"
                                            value="{{ $user->zip_code }}"
                                            {{ $user->trashed() ? 'readonly' : '' }}
-                                           data-parsley-type="digits">
+                                           data-parsley-type="digits" required>
                                     @error('zip_code')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -153,9 +157,9 @@
                                         <option value="Female" {{ $user->gender == 'Female' ? 'selected' : '' }}>Female</option>
                                         <option value="Other" {{ $user->gender == 'Other' ? 'selected' : '' }}>Other</option>
                                     </select>
-                                    @error('gender')
-                                    <div class="text-danger">{{ $message }}</div>
-                                    @enderror
+
+                                    <div class="text-danger"></div>
+
                                 </div>
                             </div>
 
@@ -164,7 +168,7 @@
                                 <div class="form-group">
                                     <label for="description">Description</label>
                                     <textarea name="description" id="description" class="form-control" rows="3"
-                                              {{ $user->trashed() ? 'readonly' : '' }}>{{ $user->description }}</textarea>
+                                              {{ $user->trashed() ? 'readonly' : '' }} required>{{ $user->description }}</textarea>
                                     @error('description')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -211,9 +215,9 @@
                                             <label class="form-check-label" for="status_Inactive">Inactive</label>
                                         </div>
                                     </div>
-                                    @error('status')
-                                    <div class="text-danger">{{ $message }}</div>
-                                    @enderror
+
+                                    <div class="text-danger"></div>
+
                                 </div>
                             </div>
 
@@ -231,9 +235,16 @@
         </div>
     </div>
 </div>
+
 @endsection
 
 @section('script')
+<script>
+    $(document).ready(function() {
+        // Initialize Parsley validation
+        $('#editForm').parsley();
+    });
+</script>
 <script>
 $('#img').on('change', function () {
 
@@ -256,5 +267,20 @@ $('#img').on('change', function () {
         Notiflix.Notify.Warning('Please upload a valid image file.');
     }
 });
+
+    // Toggle password visibility when "Show Password" button is clicked
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        var passwordField = document.getElementById('password');
+        var passwordFieldType = passwordField.getAttribute('type');
+
+        // Toggle between text and password types
+        if (passwordFieldType === 'password') {
+            passwordField.setAttribute('type', 'text');  // Show the text
+            this.innerHTML = '<i class="fa fa-eye-slash"></i>';  // Change to eye-slash icon
+        } else {
+            passwordField.setAttribute('type', 'password');  // Hide the text
+            this.innerHTML = '<i class="fa fa-eye"></i>';  // Change to eye icon
+        }
+    });
 </script>
 @endsection

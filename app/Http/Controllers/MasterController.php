@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class MasterController extends Controller
 {
     public function index(Request $request)
     {
-        return view('layout.partials.dashboard');
+        return view('layout.partials.master');
     }
 }

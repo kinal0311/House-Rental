@@ -43,11 +43,11 @@ class AuthController extends Controller
             $user = Auth::user();
             // dd($user);
             if (in_array($user->role_id, [1, 2])) {
-                return redirect('dashboard')->with('success', 'Successfully logged in!');
+                return redirect('master')->with('success', 'Successfully logged in!');
             }
 
             Auth::logout();
-            return redirect('login')->withErrors(['access' => 'You do not have access to the dashboard.']);
+            return redirect('login')->withErrors(['access' => 'You do not have access to the master.']);
         }
 
         return redirect('login')->withErrors(['credentials' => 'Invalid email or password.']);
@@ -74,22 +74,19 @@ class AuthController extends Controller
 
     //     Auth::login($user);
 
-    //     return redirect('dashboard')->with('success', 'Registration successful!');
+    //     return redirect('master')->with('success', 'Registration successful!');
     // }
 
-    /**
-     * Show dashboard.
-     */
-    public function dashboard()
+    public function master()
     {
         if (Auth::check()) {
             $user = Auth::user();
 
             if (in_array($user->role_id, [1, 2])) {
-                return view('dashboard');
+                return view('master');
             }
 
-            return redirect('login')->withErrors(['access' => 'You do not have access to the dashboard.']);
+            return redirect('login')->withErrors(['access' => 'You do not have access to the master.']);
         }
 
         return redirect('login')->withErrors(['auth' => 'Please log in first.']);
@@ -103,7 +100,7 @@ class AuthController extends Controller
         Session::flush();
         Auth::logout();
 
-        return redirect('login')->with('success', 'Logged out successfully.');
+        return redirect('logout')->with('success', 'Logged out successfully.');
     }
 
     public function myAccount()

@@ -1,4 +1,4 @@
-@extends('layout.partials.dashboard')
+@extends('layout.partials.master')
 @section('content')
 <div class="container-fluid">
     <div class="row mt-2">
@@ -49,7 +49,7 @@
 <script>
     var dateTableUrl = "{{ route('admin.admin.get.data') }}";
     var deleteRowUrl = "{{ route('admin.destroy', ':id') }}";
-
+    var changeStatusUrl = "{{ route('admin.adminChangeData',':id')}}"
 </script>
 <script src="{{asset('assets/js/pages/admin/sub-admin/index.js')}}"></script>
 

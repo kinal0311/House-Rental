@@ -24,7 +24,6 @@ class PropertyController extends Controller
 
     public function getData(Request $request)
     {
-        // Define columns that match the property table fields
         $columns = array(
             0 => 'id',
             1 => 'property_type',
@@ -48,14 +47,12 @@ class PropertyController extends Controller
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
 
-        // Get the query builder for properties
         $query = Property::with('agent')->orderBy($order, $dir);
 
-        // Count total records
         $totalData = $query->count();
         $totalFiltered = $totalData;
 
-        // Apply search functionality
+
         if (!empty($request->input('search.value'))) {
             $search = $request->input('search.value');
 
@@ -75,15 +72,13 @@ class PropertyController extends Controller
                     $query->where('name', 'LIKE', "%{$search}%");
                 });
 
-            $totalFiltered = $query->count(); // Update totalFiltered after search
+            $totalFiltered = $query->count();
         }
 
-        // Apply pagination
         $allData = $query->offset($start)
                          ->limit($limit)
                          ->get();
 
-        // Prepare data for DataTables
         $dataArray = [];
         if (!empty($allData)) {
             foreach ($allData as $data) {
@@ -99,7 +94,7 @@ class PropertyController extends Controller
                 $nestedData['address'] = $data->address ?? '';
                 $nestedData['city'] = $data->city ?? '';
                 $nestedData['agent'] = $data->agent ? $data->agent->name : 'No Agent';
-                $nestedData['description'] = Str::limit($data->description, 50) ?? ''; // Limit description to 50 characters
+                $nestedData['description'] = Str::limit($data->description, 50) ?? '';
                 $nestedData['additional_features'] = $data->additional_features ?? '';
                 $nestedData['edit_url'] = route('admin.properties.edit', $data->id);
                 $nestedData['view_url'] = route('admin.properties.view',$data->id);
@@ -109,7 +104,6 @@ class PropertyController extends Controller
             }
         }
 
-        // Return the JSON response for DataTables
         $json_data = [
             "draw" => intval($request->input('draw')),
             "recordsTotal" => intval($totalData),
@@ -120,56 +114,29 @@ class PropertyController extends Controller
         return response()->json($json_data);
     }
 
-
-    /**
-    * Store a newly created resource in storage.
-    */
     public function store(PropertyStoreRequest $request)
     {
-        // dd($request->all());
-        // Handle media file upload
+
         $requestData = $request->safe()->all();
-    // Convert the additional features array to a comma-separated string
-    // if ($request->has('additional_features')) {
-    //     $requestData['additional_features'] = implode(', ', $request->input('additional_features'));
-    // }
-        // Store the property in the database
+
         Property::create($requestData);
 
-        // Redirect with success message
         return redirect()->route('admin.properties.index')
                          ->with('success', 'Property created successfully.');
     }
 
-        /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
-        // Find the user by ID
+
         $property = Property::findOrFail($id);
 
-        // Delete the user
         $property->delete();
 
-        // Return a JSON response indicating success
         return response()->json(['success' => 'Property deleted successfully.']);
-    }
-
-    public function restore($id)
-    {
-        // Find the soft-deleted user
-        $property = Property::withTrashed()->findOrFail($id);
-
-        // Restore the soft-deleted user
-        $property->restore();
-
-        return response()->json(['success' => 'Property restored successfully.']);
     }
 
     public function propertyEdit($id)
     {
-        // $user = User::withTrashed()->findOrFail($id);
         $property = Property::find($id);
         $agents = User::all();
 
@@ -178,13 +145,10 @@ class PropertyController extends Controller
 
     public function update(PropertyStoreRequest $request, $id)
     {
-        // dd('Update function called');
         $validatedData = $request->safe()->all();
 
-        // Fetch the user by ID
-        $property = Property::findOrFail($id); // Ensure $user is defined
+        $property = Property::findOrFail($id);
 
-        // Update the user record
         $property->update($validatedData);
 
         return redirect()->route('admin.properties.index')->with('success', 'User updated successfully.');
@@ -192,12 +156,12 @@ class PropertyController extends Controller
 
     public function show($id)
     {
-        // Find the user by ID
         $property = Property::with('agent')->findOrFail($id);
 
-        // Return the view with the user data
         return view('admin.properties.view', compact('property'));
     }
+
+
 
 }
 ?>

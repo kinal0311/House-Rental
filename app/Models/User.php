@@ -1,24 +1,16 @@
 <?php
-
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
-    use SoftDeletes;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    use HasFactory, Notifiable, SoftDeletes;
+
     protected $fillable = [
         'name',
         'role_id',
@@ -34,6 +26,7 @@ class User extends Authenticatable implements JWTSubject
         'img'
     ];
 
+    // Relationships
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
@@ -44,21 +37,19 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Property::class, 'agent_id');
     }
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
+    // Ensure the password is hashed before saving
+    public function setPasswordAttribute($value)
+    {
+        if (!empty($value)) {
+            $this->attributes['password'] = bcrypt($value);
+        }
+    }
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -67,23 +58,15 @@ class User extends Authenticatable implements JWTSubject
         ];
     }
 
-    /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
-     */
+    // JWT methods
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
 
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
     public function getJWTCustomClaims()
     {
         return [];
     }
 }
+?>

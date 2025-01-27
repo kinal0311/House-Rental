@@ -46,31 +46,36 @@ var tableVar = $('#propertyDataTable').DataTable({
             width: "100px",
             targets: 6, // Status column
             render: function (data, type, full, meta) {
+                // console.log('Status data:', data);  // Debugging log
                 var status = {
                     'sale': { 'title': "Sale", 'type': 'success' },
                     'sold': { 'title': "Sold", 'type': 'danger' },
-                    'rent': { 'title': "Rent", 'type': 'success' },
-                    // <button type="button" class="btn btn-primary btn-rounded waves-effect waves-light">Primary</button>
+                    'rent': { 'title': "Rent", 'type': 'info' },
                 };
-                if (typeof status[data] === 'undefined') {
-                    return data;
+
+                // Convert data to a string or check if it matches the status keys
+                var statusKey = data.toString().toLowerCase();  // Ensure it's lowercase or formatted correctly
+
+                if (typeof status[statusKey] === 'undefined') {
+                    return data;  // Fallback to the raw data if no match is found
                 }
-                return '<span class="badge badge-' + status[data].type + '">' + status[data].title + '</span>';
-            },
+
+                return '<span class="badge badge-' + status[statusKey].type + '">' + status[statusKey].title + '</span>';
+            }
         },
         {
-            width: "170px",
+            width: "200px",
             targets: -1, // Actions column
             title: "Actions",
             orderable: false,
             render: function (data, type, full, meta) {
-                return '<a href="'+full.view_url+'" class="btn btn-danger" ">\
+                return '<a href="'+full.view_url+'" class="btn btn-danger p-1" ">\
                             <i class="fa-solid fa-eye"></i>\
                         </a>\
-                        <a href="'+full.edit_url+'" class="btn btn-primary">\
+                        <a href="'+full.edit_url+'" class="btn btn-primary p-1">\
                             <i class="fa-solid fa-pen-to-square"></i>\
                         </a>\
-                        <button type="button" class="btn btn-danger" onclick="deleteProperty(' + data + ')">\
+                        <button type="button" class="btn btn-danger p-1" onclick="deleteProperty(' + data + ')">\
                             <i class="fa-solid fa-trash-can"></i>\
                         </button>';
             },

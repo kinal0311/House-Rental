@@ -42,9 +42,12 @@ var tableVar = $('#adminDataTable').DataTable({
                 if (typeof status[data] === 'undefined') {
                     return data;
                 }
-                return '<span class="badge badge-' + status[data].type + '">' + status[data].title + '</span>';
+
+                // Status badge with a click event to trigger confirmation
+                return '<span class="badge badge-' + status[data].type + '" style="cursor: pointer;" onclick="confirmStatusChange(' + full.id + ', ' + data + ')">' + status[data].title + '</span>';
             },
         },
+
         {
             width: "150px",
             targets: -1,
@@ -101,6 +104,51 @@ function deleteUser(id) {
         }
     );
 }
+
+function confirmStatusChange(id, currentStatus) {
+    // Ensure currentStatus is a string for proper comparison
+    currentStatus = currentStatus.toString();
+
+    // Toggle between '0' (inactive) and '1' (active)
+    var newStatus = (currentStatus === '0') ? '1' : '0';
+
+    // Replace the placeholder with the actual user ID in the URL
+    var url = changeStatusUrl.replace(':id', id);
+
+    // Show the confirmation dialog using Notiflix
+    Notiflix.Confirm.Show(
+        'Confirm Status Change',  // Title of the confirmation box
+        'Are you sure you want to change the status?',  // Confirmation message
+        'Yes',  // Confirm button text
+        'No',   // Cancel button text
+        function() {  // Callback for "Yes" button
+            // Send AJAX request to update the status
+            $.ajax({
+                url: url,  // URL with user ID
+                type: 'POST',
+                data: {
+                    _token: csrfToken,  // CSRF token for security
+                    status: newStatus,   // New status (either 0 or 1)
+                },
+                success: function(response) {
+                    tableVar.ajax.reload();  // Reload the table to reflect the change
+                    Notiflix.Notify.Success('Status updated successfully.');  // Success message
+                },
+                error: function(jqXHR, ajaxOptions, thrownError) {
+                    // Log the error for debugging
+                    console.error(jqXHR.responseJSON);
+                    Notiflix.Notify.Failure('Error updating status.');  // Failure message
+                }
+            });
+        },
+        function() {  // Callback for "No" button (nothing happens)
+            // Nothing happens when user clicks "No"
+        }
+    );
+}
+
+
+
 
 
 

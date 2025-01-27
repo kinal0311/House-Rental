@@ -1,4 +1,4 @@
-@extends('layout.partials.dashboard')
+@extends('layout.partials.master')
 @section('content')
 <div class="container-fluid">
     <div class="row mt-2">
@@ -29,7 +29,7 @@
                                 <th>Id</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Password</th>
+                                {{-- <th>Password</th> --}}
                                 <th>Gender</th>
                                 <th>Phone Number</th>
                                 <th>Date of Birth</th>
@@ -56,6 +56,7 @@
 <script>
     var dateTableUrl = "{{ route('admin.agent.agent-getdata') }}";
     var deleteRowUrl = "{{ route('admin.agent.destroy', ':id') }}";
+    var changeStatusUrl = "{{ route('admin.agentChangeData',':id')}}"
 
 </script>
 <script src="{{asset('assets/js/pages/admin/agent/index.js')}}"></script>

@@ -1,4 +1,4 @@
-@extends('layout.partials.dashboard')
+@extends('layout.partials.master')
 
 @section('content')
 <div class="container-fluid">
@@ -40,7 +40,7 @@
                                 <div class="form-group">
                                     <label for="email">Email<span class="text-danger">*</span></label>
                                     <input type="email" name="email" id="email" class="form-control"
-                                           value="{{ $user->email }}"
+                                           value="{{ $user->email }}" readonly
                                            {{ $user->trashed() ? 'readonly' : '' }}
                                            required>
                                     @error('email')
@@ -54,6 +54,10 @@
                                 <div class="form-group">
                                     <label for="password">Password (Leave blank to keep current password)</label>
                                     <input type="password" name="password" id="password" class="form-control">
+                                    <button type="button" id="togglePassword" class="btn btn-link position-absolute"
+                                            style="top: 55%; right: 10px; transform: translateY(-50%);">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
                                     @error('password')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -69,7 +73,7 @@
                                 <div class="form-group">
                                     <label for="phone_number">Phone Number</label>
                                     <input type="text" name="phone_number" id="phone_number" class="form-control"
-                                           value="{{ $user->phone_number }}"
+                                           value="{{ $user->phone_number }}" readonly
                                            {{ $user->trashed() ? 'readonly' : '' }}
                                            data-parsley-type="digits" data-parsley-length="[10, 15]">
                                     @error('phone_number')
@@ -216,6 +220,11 @@
 
 @section('script')
 <script>
+    $(document).ready(function() {
+        $('#editForm').parsley();
+    });
+</script>
+<script>
 $('#img').on('change', function () {
 
     var file = this.files[0];
@@ -237,5 +246,19 @@ $('#img').on('change', function () {
         Notiflix.Notify.Warning('Please upload a valid image file.');
     }
 });
+    // Toggle password visibility when "Show Password" button is clicked
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        var passwordField = document.getElementById('password');
+        var passwordFieldType = passwordField.getAttribute('type');
+
+        // Toggle between text and password types
+        if (passwordFieldType === 'password') {
+            passwordField.setAttribute('type', 'text');  // Show the text
+            this.innerHTML = '<i class="fa fa-eye-slash"></i>';  // Change to eye-slash icon
+        } else {
+            passwordField.setAttribute('type', 'password');  // Hide the text
+            this.innerHTML = '<i class="fa fa-eye"></i>';  // Change to eye icon
+        }
+    });
 </script>
 @endsection

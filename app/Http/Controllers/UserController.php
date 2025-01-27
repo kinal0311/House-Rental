@@ -7,7 +7,6 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
-// use Illuminate\Http\Request;
 use App\Http\Requests\AdminStoreRequest;
 
 class UserController extends Controller
@@ -20,18 +19,18 @@ class UserController extends Controller
     public function getData(Request $request)
     {
         $columns = array(
-            0 => 'id',
+                    0 => 'id',
             1 => 'name',
             2 => 'email',
-            3 => 'password',
-            4 => 'gender',
-            5 => 'phone_number',
-            6 => 'dob',
-            7 => 'status',
-            8 => 'description',
-            9 => 'address',
-            10 => 'zip_code',
-            11 => 'img'
+            // 3 => 'password',
+            3 => 'gender',
+            4 => 'phone_number',
+            5 => 'dob',
+            6 => 'status',
+            7 => 'description',
+            8 => 'address',
+            9 => 'zip_code',
+            10 => 'img',
         );
 
         $limit = $request->input('length');
@@ -39,7 +38,6 @@ class UserController extends Controller
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
 
-        // Eager load the role relationship and filter by role_id = 3
         $allData = User::with('role:id,name')
             ->where('role_id', 3)
             ->orderBy($order, $dir);
@@ -55,15 +53,12 @@ class UserController extends Controller
                       ->orWhere('gender', 'LIKE', "%{$search}%")
                       ->orWhere('phone_number', 'LIKE', "%{$search}%")
                       ->orWhere('dob', 'LIKE', "%{$search}%")
-                      ->orWhere('description', 'LIKE', "%{$search}%")
                       ->orWhere('address', 'LIKE', "%{$search}%")
-                      ->orWhere('zip_code', 'LIKE', "%{$search}%")
-                      ->orWhere('img', 'LIKE', "%{$search}%");
+                      ->orWhere('zip_code', 'LIKE', "%{$search}%");
             });
             $totalFiltered = $allData->count();
         }
 
-        // Apply pagination
         $allData = $allData->offset($start)
                            ->limit($limit)
                            ->get();
@@ -83,7 +78,7 @@ class UserController extends Controller
                 $nestedData['zip_code'] = $data->zip_code ?? '';
                 $nestedData['img'] = $data->img
                     ? asset($data->img)
-                    : asset('images/default.png'); // Default image path
+                    : asset('images/default.png');
                 $nestedData['role'] = $data->role ? $data->role->name : 'No Role';
                 $nestedData['edit_url'] = route('admin.user.edit',$data->id);
                 $nestedData['view_url'] = route('admin.user.view',$data->id);
@@ -105,30 +100,15 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        // Find the user by ID
         $user = User::findOrFail($id);
 
-        // Delete the user
         $user->delete();
 
-        // Return a JSON response indicating success
         return response()->json(['success' => 'User deleted successfully.']);
-    }
-
-    public function restore($id)
-    {
-        // Find the soft-deleted user
-        $user = User::withTrashed()->findOrFail($id);
-
-        // Restore the soft-deleted user
-        $user->restore();
-
-        return response()->json(['success' => 'User restored successfully.']);
     }
 
     public function userEdit($id)
     {
-        // $user = User::withTrashed()->findOrFail($id);
         $user = User::find($id);
         $roles = Role::all();
 
@@ -137,28 +117,17 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Fetch the user by ID
         $user = User::findOrFail($id);
 
-        // Get validated data
         $validatedData = $request->all();
 
-        // Check if a new image is uploaded
         if ($request->hasFile('img')) {
             $image = $request->file('img');
 
-            // Generate a new file name
             $imageName = time() . '.' . $image->getClientOriginalExtension();
 
-            // Move the file to the public directory
             $image->move(public_path('assets/images/users/'), $imageName);
 
-            // Delete the old image if it exists
-            // if ($user->img && file_exists(public_path($user->img))) {
-            //     unlink(public_path($user->img));
-            // }
-
-            // Save the new image path
             $upadeData['img'] = 'assets/images/users/' . $imageName;
         }
         $upadeData['name'] = $request['name'];
@@ -171,7 +140,6 @@ class UserController extends Controller
         $upadeData['description'] = $request['description'];
         $upadeData['status'] = $request['status'];
 
-        // Update user data
         $user->update($upadeData);
 
         return redirect()->route('admin.user.index')->with('success', 'User updated successfully.');
@@ -179,12 +147,24 @@ class UserController extends Controller
 
     public function show($id)
     {
-        // Find the user by ID
         $user = User::findOrFail($id);
         $roles = Role::all();
 
-        // Return the view with the user data
         return view('admin.user.view', compact('user','roles'));
     }
 
+    public function userChangeStatus($id, Request $request)
+    {
+        \Log::info($request->all());
+
+        $validated = $request->validate([
+            'status' => 'required|in:0,1',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->status = $request->status;
+        $user->save();
+
+        return response()->json(['success' => true]);
+    }
 }
