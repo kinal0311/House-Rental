@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('property_image', function (Blueprint $table) {
             $table->id();
-
             // Foreign key for properties table
             $table->unsignedBigInteger('property_id');
             $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
             $table->string('image_url');
             $table->string('alt_text')->nullable();
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }

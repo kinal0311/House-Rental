@@ -5,13 +5,14 @@ use App\Http\Controllers\MasterController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\PropertyImgController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\website\LayoutController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [LayoutController::class, 'index']);
 
+Route::get('layout', [LayoutController::class, 'index'])->name('layout');
 
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('login', [AuthController::class, 'postLogin'])->name('login.post');
@@ -64,6 +65,14 @@ Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'admin', 'as' =
     Route::get('edit/{id}', [PropertyController::class, 'propertyEdit'])->name('properties.edit');
     Route::post('update/{id}', [PropertyController::class, 'update'])->name('properties.update');
     Route::get('property-view/{id}', [PropertyController::class, 'show'])->name('properties.view');
+
+    Route::get('property_Img', [PropertyImgController::class, 'index'])->name('property_image.index');
+    Route::get('img_create', [PropertyImgController::class, 'create'])->name('property_image.create');
+    Route::post('img_store', [PropertyImgController::class, 'store'])->name('property_image.store');
+    Route::post('img_getData', [PropertyImgController::class, 'getData'])->name('property_image.getData');
+    Route::delete('property_image/{id}', [PropertyImgController::class, 'destroy'])->name('property_image.destroy');
+    Route::get('image-edit/{id}', [PropertyImgController::class, 'imageEdit'])->name('property_image.edit');
+    Route::post('image-update/{id}', [PropertyImgController::class, 'update'])->name('property_image.update');
 
 });
 

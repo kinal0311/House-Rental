@@ -68,6 +68,12 @@
             </li>
 
             <li>
+                <a href="{{ route('admin.property_image.index')}}">
+                    <i class="fe-shopping-cart"></i>
+                    <span> Property Image </span>
+                </a>
+            </li>
+            <li>
                 <a href="javascript: void(0);">
                     <i class="fe-shopping-cart"></i>
                     <span> Booking Order </span>
