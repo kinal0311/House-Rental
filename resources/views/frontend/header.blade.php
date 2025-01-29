@@ -20,8 +20,8 @@
                                 </li>
                                 <li class="dropdown">
                                     <a href="javascript:void(0)" class="nav-link menu-title">Home</a>
-                                    <ul class="nav-submenu menu-content">
-                                        {{-- <li><a href="layout-1.html">Slider filter search</a>
+                                    {{-- <ul class="nav-submenu menu-content">
+                                        <li><a href="layout-1.html">Slider filter search</a>
                                         </li>
                                         <li><a href="layout-2.html">Corporate</a>
                                         </li>
@@ -44,12 +44,12 @@
                                         <li><a href="layout-11.html">Map with v-search</a>
                                         </li>
                                         <li><a href="layout-12.html">Map with h-search</a>
-                                        </li> --}}
-                                    </ul>
+                                        </li>
+                                    </ul> --}}
                                 </li>
                                 <li class="dropdown">
                                     <a href="javascript:void(0)" class="nav-link menu-title">Listing</a>
-                                    <ul class="nav-submenu menu-content">
+                                    {{-- <ul class="nav-submenu menu-content">
                                         <li>
                                             <a href="javascript:void(0)" class="menu-title-level1">Grid view</a>
                                             <ul class="nav-sub-childmenu level1">
@@ -160,11 +160,11 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                    </ul>
+                                    </ul> --}}
                                 </li>
                                 <li class="dropdown">
                                     <a href="javascript:void(0)" class="nav-link menu-title">property</a>
-                                    <ul class="nav-submenu menu-content">
+                                    {{-- <ul class="nav-submenu menu-content">
                                         <li><a href="single-property-1.html">sticky tab or classic</a></li>
                                         <li><a href="single-property-2.html">360 view</a></li>
                                         <li><a href="single-property-3.html">Without top</a></li>
@@ -175,13 +175,13 @@
                                         <li><a href="single-property-8.html">image box</a></li>
                                         <li><a href="single-property-9.html">Template breadcrumb</a></li>
                                         <li><a href="single-property-10.html">modal details <span class="icon-trend label"><i class="fas fa-bolt"></i></span></a></li>
-                                    </ul>
+                                    </ul> --}}
                                 </li>
                                 <li class="mega-menu">
                                     <a href="javascript:void(0)" class="nav-link menu-title">
                                         pages
                                     </a>
-                                    <div class="mega-menu-container menu-content">
+                                    {{-- <div class="mega-menu-container menu-content">
                                         <div class="container">
                                             <div class="row">
                                                 <div class="col mega-box">
@@ -378,11 +378,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </li>
                                 <li class="dropdown">
                                     <a href="javascript:void(0)" class="nav-link menu-title">Modules</a>
-                                    <ul class="nav-submenu menu-content">
+                                    {{-- <ul class="nav-submenu menu-content">
                                         <li><a href="button-element.html">Button</a>
                                         </li>
                                         <li><a href="label-element.html">Label</a>
@@ -411,24 +411,24 @@
                                         </li>
                                         <li><a href="other-element.html">others</a>
                                         </li>
-                                    </ul>
+                                    </ul> --}}
                                 </li>
                                 <li class="dropdown">
                                     <a href="javascript:void(0)" class="nav-link menu-title">agent</a>
-                                    <ul class="nav-submenu menu-content">
+                                    {{-- <ul class="nav-submenu menu-content">
                                         <li><a href="agent-profile.html">Agent Profile</a></li>
                                         <li><a href="agent-grid.html">Agent Grid</a></li>
                                         <li><a href="agent-list.html">Agent List</a></li>
                                         <li><a href="submit-property.html">Submit property <span class="label">New</span></a></li>
-                                    </ul>
+                                    </ul> --}}
                                 </li>
                                 <li class="dropdown">
                                     <a href="javascript:void(0)" class="nav-link menu-title">Contact</a>
-                                    <ul class="nav-submenu menu-content">
+                                    {{-- <ul class="nav-submenu menu-content">
                                         <li><a href="contact-1.html">Contact us 1</a></li>
                                         <li><a href="contact-2.html">Contact us 2</a></li>
                                         <li><a href="contact-3.html">Contact us 3</a></li>
-                                    </ul>
+                                    </ul> --}}
                                 </li>
                             </ul>
                         </div>

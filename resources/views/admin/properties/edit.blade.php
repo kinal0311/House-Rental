@@ -27,6 +27,12 @@
                                         <option value="residential" {{ $property->property_type == 'residential' ? 'selected' : '' }}>Residential</option>
                                         <option value="commercial" {{ $property->property_type == 'commercial' ? 'selected' : '' }}>Commercial</option>
                                         <option value="land" {{ $property->property_type == 'land' ? 'selected' : '' }}>Land</option>
+                                        <option value="apartment" {{ $property->property_type == 'apartment' ? 'selected' : '' }}>Apartment</option>
+                                        <option value="family house" {{ $property->property_type == 'family house' ? 'selected' : '' }}>Family House</option>
+                                        <option value="villa" {{ $property->property_type == 'villa' ? 'selected' : '' }}>Villa</option>
+                                        <option value="town house" {{ $property->property_type == 'town house' ? 'selected' : '' }}>Town House</option>
+                                        <option value="office" {{ $property->property_type == 'office' ? 'selected' : '' }}>Office</option>
+                                        <option value="duplex" {{ $property->property_type == 'duplex' ? 'selected' : '' }}>Duplex</option>
                                     </select>
                                     @error('property_type')
                                     <div class="text-danger">{{ $message }}</div>
@@ -37,7 +43,7 @@
                             <!-- Max Rooms -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="max_rooms">Max Rooms</label>
+                                    <label for="max_rooms">Max Rooms<span class="text-danger">*</span></label>
                                     <input type="number" name="max_rooms" id="max_rooms" class="form-control" placeholder="Enter Max Rooms" value="{{ $property->max_rooms }}">
                                     @error('max_rooms')
                                     <div class="text-danger">{{ $message }}</div>
@@ -50,7 +56,7 @@
                             <!-- Beds -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="beds">Beds</label>
+                                    <label for="beds">Beds<span class="text-danger">*</span></label>
                                     <input type="number" name="beds" id="beds" class="form-control" placeholder="Enter Number of Beds" value="{{ $property->beds }}">
                                     @error('beds')
                                     <div class="text-danger">{{ $message }}</div>
@@ -61,7 +67,7 @@
                             <!-- Baths -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="baths">Baths</label>
+                                    <label for="baths">Baths<span class="text-danger">*</span></label>
                                     <input type="number" name="baths" id="baths" class="form-control" placeholder="Enter Number of Baths" value="{{ $property->baths }}">
                                     @error('baths')
                                     <div class="text-danger">{{ $message }}</div>
@@ -127,7 +133,7 @@
                             <!-- Area -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="area">Area (sqft)</label>
+                                    <label for="area">Area (sqft)<span class="text-danger">*</span></label>
                                     <input type="number" name="area" id="area" class="form-control" placeholder="Enter Area" value="{{ $property->area }}">
                                     @error('area')
                                     <div class="text-danger">{{ $message }}</div>
@@ -138,7 +144,7 @@
                             <!-- ZIP Code -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="zip_code">ZIP Code</label>
+                                    <label for="zip_code">ZIP Code<span class="text-danger">*</span></label>
                                     <input type="text" name="zip_code" id="zip_code" class="form-control" placeholder="Enter ZIP Code" value="{{ $property->zip_code }}">
                                     @error('zip_code')
                                     <div class="text-danger">{{ $message }}</div>
@@ -151,7 +157,7 @@
                             <!-- Address -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="address">Address</label>
+                                    <label for="address">Address<span class="text-danger">*</span></label>
                                     <input type="text" name="address" id="address" class="form-control" placeholder="Enter Address" value="{{ $property->address }}">
                                     @error('address')
                                     <div class="text-danger">{{ $message }}</div>
@@ -161,7 +167,7 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="city">City</label>
+                                    <label for="city">City<span class="text-danger">*</span></label>
                                     <input type="text" name="city" id="city" class="form-control" placeholder="Enter City" value="{{ $property->city }}">
                                     @error('city')
                                     <div class="text-danger">{{ $message }}</div>
@@ -194,7 +200,7 @@
                             <!-- Description -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="description">Description</label>
+                                    <label for="description">Description<span class="text-danger">*</span></label>
                                     <textarea name="description" id="description" class="form-control" rows="4" placeholder="Enter Description">{{  $property->description }}</textarea>
                                     @error('description')
                                     <div class="text-danger">{{ $message }}</div>
@@ -205,7 +211,7 @@
                             <!-- Additional Features -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="additional_features">Additional Features</label>
+                                    <label for="additional_features">Additional Features<span class="text-danger">*</span></label>
                                     <div class="form-check">
                                         <input type="checkbox" name="additional_features[]" value="Swimming Pool" id="swimming_pool" class="form-check-input" {{ in_array('Swimming Pool', $property->additional_features) ? 'checked' : '' }}>
                                         <label for="swimming_pool" class="form-check-label">Swimming Pool</label>

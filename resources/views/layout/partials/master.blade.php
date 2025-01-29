@@ -4,6 +4,7 @@
         <meta charset="utf-8" />
         <title>House Rental</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
             <!-- Plugins css -->
             <link href="{{ URL::asset('assets/libs/flatpickr/flatpickr.min.css')}}" rel="stylesheet" type="text/css" />
@@ -19,7 +20,7 @@
             crossorigin="anonymous" referrerpolicy="no-referrer" />
 
             <!-- Parsley CSS -->
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/parsleyjs/src/parsley.css">
+            {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/parsleyjs/src/parsley.css"> --}}
             <!-- Plugin js-->
             <script src="{{ URL::asset('assets/libs/parsleyjs/parsley.css')}}"></script>
 
@@ -85,47 +86,47 @@
         <!-- Right bar overlay-->
         <div class="rightbar-overlay"></div>
                 <!--JQuery-->
-        <!-- Vendor js -->
-        <script src="{{ URL::asset('assets/js/vendor.min.js')}}"></script>
+<!-- jQuery must be first -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        <!-- Plugins js-->
-        <script src="{{ URL::asset('assets/libs/flatpickr/flatpickr.min.js')}}"></script>
-        <script src="{{ URL::asset('assets/libs/jquery-knob/jquery.knob.min.js')}}"></script>
-        <script src="{{ URL::asset('assets/libs/jquery-sparkline/jquery.sparkline.min.js')}}"></script>
+<!-- Vendor and essential plugins -->
+<script src="{{ URL::asset('assets/js/vendor.min.js')}}"></script>
+<script src="{{ URL::asset('assets/libs/flatpickr/flatpickr.min.js')}}"></script>
+<script src="{{ URL::asset('assets/libs/jquery-knob/jquery.knob.min.js')}}"></script>
+<script src="{{ URL::asset('assets/libs/jquery-sparkline/jquery.sparkline.min.js')}}"></script>
 
-        <!-- App js-->
-        <script src="{{ URL::asset('assets/js/app.min.js')}}"></script>
+<!-- App scripts -->
+<script src="{{ URL::asset('assets/js/app.min.js')}}"></script>
 
-        <!-- Parsley JS -->
-        <script src="https://cdn.jsdelivr.net/npm/parsleyjs/dist/parsley.min.js"></script>
+<!-- Validation and form plugins -->
+<script src="https://cdn.jsdelivr.net/npm/parsleyjs/dist/parsley.min.js"></script>
+<script src="{{ URL::asset('assets/libs/parsleyjs/parsley.min.js')}}"></script>
 
-        <!-- Notiflix -->
-        <script src="{{ URL::asset('assets\libs\notiflix\notiflix-2.1.2.js')}}"></script>
+<!-- Ensure validation script runs only after jQuery -->
+{{-- <script defer src="{{ URL::asset('assets/js/pages/form-validation.init.js')}}"></script> --}}
 
-        <!-- Plugin js-->
-        <script src="{{ URL::asset('assets/libs/parsleyjs/parsley.min.js')}}"></script>
+<!-- DataTables and dependencies -->
+<script src="{{ asset('assets/libs/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables/dataTables.bootstrap4.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables/buttons.flash.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables/buttons.print.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables/dataTables.keyTable.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables/dataTables.select.min.js') }}"></script>
+<script src="{{ asset('assets/libs/pdfmake/pdfmake.min.js') }}"></script>
+<script src="{{ asset('assets/libs/pdfmake/vfs_fonts.js') }}"></script>
 
-        <!-- Validation init js-->
-        <script src="{{ URL::asset('assets/js/pages/form-validation.init.js')}}"></script>
+<!-- CSRF Token for AJAX -->
+<script>
+    var csrfToken = "{{ csrf_token() }}";
+</script>
 
-        <!--DataTable JS-->
-        <script src="{{asset('assets/libs/datatables/jquery.dataTables.min.js')}}"></script>
-        <script src="{{asset('assets/libs/datatables/dataTables.bootstrap4.js')}}"></script>
-        <script src="{{asset('assets/libs/datatables/dataTables.responsive.min.js')}}"></script>
-        <script src="{{asset('assets/libs/datatables/responsive.bootstrap4.min.js')}}"></script>
-        <script src="{{asset('assets/libs/datatables/dataTables.buttons.min.js')}}"></script>
-        <script src="{{asset('assets/libs/datatables/buttons.bootstrap4.min.js')}}"></script>
-        <script src="{{asset('assets/libs/datatables/buttons.html5.min.js')}}"></script>
-        <script src="{{asset('assets/libs/datatables/buttons.flash.min.js')}}"></script>
-        <script src="{{asset('assets/libs/datatables/buttons.print.min.js')}}"></script>
-        <script src="{{asset('assets/libs/datatables/dataTables.keyTable.min.js')}}"></script>
-        <script src="{{asset('assets/libs/datatables/dataTables.select.min.js')}}"></script>
-        <script src="{{asset('assets/libs/pdfmake/pdfmake.min.js')}}"></script>
-        <script src="{{asset('assets/libs/pdfmake/vfs_fonts.js')}}"></script>
-        <script>
-            var csrfToken = "{{ csrf_token() }}";
-        </script>
-        @yield('script')
+@yield('script')
+
 
     </body>
 </html>

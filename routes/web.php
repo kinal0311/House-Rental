@@ -12,8 +12,6 @@ use App\Http\Controllers\website\LayoutController;
 
 Route::get('/', [LayoutController::class, 'index']);
 
-Route::get('layout', [LayoutController::class, 'index'])->name('layout');
-
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('login', [AuthController::class, 'postLogin'])->name('login.post');
 
@@ -73,8 +71,11 @@ Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'admin', 'as' =
     Route::delete('property_image/{id}', [PropertyImgController::class, 'destroy'])->name('property_image.destroy');
     Route::get('image-edit/{id}', [PropertyImgController::class, 'imageEdit'])->name('property_image.edit');
     Route::post('image-update/{id}', [PropertyImgController::class, 'update'])->name('property_image.update');
+    Route::get('image-view/{id}', [PropertyImgController::class, 'show'])->name('property_image.view');
 
 });
 
+// Route::get('layout', [LayoutController::class, 'index'])->name('layout');
+Route::get('layout', [LayoutController::class, 'index'])->name('layout');
 
 ?>

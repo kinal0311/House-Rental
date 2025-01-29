@@ -22,6 +22,17 @@ class PropertyController extends Controller
         return view('admin.properties.create', compact('agents'));
     }
 
+    public function store(PropertyStoreRequest $request)
+    {
+
+        $requestData = $request->safe()->all();
+// dd($requestData->all());
+        Property::create($requestData);
+
+        return redirect()->route('admin.properties.index')
+                         ->with('success', 'Property created successfully.');
+    }
+
     public function getData(Request $request)
     {
         $columns = array(
@@ -114,17 +125,6 @@ class PropertyController extends Controller
         return response()->json($json_data);
     }
 
-    public function store(PropertyStoreRequest $request)
-    {
-
-        $requestData = $request->safe()->all();
-
-        Property::create($requestData);
-
-        return redirect()->route('admin.properties.index')
-                         ->with('success', 'Property created successfully.');
-    }
-
     public function destroy($id)
     {
 
@@ -156,7 +156,7 @@ class PropertyController extends Controller
 
     public function show($id)
     {
-        $property = Property::with('agent')->findOrFail($id);
+        $property = Property::with('agent', 'images')->findOrFail($id);
 
         return view('admin.properties.view', compact('property'));
     }

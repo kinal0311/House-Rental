@@ -10,9 +10,20 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('admin.store') }}" id="userForm" method="POST" enctype="multipart/form-data" data-parsley-validate>
+                    <form action="{{ route('admin.store') }}" id="userForm" method="POST" enctype="multipart/form-data" data-parsley-validate>  {{-- data-parsley-validate --}}
                         @csrf
                         <div class="row">
 
@@ -99,8 +110,8 @@
                             <!-- Phone Number Field -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="phone_number">Phone Number</label>
-                                    <input type="text" name="phone_number" id="phone_number" class="form-control"
+                                    <label for="phone_number">Phone Number<span class="text-danger">*</span></label>
+                                    <input type="text" name="phone_number" id="phone_number" class="form-control" maxlength="10"
                                            placeholder="Enter Phone Number" value="{{ old('phone_number') }}"
                                            data-parsley-type="digits"
                                            data-parsley-length="[10, 15]"
@@ -115,7 +126,7 @@
                             <!-- Date of Birth Field -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="dob">Date of Birth</label>
+                                    <label for="dob">Date of Birth<span class="text-danger">*</span></label>
                                     <input type="date" name="dob" id="dob" class="form-control"
                                            value="{{ old('dob') }}" required
                                            data-parsley-trigger="change"
@@ -133,7 +144,7 @@
                             <!-- Address Field -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="address">Address</label>
+                                    <label for="address">Address<span class="text-danger">*</span></label>
                                     <input type="text" name="address" id="address" class="form-control"
                                            placeholder="Enter Address" value="{{ old('address') }}"
                                            data-parsley-trigger="keyup" required>
@@ -146,7 +157,7 @@
                             <!-- ZIP Code Field -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="zip_code">ZIP Code</label>
+                                    <label for="zip_code">ZIP Code<span class="text-danger">*</span></label>
                                     <input type="text" name="zip_code" id="zip_code" class="form-control"
                                            placeholder="Enter ZIP Code" value="{{ old('zip_code') }}"
                                            data-parsley-type="digits" data-parsley-trigger="keyup" required>
@@ -157,7 +168,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                         <div class="row">
                             <!-- Gender Field -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -177,7 +188,7 @@
                             <!-- Description Field -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="description">Description</label>
+                                    <label for="description">Description<span class="text-danger">*</span></label>
                                     <textarea name="description" id="description" class="form-control" rows="3"
                                               placeholder="Enter Description" data-parsley-trigger="keyup" required>{{ old('description') }} </textarea>
                                     @error('description')
@@ -187,7 +198,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                         <div class="row">
                             <!-- Image Upload Field -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -239,36 +250,36 @@
 
 @section('script')
 <script>
-  $(document).ready(function() {
-    // Initialize Parsley
-    $('#userForm').parsley();
+    $(document).ready(function() {
+        // Initialize Parsley
+        $('#userForm').parsley();
 
-    // Check for radio button validation and show error message manually if needed
-    $('#userForm').on('submit', function(e) {
-        e.preventDefault();
+        // Check for radio button validation and show error message manually if needed
+        $('#userForm').on('submit', function(e) {
+            //e.preventDefault();
 
-        // If Parsley detects an invalid form
-        if ($(this).parsley().isValid() === false) {
-            // Display error message
-            $('#statusError').text('Please select a status.');
-        }
+            // If Parsley detects an invalid form
+            if ($(this).parsley().isValid() === false) {
+                // Display error message
+                $('#statusError').text('Please select a status.');
+            }
+        });
     });
-});
 
 
     // Toggle password visibility when "Show Password" button is clicked
-    document.getElementById('togglePassword').addEventListener('click', function () {
-        var passwordField = document.getElementById('password');
-        var passwordFieldType = passwordField.getAttribute('type');
+    // document.getElementById('togglePassword').addEventListener('click', function () {
+    //     var passwordField = document.getElementById('password');
+    //     var passwordFieldType = passwordField.getAttribute('type');
 
-        // Toggle between text and password types
-        if (passwordFieldType === 'password') {
-            passwordField.setAttribute('type', 'text');  // Show the text
-            this.innerHTML = '<i class="fa fa-eye-slash"></i>';  // Change to eye-slash icon
-        } else {
-            passwordField.setAttribute('type', 'password');  // Hide the text
-            this.innerHTML = '<i class="fa fa-eye"></i>';  // Change to eye icon
-        }
-    });
+    //     // Toggle between text and password types
+    //     if (passwordFieldType === 'password') {
+    //         passwordField.setAttribute('type', 'text');  // Show the text
+    //         this.innerHTML = '<i class="fa fa-eye-slash"></i>';  // Change to eye-slash icon
+    //     } else {
+    //         passwordField.setAttribute('type', 'password');  // Hide the text
+    //         this.innerHTML = '<i class="fa fa-eye"></i>';  // Change to eye icon
+    //     }
+    // });
 </script>
 @endsection

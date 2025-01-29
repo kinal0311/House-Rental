@@ -66,7 +66,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-md-6 wow fadeInUp">
+                {{-- <div class="col-xl-4 col-md-6 wow fadeInUp">
                     <div class="property-box">
                         <div class="property-image">
                             <div class="property-slider color-6">
@@ -357,7 +357,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

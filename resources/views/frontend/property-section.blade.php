@@ -9,11 +9,12 @@
             <div class="listing-hover-property row">
                 <div class="col-xl-4 col-md-6 wow fadeInUp">
                     <div class="property-box">
+                        @foreach($property   as $properties)
                         <div class="property-image">
                             <a href="javascript:void(0)">
                                 <img src="{{ URL::asset('sheltos/assets/images/others/1.jpg') }}" class="bg-img" alt="">
                                 <div class="labels-left">
-                                    <span class="label label-shadow">Sale</span>
+                                    <span class="label label-shadow">{{ $properties->status }}</span>
                                 </div>
                             </a>
                             <div class="bottom-property">
@@ -46,6 +47,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-delay="200ms">

@@ -11,6 +11,17 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
                     <form action="{{ route('admin.properties.store')}}" id="propertyForm" method="POST" enctype="multipart/form-data" data-parsley-validate>
@@ -25,6 +36,12 @@
                                         <option value="residential">Residential</option>
                                         <option value="commercial">Commercial</option>
                                         <option value="land">Land</option>
+                                        <option value="apartment">Apartment</option>
+                                        <option value="family house">Family House</option>
+                                        <option value="villa">Villa</option>
+                                        <option value="town house">Town House</option>
+                                        <option value="office">Office</option>
+                                        <option value="duplex">Duplex</option>
                                     </select>
                                 </div>
                             </div>
@@ -32,7 +49,7 @@
                             <!-- Max Rooms -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="max_rooms">Max Rooms</label>
+                                    <label for="max_rooms">Max Rooms<span class="text-danger">*</span></label>
                                     <input type="number" name="max_rooms" id="max_rooms" class="form-control" required placeholder="Enter Max Rooms" data-parsley-type="number" data-parsley-type-message="Please enter a valid number.">
                                 </div>
                             </div>
@@ -42,7 +59,7 @@
                             <!-- Beds -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="beds">Beds</label>
+                                    <label for="beds">Beds<span class="text-danger">*</span></label>
                                     <input type="number" name="beds" id="beds" class="form-control" required placeholder="Enter Number of Beds" data-parsley-type="number" data-parsley-type-message="Please enter a valid number.">
                                 </div>
                             </div>
@@ -50,7 +67,7 @@
                             <!-- Baths -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="baths">Baths</label>
+                                    <label for="baths">Baths<span class="text-danger">*</span></label>
                                     <input type="number" name="baths" id="baths" class="form-control" required placeholder="Enter Number of Baths" data-parsley-type="number" data-parsley-type-message="Please enter a valid number.">
                                 </div>
                             </div>
@@ -92,7 +109,7 @@
                             <!-- Area -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="area">Area (sqft)</label>
+                                    <label for="area">Area (sqft)<span class="text-danger">*</span></label>
                                     <input type="number" name="area" id="area" class="form-control" required placeholder="Enter Area" data-parsley-type="number" data-parsley-type-message="Please enter a valid area size.">
                                 </div>
                             </div>
@@ -100,7 +117,7 @@
                             <!-- ZIP Code -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="zip_code">ZIP Code</label>
+                                    <label for="zip_code">ZIP Code<span class="text-danger">*</span></label>
                                     <input type="text" name="zip_code" id="zip_code" class="form-control" required placeholder="Enter ZIP Code" data-parsley-pattern="^\d{5}$" data-parsley-pattern-message="Please enter a valid ZIP Code.">
                                 </div>
                             </div>
@@ -110,7 +127,7 @@
                             <!-- Address -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="address">Address</label>
+                                    <label for="address">Address<span class="text-danger">*</span></label>
                                     <input type="text" name="address" id="address" class="form-control" required placeholder="Enter Address">
                                 </div>
                             </div>
@@ -118,7 +135,7 @@
                             <!-- City -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="city">City</label>
+                                    <label for="city">City<span class="text-danger">*</span></label>
                                     <input type="text" name="city" id="city" class="form-control" required placeholder="Enter City">
                                 </div>
                             </div>
@@ -143,10 +160,39 @@
 
                         <div class="row">
                             <!-- Description -->
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="description">Description</label>
+                                    <label for="description">Description<span class="text-danger">*</span></label>
                                     <textarea name="description" id="description" class="form-control" rows="4" required placeholder="Enter Description"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="additional_features">Additional Features<span class="text-danger">*</span></label>
+                                    <div class="form-check">
+                                        <input type="checkbox" name="additional_features[]" value="Swimming Pool" id="swimming_pool" class="form-check-input" >
+                                        <label for="swimming_pool" class="form-check-label">Swimming Pool</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" name="additional_features[]" value="Gym" id="gym" class="form-check-input">
+                                        <label for="gym" class="form-check-label">Gym</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" name="additional_features[]" value="Garage" id="garage" class="form-check-input" >
+                                        <label for="garage" class="form-check-label">Garage</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" name="additional_features[]" value="Garden" id="garden" class="form-check-input" >
+                                        <label for="garden" class="form-check-label">Garden</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" name="additional_features[]" value="Fireplace" id="fireplace" class="form-check-input" >
+                                        <label for="fireplace" class="form-check-label">Fireplace</label>
+                                    </div>
+                                    @error('additional_features')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -164,7 +210,7 @@
 </div>
 @endsection
 
-@section('scripts')
+@section('script')
 <script>
     $(document).ready(function () {
         $('#propertyForm').parsley();

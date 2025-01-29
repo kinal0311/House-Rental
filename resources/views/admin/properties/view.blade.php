@@ -1,4 +1,12 @@
 @extends('layout.partials.master')
+{{-- <style>
+    .property-image {
+        width: 200px; /* Set the desired width */
+        height: 200px; /* Set the desired height */
+        object-fit: cover; /* This ensures the image will cover the area without distortion */
+    }
+</style> --}}
+
 @section('content')
 
 <div class="container-fluid">
@@ -90,6 +98,21 @@
                                             <span>no data</span>
                                         @endforelse
                                     </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-nowrap" scope="row">Property Images</th>
+                                <td>
+                                    <div class="row">
+                                        @foreach ($property->images as $image)
+                                            <div class="col-md-3 mb-3">
+                                                <img src="{{ asset($image->image_url) }}" alt="{{ $image->alt_text }}" class="img-fluid h-75 w-75">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    @if($property->images->isEmpty())
+                                        <p>No images available</p>
+                                    @endif
                                 </td>
                             </tr>
                             </tbody>

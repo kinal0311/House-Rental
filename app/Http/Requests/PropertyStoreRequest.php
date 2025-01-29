@@ -27,7 +27,7 @@ class PropertyStoreRequest extends FormRequest
         'beds' => 'required',
         'baths' => 'required',
         'price' => 'required',
-        'status' => 'required|in:sale,sold,rent',
+        'status' => 'required|in:Sale,Sold,Rent',
         'area' => 'required',
         'zip_code' => 'required',
         'address' => 'required',

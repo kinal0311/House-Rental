@@ -71,7 +71,7 @@
                             <!-- Phone Number Field -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="phone_number">Phone Number</label>
+                                    <label for="phone_number">Phone Number<span class="text-danger">*</span></label>
                                     <input type="text" name="phone_number" id="phone_number" class="form-control"
                                            value="{{ $user->phone_number }}" readonly
                                            {{ $user->trashed() ? 'readonly' : '' }}
@@ -85,7 +85,7 @@
                             <!-- Date of Birth Field -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="dob">Date of Birth</label>
+                                    <label for="dob">Date of Birth<span class="text-danger">*</span></label>
                                     <input type="date" name="dob" id="dob" class="form-control" value="{{ $user->dob }}"
                                            {{ $user->trashed() ? 'readonly' : '' }} required>
                                     @error('dob')
@@ -101,7 +101,7 @@
                             <!-- Address Field -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="address">Address</label>
+                                    <label for="address">Address<span class="text-danger">*</span></label>
                                     <input type="text" name="address" id="address" class="form-control"
                                            value="{{ $user->address }}"
                                            {{ $user->trashed() ? 'readonly' : '' }}>
@@ -114,7 +114,7 @@
                             <!-- ZIP Code Field -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="zip_code">ZIP Code</label>
+                                    <label for="zip_code">ZIP Code<span class="text-danger">*</span></label>
                                     <input type="text" name="zip_code" id="zip_code" class="form-control"
                                            value="{{ $user->zip_code }}"
                                            {{ $user->trashed() ? 'readonly' : '' }}
@@ -147,7 +147,7 @@
                             <!-- Description Field -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="description">Description</label>
+                                    <label for="description">Description<span class="text-danger">*</span></label>
                                     <textarea name="description" id="description" class="form-control" rows="3"
                                               {{ $user->trashed() ? 'readonly' : '' }}>{{ $user->description }}</textarea>
                                     @error('description')
