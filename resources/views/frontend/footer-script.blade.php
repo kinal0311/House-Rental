@@ -37,3 +37,25 @@
 
    <!-- Color-picker js-->
    <script src="{{ URL::asset('sheltos/assets/js/color/layout3.js') }}"></script>
+
+    <!-- Include jQuery UI (if you're using jQuery UI Slider) -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <!-- Slick Slider JS -->
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+  <!-- magnific js -->
+  {{-- <script src="{{ URL::asset('sheltos/assets/js/jquery.magnific-popup.js') }}"></script>
+  <script src="{{ URL::asset('sheltos/assets/js/zoom-gallery.js') }}"></script>
+  <script src="{{ URL::asset('sheltos/assets/js/zoom-gallery-multiple.js') }}"></script> --}}
+
+  <!-- video js-->
+  <script src="{{ URL::asset('sheltos/assets/js/jquery.vide.min.js') }}"></script>
+
+  <!-- range slider js -->
+  <script src="{{ URL::asset('sheltos/assets/js/jquery-ui.js') }}"></script>
+  <script src="{{ URL::asset('sheltos/assets/js/jquery.ui.touch-punch.min.js') }}"></script>
+  <script src="{{ URL::asset('sheltos/assets/js/range-slider.js') }}"></script>
+
+  <!-- print js -->
+  <script src="{{ URL::asset('sheltos/assets/js/print.js') }}"></script>

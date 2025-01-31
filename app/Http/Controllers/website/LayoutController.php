@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyImg;
+use App\Models\User;
 
 
 class LayoutController extends Controller

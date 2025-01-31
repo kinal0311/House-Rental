@@ -9,6 +9,8 @@ use App\Http\Controllers\PropertyImgController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\website\LayoutController;
+use App\Http\Controllers\website\SinglePropertyController;
+
 
 Route::get('/', [LayoutController::class, 'index']);
 
@@ -75,7 +77,8 @@ Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'admin', 'as' =
 
 });
 
-// Route::get('layout', [LayoutController::class, 'index'])->name('layout');
 Route::get('layout', [LayoutController::class, 'index'])->name('layout');
+Route::get('single-property-8', [SinglePropertyController::class, 'index'])->name('single-property-8');
+Route::get('/single-property-8/{id}', [SinglePropertyController::class, 'show'])->name('single-property.show');
 
 ?>

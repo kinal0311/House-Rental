@@ -38,16 +38,14 @@
                                 <ul>
                                     <li>
                                         <a href="grid-2.html" class="looking-icon">
-                                            <svg class="property-svg">
-                                                <use xlink:href="https://themes.pixelstrap.com/sheltos/assets2/svg/icons.svg#home-lock"></use>
-                                            </svg>
+                                            <i class="fa-regular fa-house-heart" style="color: #ffffff;"></i>
                                             <h6>House</h6>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="user-create.html" class="looking-icon">
                                             <svg class="property-svg">
-                                                <use xlink:href="https://themes.pixelstrap.com/sheltos/assets2/svg/icons.svg#home-heart"></use>
+                                                <use xlink:href="https://themes.pixelstrap.com/sheltos/assets/svg/icons.svg#home-heart"></use>
                                             </svg>
                                             <h6>Booking</h6>
                                         </a>
@@ -55,7 +53,7 @@
                                     <li>
                                         <a href="user-listing.html" class="looking-icon">
                                             <svg class="property-svg">
-                                                <use xlink:href="https://themes.pixelstrap.com/sheltos/assets2/svg/icons.svg#key"></use>
+                                                <use xlink:href="https://themes.pixelstrap.com/sheltos/assets/svg/icons.svg#key"></use>
                                             </svg>
                                             <h6>Garage</h6>
                                         </a>
