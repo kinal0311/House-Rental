@@ -9,6 +9,45 @@
 
     @include('frontend.layoutcss')
 
+    <style>
+        /* .slick-slide {
+            min-width: 100px !important;
+            width: auto !important;
+        }
+        .slick-track {
+            display: flex !important;
+        }
+        .slick-slide img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .gallery-for, .gallery-nav {
+            max-width: 100%;
+            overflow: hidden;
+        }
+        .large-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .thumbnail-img {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .thumbnail-img:hover {
+            transform: scale(1.1);
+        } */
+
+    </style>
+
 </head>
 
 <body>
@@ -47,52 +86,26 @@
                                         </li>
                                         <li class="dropdown">
                                             <a href="javascript:void(0)" class="nav-link menu-title">Home</a>
-                                            {{-- <ul class="nav-submenu menu-content">
-                                                <li><a href="layout-1.html">Slider filter search</a>
-                                                </li>
-                                                <li><a href="layout-2.html">Corporate</a>
-                                                </li>
-                                                <li><a href="layout-3.html">Enterprise</a>
-                                                </li>
-                                                <li><a href="layout-4.html">Classic <span class="label">New</span></a>
-                                                </li>
-                                                <li><a href="layout-5.html">Image with content</a>
-                                                </li>
-                                                <li><a href="layout-6.html">Modern <span class="label">New</span></a>
-                                                </li>
-                                                <li><a href="layout-7.html">Parallax image</a>
-                                                </li>
-                                                <li><a href="layout-8.html">Search tab</a>
-                                                </li>
-                                                <li><a href="layout-9.html">Typed image</a>
-                                                </li>
-                                                <li><a href="layout-10.html">Morden video</a>
-                                                </li>
-                                                <li><a href="layout-11.html">Map with v-search</a>
-                                                </li>
-                                                <li><a href="layout-12.html">Map with h-search</a>
-                                                </li>
-                                            </ul> --}}
                                         </li>
                                         <li class="dropdown">
-                                            <a href="javascript:void(0)" class="nav-link menu-title">Listing</a>
+                                            <a href="{{ route('listing') }}" class="nav-link menu-title">Listing</a>
                                         </li>
                                         <li class="dropdown">
-                                            <a href="javascript:void(0)" class="nav-link menu-title">property</a>
+                                            <a href="{{ route('agent-grid') }}" class="nav-link menu-title">Agents</a>
                                         </li>
                                         <li class="mega-menu">
-                                            <a href="javascript:void(0)" class="nav-link menu-title">
-                                                pages
+                                            <a href="{{ route('sale-property') }}" class="nav-link menu-title">
+                                                For Sale
                                             </a>
                                         </li>
                                         <li class="dropdown">
-                                            <a href="javascript:void(0)" class="nav-link menu-title">Modules</a>
+                                            <a href="{{ route('rent-property') }}" class="nav-link menu-title">For Rent</a>
                                         </li>
-                                        <li class="dropdown">
+                                        {{-- <li class="dropdown">
                                             <a href="javascript:void(0)" class="nav-link menu-title">agent</a>
-                                        </li>
+                                        </li> --}}
                                         <li class="dropdown">
-                                            <a href="javascript:void(0)" class="nav-link menu-title">Contact</a>
+                                            <a href="{{ route('contect') }}" class="nav-link menu-title">Contact</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -430,17 +443,11 @@
                                     <div class="tab-pane fade page-section ratio3_2" id="gallery">
                                         <h4 class="content-title">Gallery</h4>
                                         <div class="single-gallery">
-                                            <!-- Large Images Slider -->
+                                            <!-- Large Image Slider (Main Image) -->
                                             <div class="gallery-for">
-                                                @foreach($property->images as $image)
-                                                    <div>
-                                                        <div class="bg-size">
-                                                            <img src="{{ URL::asset($image->image_url) }}" class="bg-img" alt="Property Image">
-                                                            {{-- @dd($image->image_url); --}}
-                                                            @php
-
-                                                            @endphp
-                                                        </div>
+                                                @foreach($property->images as $key => $image)
+                                                    <div class="{{ $key == 0 ? 'large-image' : '' }}">
+                                                        <img src="{{ asset($image->image_url) }}" class="bg-img" alt="Property Image">
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -449,32 +456,13 @@
                                             <div class="gallery-nav">
                                                 @foreach($property->images as $image)
                                                     <div>
-                                                        <img src="{{ URL::asset($image->image_url) }}" class="img-fluid" alt="Thumbnail Image">
+                                                        <img src="{{ asset($image->image_url) }}" class="img-fluid thumbnail-img" alt="Thumbnail Image">
                                                     </div>
                                                 @endforeach
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="tab-pane fade page-section ratio_40" id="video">
-                                        <h4 class="content-title">video</h4>
-                                        <div class="play-bg-image">
-                                            <div class="bg-size">
-                                                <img src="../assets/images/property/11.jpg" class="bg-img" alt="">
-                                            </div>
-                                            <div class="icon-video">
-                                                <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                    data-bs-target="#videomodal">
-                                                    <i class="fas fa-play"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade page-section" id="floor_plan">
-                                        <h4 class="content-title">Floor plan</h4>
-                                        <img src="../assets/images/single-property/floor-plan.png" alt=""
-                                            class="img-fluid">
-                                    </div>
                                     <div class="tab-pane fade page-section" id="location-map">
                                         <h4 class="content-title">location</h4>
                                         <iframe title="realestate location" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.1583091352!2d-74.11976373946229!3d40.69766374859258!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew+York%2C+NY%2C+USA!5e0!3m2!1sen!2sin!4v1563449626439!5m2!1sen!2sin"
@@ -482,7 +470,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="desc-box">
+                            {{-- <div class="desc-box">
                                 <div class="page-section">
                                     <h4 class="content-title">Reviews</h4>
                                     <div class="review">
@@ -555,10 +543,10 @@
                                         <button type="submit" onclick="document.location='submit-property.html'" class="btn btn-gradient color-2 btn-pill">Submit</button>
                                     </form>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
-                    <div class="property-section p-t-40">
+                    {{-- <div class="property-section p-t-40">
                         <div class="title-3 text-start inner-title">
                             <h2>Related Properties</h2>
                         </div>
@@ -803,7 +791,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="col-xl-3 col-lg-4">
                     <div class="left-sidebar sticky-cls single-sidebar">
@@ -813,23 +801,27 @@
                                 <div class="category-property">
                                     <div class="agent-info">
                                         <div class="media">
-                                            <img src="../assets/images/testimonial/3.png" class="img-50" alt="">
+                                            <img src="{{ asset($property->agent->img ?? 'assets/images/default-agent.png') }}"
+                                                 class="img-50" alt="Agent Image">
                                             <div class="media-body ms-2">
-                                                <h6>Jonathan Scott</h6>
-                                                <p>Contact@gmail.com</p>
+                                                <h6>{{ $property->agent->name ?? 'Unknown Agent' }}</h6>
+                                                <p>{{ $property->agent->email ?? 'No Email Available' }}</p>
                                             </div>
                                         </div>
                                     </div>
                                     <ul>
                                         <li>
-                                            <i data-feather="map-pin" class="me-2"></i>A-32, Albany, Newyork.
+                                            <i data-feather="map-pin" class="me-2"></i>
+                                            {{ $property->agent->address ?? 'No Address Available' }}
                                         </li>
                                         <li>
-                                            <i data-feather="phone-call" class="me-2"></i>(+066) 518 - 457 - 5181
+                                            <i data-feather="phone-call" class="me-2"></i>
+                                            {{ $property->agent->phone_number ?? 'No Contact Available' }}
                                         </li>
                                     </ul>
                                 </div>
                             </div>
+
                             <div class="advance-card">
                                 <h6>Request exploration</h6>
                                 <div class="category-property">
@@ -1354,7 +1346,48 @@
     <!-- customizer end -->
 
     @include('frontend.footer-script')
+    @yield('script')
+<script>
+$(document).ready(function () {
+    if ($('.gallery-for').length && $('.gallery-nav').length) {
+        // Main Image Slider
+        $('.gallery-for').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            asNavFor: '.gallery-nav'
+        });
 
+        // Thumbnail Image Slider
+        $('.gallery-nav').slick({
+            slidesToShow: 4, // Adjust number of thumbnails
+            slidesToScroll: 1,
+            asNavFor: '.gallery-for',
+            dots: false,
+            centerMode: false,
+            focusOnSelect: true,
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: { slidesToShow: 3 }
+                },
+                {
+                    breakpoint: 480,
+                    settings: { slidesToShow: 2 }
+                }
+            ]
+        });
+
+        // Force recalculation of widths
+        setTimeout(() => {
+            $('.gallery-nav, .gallery-for').slick('setPosition');
+        }, 500);
+    }
+});
+
+
+</script>
 </body>
 
 

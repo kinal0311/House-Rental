@@ -7,24 +7,20 @@ use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyImg;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 
-class SinglePropertyController extends Controller
+class AgentProfileController extends Controller
 {
     public function index(Request $request)
     {
         $properties = Property::all();
         $images = PropertyImg::all();
         $agents = User::where('role_id', 2)->get();
-        return view('frontend.single-property', compact('properties','images', 'agents'));
+        return view('frontend.agent-profile', compact('properties','images','agents'));
     }
 
     public function show($id)
     {
-        $property = Property::with('agent')->findOrFail($id);
-        $images = PropertyImg::where('property_id', $id)->get();
-
-        return view('frontend.single-property', compact('property', 'images'));
+        $agent = User::findOrFail($id);  // Get the agent by ID
+        return view('frontend.agent-profile', compact('agent'));  // Pass the agent to the view
     }
-
 }

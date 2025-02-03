@@ -47,7 +47,132 @@
 
     <!-- header start -->
     <header class="header-1 header-6">
-        @include('frontend.header')
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="menu">
+                        <div class="brand-logo">
+                            <a href="https://themes.pixelstrap.com/sheltos/index.html">
+                                <img src="{{ URL::asset('sheltos/assets/images/logo/6.png')}}" alt="" class="img-fluid">
+                            </a>
+                        </div>
+                        <nav>
+                            <div class="main-navbar">
+                                <div id="mainnav">
+                                    <div class="toggle-nav"><i class="fa fa-bars sidebar-bar"></i></div>
+                                    <ul class="nav-menu">
+                                        <li class="back-btn">
+                                            <div class="mobile-back text-end">
+                                                <span>Back</span>
+                                                <i aria-hidden="true" class="fa fa-angle-right ps-2"></i>
+                                            </div>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="javascript:void(0)" class="nav-link menu-title">Home</a>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="{{ route('listing') }}" class="nav-link menu-title">Listing</a>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="{{ route('agent-grid') }}" class="nav-link menu-title">Agents</a>
+                                        </li>
+                                        <li class="mega-menu">
+                                            <a href="{{ route('sale-property') }}" class="nav-link menu-title">
+                                                For Sale
+                                            </a>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="{{ route('rent-property') }}" class="nav-link menu-title">For Rent</a>
+                                        </li>
+                                        {{-- <li class="dropdown">
+                                            <a href="javascript:void(0)" class="nav-link menu-title">agent</a>
+                                        </li> --}}
+                                        <li class="dropdown">
+                                            <a href="{{ route('contect') }}" class="nav-link menu-title">Contact</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                        <ul class="header-right">
+                            <li class="right-menu color-6">
+                                <ul class="nav-menu">
+                                    <li class="dropdown language">
+                                        <a href="javascript:void(0)">
+                                            <i data-feather="globe"></i>
+                                        </a>
+                                        <ul class="nav-submenu">
+                                            <li><a href="javascript:void(0)">English</a></li>
+                                            <li><a href="javascript:void(0)">French</a></li>
+                                            <li><a href="javascript:void(0)">Arabic</a></li>
+                                            <li><a href="javascript:void(0)">Spanish</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="user-favourites.html">
+                                            <i data-feather="heart"></i>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown cart">
+                                        <a href="javascript:void(0)">
+                                            <i data-feather="shopping-cart"></i>
+                                        </a>
+                                        <ul class="nav-submenu">
+                                            <li>
+                                                <div class="media">
+                                                    <img src="{{ URL::asset('sheltos/assets/images/property/2.jpg')}}" class="img-fluid" alt="">
+
+                                                    <div class="media-body">
+                                                        <a href="single-property-8.html"><h5>Magnolia Ranch</h5></a>
+                                                        <span>$120.00*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="close-circle">
+                                                    <a href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="media">
+                                                    <img src="{{ URL::asset('sheltos/assets/images/property/3.jpg') }}" class="img-fluid" alt="">
+                                                    <div class="media-body">
+                                                        <a href="single-property-8.html"><h5>Magnolia Ranch</h5></a>
+                                                        <span>$140.00*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="close-circle">
+                                                    <a href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="total">
+                                                    <h5>Subtotal :- <span class="float-end">$260.00</span></h5>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown currency">
+                                        <a href="javascript:void(0)">
+                                            <i data-feather="dollar-sign"></i>
+                                        </a>
+                                        <ul class="nav-submenu">
+                                            <li><a href="javascript:void(0)">Dollar</a></li>
+                                            <li><a href="javascript:void(0)">Euro</a></li>
+                                            <li><a href="javascript:void(0)">Pound</a></li>
+                                            <li><a href="javascript:void(0)">Yuan</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="login.html">
+                                            <i data-feather="user"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
     <!--  header end -->
 
@@ -92,7 +217,7 @@
                                         <h5>What are you looking for?</h5>
                                         <ul>
                                             <li>
-                                                <a href="grid-2.html" class="looking-icon d-flex flex-column align-items-center">
+                                                <div  class="looking-icon d-flex flex-column align-items-center">
                                                     <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                                     width="800px" height="800px" viewBox="0 0 70.873 70.873"
                                                     xml:space="preserve"><g>
@@ -118,11 +243,11 @@
                                                         </g>
                                                     </g></svg>
                                                     <h6 class="mt-2">House</h6>
-                                                </a>
+                                                </div>
                                             </li>
 
                                             <li>
-                                                <a href="user-create.html" class="looking-icon">
+                                                <div class="looking-icon">
                                                    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                                                    <svg fill="#000000" height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                                    viewBox="0 0 512.001 512.001" xml:space="preserve">
@@ -179,15 +304,15 @@
                                                </g>
                                                </svg>
                                                     <h6>Booking</h6>
-                                                </a>
+                                            </div>
                                             </li>
                                             <li>
-                                                <a href="user-listing.html" class="looking-icon">
+                                                <div class="looking-icon">
                                                     <svg fill="#000000" width="800px" height="800px" viewBox="0 0 256 256" id="Flat" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M160.00244,12A84.06494,84.06494,0,0,0,79.37939,119.65234l-55.8623,55.86231A12.00282,12.00282,0,0,0,20.00244,184v40a11.99934,11.99934,0,0,0,12,12h40a11.99934,11.99934,0,0,0,12-12V212h12a11.99934,11.99934,0,0,0,12-12V188h12a12.00282,12.00282,0,0,0,8.48535-3.51465l7.86231-7.8623A84.00932,84.00932,0,1,0,160.00244,12Zm0,144a59.70987,59.70987,0,0,1-22.10449-4.19922,12.01272,12.01272,0,0,0-13.21289,2.5459L115.03174,164H96.00244a11.99934,11.99934,0,0,0-12,12v12h-12a11.99934,11.99934,0,0,0-12,12v12h-16V188.9707l57.65332-57.65332a12.005,12.005,0,0,0,2.54688-13.21093A60.01234,60.01234,0,1,1,160.00244,156Zm35.99707-80a16,16,0,1,1-16-16A16.01833,16.01833,0,0,1,195.99951,76Z"/>
                                                       </svg>
                                                     <h6>Garage</h6>
-                                                </a>
+                                                    </div>
                                             </li>
                                         </ul>
                                     </div>
@@ -457,7 +582,7 @@
                                                             </span>
                                                         </a>
                                                         <div class="property-btn">
-                                                            <a href="single-property-8.html" class="btn btn-dashed btn-pill color-6" tabindex="0">Details</a>
+                                                            <a href="{{ route('single-property.show', $property->id) }}" class="btn btn-dashed btn-pill color-6" tabindex="0">Details</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -532,7 +657,7 @@
                                     </div>
                                     <div class="seen-data">
                                         <i data-feather="camera"></i>
-                                        <span>10</span>
+                                        <span>{{ $property->images->count() }}</span>
                                     </div>
                                     <div class="overlay-property-box">
                                         <a href="compare.html" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Compare">
@@ -558,7 +683,7 @@
                                     </ul>
                                     <div class="property-btn d-flex">
                                         {{-- <span>{{ $property->created_at }}</span>    --}}
-                                        <button type="button"  onclick="document.location='single-property-8.html'" class="btn btn-dashed btn-pill color-6">Details</button>
+                                        <a href="{{ route('single-property.show', $property->id) }}" class="btn btn-dashed btn-pill color-6" tabindex="0">Details</a>
                                     </div>
                                 </div>
                             </div>
@@ -634,7 +759,40 @@
 
     <!-- find properties section start -->
     <section class="my-gallery gallery-6">
-        @include('frontend.my-gallery')
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="title-1 color-6">
+                        <span class="label label-gradient color-6">city</span>
+                        <h2>Find Properties in These Cities</h2>
+                        <hr>
+                    </div>
+                    <div class="row">
+                        @foreach($cities as $city)
+                            <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 wow fadeInUp">
+                                <div class="find-cities bg-size">
+                                    @php
+                                        // Get the first property image for the first property in the city
+                                        $firstImage = $properties->firstWhere('city', $city->city)->images->first()->image_url ?? 'layout-9.png';
+                                    @endphp
+
+                                    <!-- Display the image -->
+                                    <img src="{{ URL::asset($firstImage) }}" class="bg-img" alt="{{ $city->city }}">
+
+                                    <div class="citi-overlay">
+                                        <div>
+                                            <h4>{{ $city->property_count }}+ Property</h4>
+                                            <h2>{{ $city->city }}</h2>
+                                            <h6 class="font-roboto">Many Properties in this city</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
     <!-- find properties section end -->
 
@@ -653,8 +811,8 @@
                         <h2>Looking to Buy a new property or Sell an existing one?
                             Real Homes provides an easy solution!</h2>
                         <div class="button-banner">
-                            <a href="submit-property.html" class="btn btn-gradient color-6">Submit property</a>
-                            <a href="portfolio-details.html" class="btn btn-white color-6"> <span>Browse property</span></a>
+                            <a href="{{ route('submit-property') }}" class="btn btn-gradient color-6">Submit property</a>
+                            <a href="{{ route('listing') }}" class="btn btn-white color-6"> <span>Browse property</span></a>
                         </div>
                     </div>
                 </div>
@@ -706,7 +864,7 @@
                                                 <h3>Communicating with..</h3>
                                                 <span class="font-roboto"><i data-feather="mail" class="me-1"></i>{{ $agent->email }}</span>
                                                 <p class="font-roboto">{{ $agent->description }}</p>
-                                                <a href="agent-profile.html" class="btn btn-gradient btn-pill color-6 mt-2">
+                                                <a href="{{ route('agent-profile', $agent->id) }}" class="btn btn-gradient btn-pill color-6 mt-2">
                                                     <i data-feather="eye"></i> View Portfolio
                                                 </a>
                                             </div>

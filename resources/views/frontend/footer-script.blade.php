@@ -1,6 +1,7 @@
         {{-- All js --}}
 
    <!-- latest jquery-->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
    <script src="{{ URL::asset('sheltos/assets/js/jquery-3.6.0.min.js') }}"></script>
 
    <!-- popper js-->
@@ -43,6 +44,8 @@
 
     <!-- Slick Slider JS -->
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
 
   <!-- magnific js -->
   {{-- <script src="{{ URL::asset('sheltos/assets/js/jquery.magnific-popup.js') }}"></script>
@@ -59,3 +62,22 @@
 
   <!-- print js -->
   <script src="{{ URL::asset('sheltos/assets/js/print.js') }}"></script>
+
+
+  <!--grid js -->
+  <script src="{{ URL::asset('sheltos/assets/js/grid-list.js') }}"></script>
+
+  <!-- Color-picker js-->
+  {{-- <script src="{{ URL::asset('sheltos/assets/js/color/single-property.js') }}"></script> --}}
+
+
+  <!-- Dropzone js -->
+  <script src="{{ URL::asset('sheltos/assets/js/dropzone/dropzone.js') }}"></script>
+  <script src="{{ URL::asset('sheltos/assets/js/dropzone/dropzone-script.js') }}"></script>
+
+  <!-- property wizard js -->
+  <script src="{{ URL::asset('sheltos/assets/js/property-wizard.js') }}"></script>
+
+
+  <!-- Color-picker js-->
+  <script src="{{ URL::asset('sheltos/assets/js/color/template-color.js') }}"></script>

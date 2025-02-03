@@ -10,6 +10,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\website\LayoutController;
 use App\Http\Controllers\website\SinglePropertyController;
+use App\Http\Controllers\website\AgentProfileController;
+use App\Http\Controllers\website\ListingController;
+use App\Http\Controllers\website\AgentGridController;
+use App\Http\Controllers\website\SalePropertyController;
+use App\Http\Controllers\website\RentPropertyController;
+use App\Http\Controllers\website\ContectController;
+use App\Http\Controllers\website\SubmitPropertyController;
 
 
 Route::get('/', [LayoutController::class, 'index']);
@@ -78,7 +85,15 @@ Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'admin', 'as' =
 });
 
 Route::get('layout', [LayoutController::class, 'index'])->name('layout');
-Route::get('single-property-8', [SinglePropertyController::class, 'index'])->name('single-property-8');
-Route::get('/single-property-8/{id}', [SinglePropertyController::class, 'show'])->name('single-property.show');
+Route::get('single-property', [SinglePropertyController::class, 'index'])->name('single-property');
+Route::get('/single-property/{id}', [SinglePropertyController::class, 'show'])->name('single-property.show');
+Route::get('/agent-profile/{id}', [AgentProfileController::class, 'show'])->name('agent-profile');
+Route::get('listing', [ListingController::class, 'index'])->name('listing');
+Route::get('agent-grid', [AgentGridController::class, 'index'])->name('agent-grid');
+Route::get('sale-property', [SalePropertyController::class, 'index'])->name('sale-property');
+Route::get('rent-property', [RentPropertyController::class, 'index'])->name('rent-property');
+Route::get('contect', [ContectController::class, 'index'])->name('contect');
+Route::get('submit-property', [SubmitPropertyController::class, 'index'])->name('submit-property');
+
 
 ?>
