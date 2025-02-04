@@ -10,7 +10,7 @@
     @include('frontend.layoutcss')
 
     <style>
-        /* .slick-slide {
+        .slick-slide {
             min-width: 100px !important;
             width: auto !important;
         }
@@ -18,33 +18,15 @@
             display: flex !important;
         }
         .slick-slide img {
-            width: 100%;
-            height: auto;
+            /* width: 100%; */
+            /* height: auto; */
             display: block;
         }
         .gallery-for, .gallery-nav {
             max-width: 100%;
             overflow: hidden;
         }
-        .large-image img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-        }
 
-        .thumbnail-img {
-            width: 80px;
-            height: 60px;
-            object-fit: cover;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .thumbnail-img:hover {
-            transform: scale(1.1);
-        } */
 
     </style>
 
@@ -446,7 +428,7 @@
                                             <!-- Large Image Slider (Main Image) -->
                                             <div class="gallery-for">
                                                 @foreach($property->images as $key => $image)
-                                                    <div class="{{ $key == 0 ? 'large-image' : '' }}">
+                                                    <div class="large-image">
                                                         <img src="{{ asset($image->image_url) }}" class="bg-img" alt="Property Image">
                                                     </div>
                                                 @endforeach
@@ -1348,44 +1330,28 @@
     @include('frontend.footer-script')
     @yield('script')
 <script>
-$(document).ready(function () {
-    if ($('.gallery-for').length && $('.gallery-nav').length) {
-        // Main Image Slider
-        $('.gallery-for').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: true,
-            asNavFor: '.gallery-nav'
-        });
+  $(document).ready(function(){
+    // Initialize Slick for large image slider
+    $('.gallery-for').slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      arrows: false,
+      fade: true, // For fade effect between images
+      asNavFor: '.gallery-nav' // Sync with the thumbnail slider
+    });
 
-        // Thumbnail Image Slider
-        $('.gallery-nav').slick({
-            slidesToShow: 4, // Adjust number of thumbnails
-            slidesToScroll: 1,
-            asNavFor: '.gallery-for',
-            dots: false,
-            centerMode: false,
-            focusOnSelect: true,
-            responsive: [
-                {
-                    breakpoint: 768,
-                    settings: { slidesToShow: 3 }
-                },
-                {
-                    breakpoint: 480,
-                    settings: { slidesToShow: 2 }
-                }
-            ]
-        });
-
-        // Force recalculation of widths
-        setTimeout(() => {
-            $('.gallery-nav, .gallery-for').slick('setPosition');
-        }, 500);
-    }
-});
-
+    // Initialize Slick for thumbnail images slider
+    $('.gallery-nav').slick({
+      slidesToShow: 4,
+      slidesToScroll: 1,
+      asNavFor: '.gallery-for',
+      dots: false,
+      centerMode: true,
+      focusOnSelect: true,
+      centerPadding: '0',
+      arrows: true
+    });
+  });
 
 </script>
 </body>

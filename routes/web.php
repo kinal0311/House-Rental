@@ -17,9 +17,10 @@ use App\Http\Controllers\website\SalePropertyController;
 use App\Http\Controllers\website\RentPropertyController;
 use App\Http\Controllers\website\ContectController;
 use App\Http\Controllers\website\SubmitPropertyController;
+use App\Http\Controllers\website\LoginController;
+use App\Http\Controllers\website\SignUpController;
 
-
-Route::get('/', [LayoutController::class, 'index']);
+Route::get('/', [LayoutController::class, 'index'])->name('home');
 
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('login', [AuthController::class, 'postLogin'])->name('login.post');
@@ -94,6 +95,12 @@ Route::get('sale-property', [SalePropertyController::class, 'index'])->name('sal
 Route::get('rent-property', [RentPropertyController::class, 'index'])->name('rent-property');
 Route::get('contect', [ContectController::class, 'index'])->name('contect');
 Route::get('submit-property', [SubmitPropertyController::class, 'index'])->name('submit-property');
+Route::get('login-user', [LoginController::class, 'index'])->name('login-user');
+Route::post('login-user', [LoginController::class, 'postLogin'])->name('login-user.post');
+Route::get('signup-user', [SignUpController::class, 'index'])->name('signup-user');
+Route::post('signup-user', [SignUpController::class, 'store'])->name('user.store');
+
+
 
 
 ?>

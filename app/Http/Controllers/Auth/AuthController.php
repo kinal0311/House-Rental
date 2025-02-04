@@ -38,7 +38,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
         $credentials = $request->only('email', 'password');
-
+// dd($credentials);
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             // dd($user);

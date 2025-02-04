@@ -18,7 +18,7 @@
     <div class="loader-wrapper">
         <div class="row loader-img">
             <div class="col-12">
-                <img src="../assets/images/loader/loader-2.gif" class="img-fluid" alt="">
+                <img src="{{ asset ('sheltos/assets/images/loader/loader-2.gif') }}" class="img-fluid" alt="">
             </div>
         </div>
     </div>
@@ -32,7 +32,7 @@
                     <div class="menu">
                         <div class="brand-logo">
                             <a href="https://themes.pixelstrap.com/sheltos/index.html">
-                                <img src="../assets/images/logo/2.png" alt="" class="img-fluid">
+                                <img src="{{ asset ('sheltos/assets/images/logo/2.png') }}" alt="" class="img-fluid">
                             </a>
                         </div>
                         <nav>

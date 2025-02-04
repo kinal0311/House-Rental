@@ -9,8 +9,7 @@
             <!-- Notiflix -->
             <link href="{{asset('assets\libs\notiflix\notiflix-2.1.2.css')}}" rel="stylesheet" type="text/css" />
 
-        <!-- Parsley CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/parsleyjs@2.9.2/dist/parsley.css" rel="stylesheet">
+
 
         <!-- App css -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />

@@ -19,6 +19,9 @@ rel="stylesheet">
 <link href="{{ URL::asset('sheltos/assets/css/bootstrap.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ URL::asset('sheltos/assets/css/color1.css')}}" rel="stylesheet" type="text/css" />
 
+{{-- parsley css --}}
+<link href="{{ URL::asset('sheltos/assets/css/parsley.css')}}" rel="stylesheet" type="text/css" />
+
 <!-- Include the jQuery UI CSS -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
