@@ -193,7 +193,7 @@
                                                         alt="">
                                                     <h6>Want to buy or rent Home ?</h6>
                                                     <h1>Reality Properties solve your problems</h1>
-                                                    <a href="submit-property.html"
+                                                    <a href="{{ route('submit-property')}}"
                                                         class="btn btn-gradient color-6">submit
                                                         property</a>
                                                 </div>
@@ -206,7 +206,7 @@
                                                         alt="">
                                                     <h6>Want to buy or sell Land ?</h6>
                                                     <h1>Elegant retreat in quiet Coral Gables</h1>
-                                                    <a href="submit-property.html"
+                                                    <a href="{{ route('submit-property')}}"
                                                         class="btn btn-gradient color-6">submit
                                                         property</a>
                                                 </div>

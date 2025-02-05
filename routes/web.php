@@ -95,6 +95,7 @@ Route::get('sale-property', [SalePropertyController::class, 'index'])->name('sal
 Route::get('rent-property', [RentPropertyController::class, 'index'])->name('rent-property');
 Route::get('contect', [ContectController::class, 'index'])->name('contect');
 Route::get('submit-property', [SubmitPropertyController::class, 'index'])->name('submit-property');
+Route::post('submit-property', [SubmitPropertyController::class, 'store'])->name('submit-property.store');
 Route::get('login-user', [LoginController::class, 'index'])->name('login-user');
 Route::post('login-user', [LoginController::class, 'postLogin'])->name('login-user.post');
 Route::get('signup-user', [SignUpController::class, 'index'])->name('signup-user');

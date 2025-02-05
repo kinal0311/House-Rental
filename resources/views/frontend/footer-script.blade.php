@@ -3,7 +3,7 @@
    <!-- latest jquery-->
    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
    <script src="{{ URL::asset('sheltos/assets/js/jquery-3.6.0.min.js') }}"></script>
-
+   <script src="{{ URL::asset('sheltos/assets/js/parsleyjs/parsley.min.js') }}"></script>
    <!-- popper js-->
    <script src="{{ URL::asset('sheltos/assets/js/popper.min.js') }}"></script>
 
@@ -78,4 +78,19 @@
   <script src="{{ URL::asset('sheltos/assets/js/color/template-color.js') }}"></script>
 
   {{-- parsley js --}}
-  <script src="{{ URL::asset('sheltos/assets/js/parsleyjs/parsley.min.js') }}"></script>
+
+
+  {{-- Notiflix --}}
+  {{-- <script src="{{ URL::asset('sheltos/assets/js/notiflix/notiflix-2.1.2.js') }}"></script>
+  <script src="{{ URL::asset('sheltos/assets/js/notiflix/notiflix.js') }}"></script> --}}
+  <!-- Notiflix JS -->
+<script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-aio-3.2.5.min.js"></script>
+
+{{-- wizard js --}}
+{{-- <script src="{{ URL::asset('sheltos/assets/js/wizard.js/bs-stepper.min.js') }}"></script>
+<script src="{{ URL::asset('sheltos/assets/js/wizard.js/form-wizard.min.js') }}"></script> --}}
+
+
+<script>
+    var csrfToken = "{{ csrf_token() }}";
+</script>

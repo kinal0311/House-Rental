@@ -21,29 +21,27 @@ class LoginController extends Controller
     }
 
     public function postLogin(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-    $credentials = $request->only('email', 'password');
-// dd($credentials);
-    if (Auth::attempt($credentials)) {
-        $user = Auth::user();
-// dd($user->password);
-        // Allow only users (assuming 'role_id' for users is 3)
-        if ($user->role_id == 3) {
-            return redirect()->route('home')->with('success', 'Successfully logged in!');
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            if ($user->role_id == 3) {
+                return redirect()->route('home')->with('success', 'Successfully logged in!');
+            }
+
+            Auth::logout();
+            return redirect('login-user')->withErrors(['access' => 'Only users are allowed to log in.']);
         }
-        // dd($user->password);
 
-        Auth::logout();
-        return redirect('login-user')->withErrors(['access' => 'Only users are allowed to log in.']);
+        return redirect('login-user')->withErrors(['credentials' => 'Invalid email or password.']);
     }
-
-    return redirect('login-user')->withErrors(['credentials' => 'Invalid email or password.']);
-}
 
 
 

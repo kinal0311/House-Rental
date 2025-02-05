@@ -75,7 +75,7 @@
                                     <input type="text" name="phone_number" id="phone_number" class="form-control"
                                            value="{{ $user->phone_number }}" readonly
                                            {{ $user->trashed() ? 'readonly' : '' }}
-                                           data-parsley-type="digits" data-parsley-length="[10, 15]">
+                                            data-parsley-length="[10, 20]">
                                     @error('phone_number')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror

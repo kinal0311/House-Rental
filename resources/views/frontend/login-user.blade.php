@@ -10,7 +10,24 @@
     <title>Login page</title>
 
 @include('frontend.layoutcss')
+<style>
 
+    /* Red background for invalid inputs */
+    .is-invalid, .is-invalid:focus {
+        background-color: #f8d7da;
+        border-bottom-color: #dc3545 !important; /* Red border */
+    }
+
+    /* Red error messages */
+    .parsley-errors-list {
+        color: #dc3545;
+        font-size: 14px;
+        list-style: none;
+        padding: 5px 0 0;
+        margin: 0;
+    }
+
+</style>
 </head>
 
 <body>
@@ -181,83 +198,67 @@
             <div class="row log-in">
                 <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
                     <div class="theme-card">
-                    <div class="title-3 text-start">
-                        <h2>Log in</h2>
+                        <div class="title-3 text-start">
+                            <h2>Log in</h2>
+                        </div>
+                        <form method="POST" id="userLoginForm" action="{{ route('login-user.post') }}" data-parsley-validate>
+                            @csrf
+
+                            <!-- Email Field -->
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i data-feather="user"></i>
+                                        </div>
+                                    </div>
+                                    <input type="text" name="email" class="form-control" placeholder="Enter Email" required
+                                        data-parsley-required-message="Email not Found" value="{{ old('email') }}">
+                                </div>
+                                {{-- <div class="text-danger d-block mt-1">
+                                    @error('email') {{ $message }} @enderror
+                                </div> --}}
+                            </div>
+
+                            <!-- Password Field -->
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i data-feather="lock"></i>
+                                        </div>
+                                    </div>
+                                    <input type="password" id="pwd-input" name="password" class="form-control" placeholder="Password" maxlength="8" required
+                                        data-parsley-required-message="Password is incorrect">
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <i id="pwd-icon" class="far fa-eye-slash"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- <small class="text-danger d-block mt-1">
+                                    @error('password') {{ $message }} @enderror
+                                </small> --}}
+                                <div class="important-note">
+                                    Password should be a minimum of 8 characters and should contain letters and numbers.
+                                </div>
+                            </div>
+
+                            <!-- Remember Me and Forgot Password -->
+                            <div class="d-flex">
+                                <label class="d-block mb-0" for="chk-ani">
+                                    <input class="checkbox_animated color-2" id="chk-ani" type="checkbox"> <span>Remember me</span>
+                                </label>
+                                <a href="#" class="font-rubik text-color-2">Forgot password?</a>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div>
+                                <button type="submit" class="btn btn-gradient btn-pill color-2 me-sm-3 me-2">Log in</button>
+                                <a href="{{ route('signup-user') }}" class="btn btn-dashed btn-pill color-2">Create Account</a>
+                            </div>
+                        </form>
                     </div>
-                    <form method="POST" id="userLoginForm" action="{{route('login-user.post')}}">
-                        @csrf
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <i data-feather="user"></i>
-                                    </div>
-                                </div>
-                                <input type="text" name="email" class="form-control" placeholder="Enter Email" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <i data-feather="lock"></i>
-                                    </div>
-                                </div>
-                                <input type="password" id="pwd-input" name="password" class="form-control" placeholder="Password" maxlength="8" required>
-                                <div class="input-group-apend">
-                                    <div class="input-group-text">
-                                        <i id="pwd-icon" class="far fa-eye-slash"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="important-note">
-                                password should be a minimum of 8 characters and should contains letters and numbers
-                            </div>
-                        </div>
-                        <div class="d-flex">
-                            <label class="d-block mb-0" for="chk-ani">
-                                <input class="checkbox_animated color-2" id="chk-ani" type="checkbox"> <span>Remember me</span>
-                            </label>
-                            <a href="#" class="font-rubik text-color-2">Forgot password ?</a>
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-gradient btn-pill color-2 me-sm-3 me-2">Log in</button>
-                            <a href="{{ route('signup-user')}}" class="btn btn-dashed btn-pill color-2">Create Account</a>
-                        </div>
-                        <div class="divider">
-                            <h6>or</h6>
-                        </div>
-                        <div>
-                            <h6>Log in with</h6>
-                            <div class="row social-connect">
-                                <div class="col-6">
-                                    <a href="https://www.facebook.com/" class="btn btn-social btn-flat facebook p-0">
-                                        <i class="fab fa-facebook-f"></i>
-                                        <span>Facebook</span>
-                                    </a>
-                                </div>
-                                <div class="col-6">
-                                    <a href="https://twitter.com/" class="btn btn-social btn-flat twitter p-0">
-                                        <i class="fab fa-twitter"></i>
-                                        <span>Twitter</span>
-                                    </a>
-                                </div>
-                                <div class="col-6">
-                                    <a href="https://account.google.com/" class="btn btn-social btn-flat google p-0">
-                                        <i class="fab fa-google"></i>
-                                        <span>Google</span>
-                                    </a>
-                                </div>
-                                <div class="col-6">
-                                    <a href="https://www.linkedin.com/" class="btn btn-social btn-flat linkedin p-0">
-                                        <i class="fab fa-linkedin-in"></i>
-                                        <span>Linkedin</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
                 </div>
             </div>
         </div>
@@ -530,27 +531,42 @@
 @yield('script')
 @include('frontend.footer-script')
 <script>
-// @if(session('error'))
-// Notiflix.Notify.Failure('{{ session('error') }}');
-// @endif
 
-$('#userLoginForm').parsley();
+    $(document).ready(function() {
+        $('#userLoginForm').parsley();
 
-/
-$('#userLoginForm').on('submit', function(e) {
-e.preventDefault(); // Prevent the default form submission
+        // Apply red background on error
+        $('#userLoginForm').parsley().on('field:error', function() {
+            this.$element.addClass('is-invalid'); // Add red background
+        });
 
-var form = $(this);
-if (form.parsley().isValid()) {
-    // Notiflix.Notify.Success('Form is valid. Logging in...');
-    alert('values is valid');
-    form.off('submit').submit();
-} else {
-    alert('values is not valid');
+        // Remove red background when fixed
+        $('#userLoginForm').parsley().on('field:success', function() {
+            this.$element.removeClass('is-invalid'); // Remove red background
+        });
+    });
+    // @if(session('error'))
+    //     Notiflix.Notify.Failure('{{ session('error') }}');
+    // @endif
 
-    // Notiflix.Notify.Failure('Please fix the errors in the form.');
-}
-});
+    // // Initialize Parsley validation
+    // $('#userLoginForm').parsley();
+
+    // // Show success or failure on form submission
+    // $('#userLoginForm').on('submit', function(e) {
+    //     e.preventDefault(); // Prevent the default form submission
+
+    //     var form = $(this);
+    //     if (form.parsley().isValid()) {
+    //         // If the form is valid, show a success notification
+    //         Notiflix.Notify.Success('Form is valid. Logging in...');
+    //         form.off('submit').submit();  // Allow form submission after valid check
+    //     } else {
+    //         // If the form is invalid, show a failure notification
+    //         Notiflix.Notify.Failure('Please fix the errors in the form.');
+    //     }
+    // });
+
 </script>
 </body>
 <!-- Mirrored from themes.pixelstrap.com/sheltos/main/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 27 Jan 2025 12:55:03 GMT -->

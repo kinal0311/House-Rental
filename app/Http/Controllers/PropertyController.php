@@ -18,7 +18,7 @@ class PropertyController extends Controller
 
     public function create()
     {
-        $agents = User::all();
+        $agents = User::where('role_id', 2)->get();
         return view('admin.properties.create', compact('agents'));
     }
 
@@ -138,7 +138,7 @@ class PropertyController extends Controller
     public function propertyEdit($id)
     {
         $property = Property::find($id);
-        $agents = User::all();
+        $agents = User::where('role_id', 2)->get();
 
         return view('admin.properties.edit', compact('property','agents'));
     }

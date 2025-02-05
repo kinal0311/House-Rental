@@ -22,6 +22,10 @@ rel="stylesheet">
 {{-- parsley css --}}
 <link href="{{ URL::asset('sheltos/assets/css/parsley.css')}}" rel="stylesheet" type="text/css" />
 
+  {{-- Notiflix --}}
+  {{-- <script src="{{ URL::asset('sheltos/assets/js/notiflix/notiflix-2.1.2.css') }}"></script> --}}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-3.2.5.min.css">
+
 <!-- Include the jQuery UI CSS -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
@@ -35,3 +39,4 @@ rel="stylesheet">
 integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
 crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+<link href="{{ URL::asset('sheltos/assets/js/wizard.js/bs-stepper.min.css')}}" rel="stylesheet" type="text/css" />

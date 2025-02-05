@@ -7,7 +7,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>House Rental</title>
 
     @include('frontend.layoutcss')
@@ -249,6 +248,7 @@
                                     </div>
                                 </li>
                             </ul>
+
                            </div>
                        </div>
 
@@ -258,7 +258,7 @@
                                         <div class="wizard-step wizard-step-1 d-block">
                                             <h2>General</h2>
                                             <p class="font-roboto">Basic information about property</p>
-                                            <form class="row gx-3" action="" method="POST" id="basicForm" data-parsley-validate>
+                                            <form class="row gx-3" action="{{ route('property.storeStep1') }}" method="POST" id="basicForm" data-parsley-validate>
                                                 @csrf
                                                 <div class="form-group col-sm-4">
                                                     <label>Property Type<span class="text-danger">*</span></label>
@@ -348,7 +348,7 @@
                                                 </div>
 
                                                 <div class="text-end mt-3">
-                                                    <button type="button" class="btn btn-gradient next-btn color-2 btn-pill"  data-next-step="2">Next<i class="fas fa-arrow-right ms-2"></i></button>
+                                                    <button type="submit" class="btn btn-gradient next-btn color-2 btn-pill"  data-next-step="2">Next<i class="fas fa-arrow-right ms-2"></i></button>
                                                 </div>
 
                                             </form>
@@ -356,7 +356,7 @@
                                         <div class="wizard-step wizard-step-2 d-none">
                                             <h2>Address</h2>
                                             <p class="font-roboto">Add your property Location</p>
-                                            <form class="row gx-3" action="" method="POST" id="addressForm" data-parsley-validate>
+                                            <form class="row gx-3" action="{{ route('property.storeStep2') }}" method="POST" id="addressForm" data-parsley-validate>
                                                 @csrf
 
                                                 <!-- Address -->
@@ -404,7 +404,7 @@
                                             <h2>Gallery</h2>
                                             <p class="font-roboto">Add your property Media</p>
                                             <label>Media<span class="text-danger">*</span></label>
-                                            <form class="dropzone" action="" method="POST" id="multiFileUpload" action="https://themes.pixelstrap.com/upload.php">
+                                            <form class="dropzone" action="{{ route('property.storeStep3') }}" method="POST" id="multiFileUpload" action="https://themes.pixelstrap.com/upload.php">
                                                 <div class="dz-message needsclick">
                                                     <i class="fas fa-cloud-upload-alt"></i>
                                                     <h6>Drop files here or click to upload.</h6>
@@ -443,7 +443,7 @@
 
                                         <!-- Step 4: Confirmation -->
                                         <div class="wizard-step wizard-step-4 d-none">
-                                            <form id="submitForm" action="" method="POST">
+                                            <form id="submitForm" action="{{ route('property.storeStep4') }}" method="POST">
                                                 @csrf
                                                 <div class="complete-details">
                                                     <div>
@@ -736,123 +736,151 @@
     @yield('script')
     @include('frontend.footer-script')
 
-    {{-- wizardjs --}}
-    <script src="{{ URL::asset('sheltos/assets/js/wizard.js/form-wizard.js') }}"></script>
-
 <script>
-// $(document).ready(function() {
+$(document).ready(function() {
+    // Initialize Parsley validation for each form step
+    var basicForm = $('#basicForm').parsley();
+    var addressForm = $('#addressForm').parsley();
+    var galleryForm = $('#galleryForm').parsley();
 
-
-   /*  $('#basicForm').submit(function(e) {
-        e.preventDefault(); // Prevent default form submission
-
-        var formData = $(this).serialize(); // Serialize form data
-
-        $.ajax({
-            type: "POST",
-            url: '{{ route('submit-property.store') }}', // Define your Laravel route
-            data: formData,
-            success: function(response) {
-                console.log(response);
-                // Transition to the next step
-                $('.step-1').hide();
-                $('.step-2').show();
-            },
-            error: function(xhr, status, error) {
-                if (xhr.status === 422) {
-                    var errors = xhr.responseJSON.errors; // Get validation errors from response
-                    var errorMessages = '';
-                    for (var field in errors) {
-                        errorMessages += errors[field].join('<br>'); // Join errors for each field
-                    }
-                    alert('Validation errors: ' + errorMessages); // Show error message
-                } else {
-                    alert('Error: ' + error);
-                }
-            }
+    // Apply red border on error for each form
+    function applyValidationStyling(form) {
+        form.on('field:error', function() {
+            this.$element.addClass('is-invalid');
         });
-    }); */
+        form.on('field:success', function() {
+            this.$element.removeClass('is-invalid');
+        });
+    }
 
+    applyValidationStyling(basicForm);
+    applyValidationStyling(addressForm);
+    applyValidationStyling(galleryForm);
 
+    // AJAX Form Submission (without page reload)
+    function submitForm(formId, route, nextStep) {
+        var form = $(formId);
+        form.parsley().validate(); // Validate form
 
-    // Handle the address form submission (step 2)
-    // $('#addressForm').submit(function(e) {
-    //     e.preventDefault(); // Prevent default form submission
+        if (form.parsley().isValid()) {
+            var formData = form.serialize(); // Serialize form data
 
-    //     var formData = $(this).serialize(); // Serialize form data
+            $.ajax({
+                url: route,
+                type: "POST",
+                data: formData,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.success) {
+                        var currentStep = form.closest('.wizard-step');
+                        currentStep.addClass('d-none'); // Hide current step
+                        $('.wizard-step-' + nextStep).removeClass('d-none'); // Show next step
 
-    //     $.ajax({
-    //         type: "POST",
-    //         url: '{{ route('submit-property.store') }}', // Define your Laravel route
-    //         data: formData,
-    //         success: function(response) {
-    //             console.log(response);
-    //             // Transition to the next step
-    //             $('.step-2').hide();
-    //             $('.step-3').show();
-    //         },
-    //         error: function(xhr, status, error) {
-    //             alert('Error: ' + error);
-    //         }
-    //     });
-    // });
+                        // Update step icon to indicate completion
+                        var currentStepIcon = $('.wizard-steps .step-' + currentStep.data('step') + ' .step-icon i');
+                        currentStepIcon.addClass('feather-check').removeClass('feather-chevron-right');
 
-    // // Handle the gallery form submission (step 3)
-    // $('#galleryForm').submit(function(e) {
-    //     e.preventDefault(); // Prevent default form submission
+                        // Re-initialize Feather icons
+                        feather.replace();
 
-    //     var formData = $(this).serialize(); // Serialize form data
+                        // Mark next step as active
+                        $('.wizard-steps .step-' + nextStep).addClass('active');
+                    } else {
+                        alert('Something went wrong. Please try again.');
+                    }
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText); // Debugging: Log errors
+                    alert('An error occurred. Please check your input.');
+                }
+            });
+        }
+    }
 
-    //     $.ajax({
-    //         type: "POST",
-    //         url: '{{ route('submit-property.store') }}', // Define your Laravel route
-    //         data: formData,
-    //         success: function(response) {
-    //             console.log(response);
-    //             // Transition to the next step
-    //             $('.step-3').hide();
-    //             $('.step-4').show();
-    //         },
-    //         error: function(xhr, status, error) {
-    //             alert('Error: ' + error);
-    //         }
-    //     });
-    // });
+    // Step 1 Form Submission (basicForm)
+    $('#basicForm').on('submit', function(e) {
+        e.preventDefault();
+        submitForm('#basicForm', "{{ route('property.storeStep1') }}", 2);
+    });
 
-    // // Handle final form submission (step 4)
-    // $('#submitForm').submit(function(e) {
-    //     e.preventDefault(); // Prevent default form submission
+    // Step 2 Form Submission (addressForm)
+    $('#addressForm').on('submit', function(e) {
+        e.preventDefault();
+        submitForm('#addressForm', "{{ route('property.storeStep2') }}", 3);
+    });
 
-    //     var formData = $(this).serialize(); // Serialize form data
+    // Step 3 Form Submission (galleryForm / Final Step)
+    $('#galleryForm').on('submit', function(e) {
+        e.preventDefault();
+        submitForm('#galleryForm', "{{ route('property.storeStep3') }}", 4);
+    });
 
-    //     $.ajax({
-    //         type: "POST",
-    //         url: '{{ route('submit-property.store') }}', // Define your Laravel route
-    //         data: formData,
-    //         success: function(response) {
-    //             console.log(response);
-    //             // Display a success message or reset the wizard
-    //             alert('Property submitted successfully!');
-    //             window.location.reload(); // Reset or redirect after successful submission
-    //         },
-    //         error: function(xhr, status, error) {
-    //             alert('Error: ' + error);
-    //         }
-    //     });
-    // });
+    // Final Step Submission (AJAX or traditional form)
+    $('#submitForm').on('submit', function(event) {
+        event.preventDefault();
+        var form = $(this);
+        form.parsley().validate();
 
-    // // Handle file uploads (if using Dropzone.js for multi-file upload in gallery form)
-    // $("#multiFileUpload").dropzone({
-    //     url: "/your-laravel-upload-route", // Define the route for handling uploads
-    //     success: function(file, response) {
-    //         console.log(response);
-    //     },
-    //     error: function(file, errorMessage) {
-    //         console.log("File upload error: " + errorMessage);
-    //     }
-    // });
+        if (form.parsley().isValid()) {
+            $.ajax({
+                url: "{{ route('property.storeStep4') }}",
+                type: "POST",
+                data: form.serialize(),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert('Property successfully added!');
+                        window.location.href = "{{ route('home') }}"; // Redirect after success
+                    } else {
+                        alert('Error submitting property. Try again.');
+                    }
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                    alert('Submission failed. Please check your input.');
+                }
+            });
+        }
+    });
 
-// });
+    // Next button click logic (for navigation)
+    $('.next-btn').click(function() {
+        var currentForm = $(this).closest('form');
+        var currentStep = $(this).closest('.wizard-step');
+        var nextStep = $(this).data('next-step');
+
+        currentForm.parsley().validate();
+
+        if (currentForm.parsley().isValid()) {
+            currentStep.addClass('d-none');
+            $('.wizard-step-' + nextStep).removeClass('d-none');
+
+            // Update step progress
+            var currentStepIcon = $('.wizard-steps .step-' + currentStep.data('step') + ' .step-icon i');
+            currentStepIcon.addClass('feather-check').removeClass('feather-chevron-right');
+
+            feather.replace();
+            $('.wizard-steps .step-' + nextStep).addClass('active');
+        }
+    });
+
+    // Previous button click logic (to go back)
+    $('.prev-btn').click(function() {
+        var currentStep = $(this).closest('.wizard-step');
+        var prevStep = $(this).data('prev-step');
+
+        currentStep.addClass('d-none');
+        $('.wizard-step-' + prevStep).removeClass('d-none');
+
+        feather.replace();
+        $('.wizard-steps .step-' + prevStep).addClass('active');
+    });
+});
+
 
 
 </script>
@@ -860,3 +888,117 @@
 
 <!-- Mirrored from themes.pixelstrap.com/sheltos/main/submit-property.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 27 Jan 2025 12:55:06 GMT -->
 </html>
+
+
+<?php
+
+namespace App\Http\Controllers\website;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Property;
+use App\Models\PropertyImg;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+
+class SubmitPropertyController extends Controller
+{
+
+    public function index(Request $request)
+    {
+        $agents = User::where('role_id', 2)->get();
+        return view('frontend.submit-property', compact('agents'));
+    }
+
+    public function storeStep1(Request $request)
+    {
+        $validated = $request->validate([
+            'property_type' => 'required|string|max:255',
+            'status' => 'required|in:Sale,Sold,Rent',
+            'max_rooms' => 'required',
+            'beds' => 'required',
+            'baths' => 'required',
+            'area' => 'required',
+            'price' => 'required',
+            'agent_id' => 'required|exists:users,id',
+            'description' => 'required',
+        ]);
+
+        session(['step1' => $validated]);
+// dd($validated);
+        return response()->json(['success' => true]);
+    }
+
+    // Step 2: Store price and rooms
+    public function storeStep2(Request $request)
+    {
+        $validated = $request->validate([
+            'address' => 'required',
+            'zip_code' => 'required',
+            'city' => 'required',
+        ]);
+dd('storeStep2');
+        session(['step2' => $validated]);
+
+        return redirect()->route('property.step3');
+    }
+
+    // Step 3: Store area and description
+    public function storeStep3(Request $request)
+    {
+        $validated = $request->validate([
+            'additional_features' => 'required|array|min:1', // Ensure it's an array with at least one item
+        ]);
+
+        session(['step3' => $validated]);
+// dd($validated);
+        return redirect()->route('property.step4');
+    }
+
+    public function storeStep4(Request $request)
+    {
+        // Debugging: Check if session data exists
+        if (!session()->has('step1')) {
+            return back()->with('error', 'Step 1 data is missing.');
+        }
+        if (!session()->has('step2')) {
+            return back()->with('error', 'Step 2 data is missing.');
+        }
+        if (!session()->has('step3')) {
+            return back()->with('error', 'Step 3 data is missing.');
+        }
+        // dd(session()->all());
+
+        // Now store all data in the database
+        $property = new Property();
+        $property->property_type = session('step1.property_type');
+        $property->status = session('step1.status');
+        $property->max_rooms = session('step1.max_rooms');
+        $property->beds = session('step1.beds');
+        $property->baths = session('step1.baths');
+        $property->area = session('step1.area');
+        $property->price = session('step1.price');
+        $property->agent_id = session('step1.agent_id');
+        $property->description = session('step1.description');
+        $property->address = session('step2.address');
+        $property->zip_code = session('step2.zip_code');
+        $property->city = session('step2.city');
+        $property->additional_features = json_encode(session('step3.additional_features')); // Ensure it's stored as JSON
+        $property->save();
+
+        // Clear the session data
+        session()->forget(['step1', 'step2', 'step3']);
+
+        return redirect()->route('home')->with('success', 'Property added successfully!');
+    }
+
+}
+
+
+Route::post('/property/store-step1', [SubmitPropertyController::class, 'storeStep1'])->name('property.storeStep1');
+
+Route::post('/property/store-step2', [SubmitPropertyController::class, 'storeStep2'])->name('property.storeStep2');
+
+Route::post('/property/store-step3', [SubmitPropertyController::class, 'storeStep3'])->name('property.storeStep3');
+
+Route::post('/property/store-step4', [SubmitPropertyController::class, 'storeStep4'])->name('property.storeStep4');

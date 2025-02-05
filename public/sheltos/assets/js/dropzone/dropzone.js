@@ -1060,9 +1060,9 @@ var Dropzone = function (_Emitter) {
       _this.options.url = _this.element.getAttribute("action");
     }
 
-    if (!_this.options.url) {
-      throw new Error("No URL provided.");
-    }
+    // if (!_this.options.url) {
+    //   throw new Error("No URL provided.");
+    // }
 
     if (_this.options.acceptedFiles && _this.options.acceptedMimeTypes) {
       throw new Error("You can't provide both 'acceptedFiles' and 'acceptedMimeTypes'. 'acceptedMimeTypes' is deprecated.");

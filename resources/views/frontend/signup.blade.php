@@ -36,6 +36,24 @@
             border: none;
             padding-right: 0;
         }
+
+
+            /* Red background for invalid inputs */
+    .is-invalid, .is-invalid:focus {
+        background-color: #f8d7da;
+        /* border-bottom-color: #dc3545 !important; Red border */
+        border-bottom: 2px solid #f8d7da;
+
+    }
+
+    /* Red error messages */
+    .parsley-errors-list {
+        color: #dc3545;
+        font-size: 14px;
+        list-style: none;
+        padding: 5px 0 0;
+        margin: 0;
+    }
     </style>
 
 </head>
@@ -210,68 +228,99 @@
                         <div class="title-3 text-start">
                             <h2>Sign up</h2>
                         </div>
-                        <form method="POST" action="{{ route('user.store') }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('user.store') }}" id="signUpForm" enctype="multipart/form-data" data-parsley-validate>
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Name</label>
-                                        <div class="input-group">
-                                            <input type="text" name="name" class="form-control" placeholder="Enter your name" required>
-                                            <span class="input-group-text"><i data-feather="user"></i></span>
-                                        </div>
+                                        <label for="name">Name<span class="text-danger">*</span></label>
+                                        <input type="text" name="name" id="name" class="form-control"
+                                               placeholder="Enter Name" value="{{ old('name') }}"
+                                               required
+                                               data-parsley-pattern="^[a-zA-Z\s]+$"
+                                               data-parsley-pattern-message="Name must contain only letters and spaces."
+                                               data-parsley-trigger="keyup">
+                                        @error('name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Email</label>
-                                        <div class="input-group">
-                                            <input type="email" name="email" class="form-control" placeholder="Enter email address" required>
-                                            <span class="input-group-text"><i data-feather="mail"></i></span>
-                                        </div>
+                                        <label for="email">Email<span class="text-danger">*</span></label>
+                                        <input type="email" name="email" id="email" class="form-control"
+                                               placeholder="Enter Email" value="{{ old('email') }}"
+                                               required
+                                               data-parsley-type="email"
+                                               data-parsley-trigger="keyup"
+                                               data-parsley-type-message="Please enter a valid email address.">
+                                        @error('email')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Phone Number</label>
-                                        <div class="input-group">
-                                            <input type="text" name="phone_number" class="form-control" placeholder="Enter phone number" required>
-                                            <span class="input-group-text"><i data-feather="phone"></i></span>
-                                        </div>
+                                        <label for="phone_number">Phone Number<span class="text-danger">*</span></label>
+                                        <input type="text" name="phone_number" id="phone_number" class="form-control" maxlength="15"
+                                               placeholder="Enter Phone Number" value="{{ old('phone_number') }}"
+                                               data-parsley-length="[10, 20]"
+                                               data-parsley-length-message="Phone number must be between 10 and 15 digits."
+                                               data-parsley-trigger="keyup" required>
+                                        @error('phone_number')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Gender</label>
-                                        <div class="input-group">
-                                            <select name="gender" class="form-control" required>
-                                                <option value="" class="active">Select Gender</option>
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
-                                                <option value="other">Other</option>
-                                            </select>
-                                            <span class="input-group-text"><i data-feather="users"></i></span>
-                                        </div>
+                                        <label for="gender">Gender<span class="text-danger">*</span></label>
+                                        <select name="gender" id="gender" class="form-control" required data-parsley-trigger="change" required>
+                                            <option value="" disabled selected>Select Gender</option>
+                                            <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
+                                            <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female</option>
+                                            <option value="Other" {{ old('gender') == 'Other' ? 'selected' : '' }}>Other</option>
+                                        </select>
+                                        @error('gender')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Date of Birth</label>
-                                        <input type="date" name="dob" class="form-control" id="dob" required>
+                                        <label for="dob">Date of Birth<span class="text-danger">*</span></label>
+                                        <input type="date" name="dob" id="dob" class="form-control"
+                                               value="{{ old('dob') }}" required
+                                               data-parsley-trigger="change"
+                                               data-parsley-required-message="Date of birth is required."
+                                               data-parsley-date
+                                               data-parsley-date-message="Please select a valid date.">
+                                        @error('dob')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Password</label>
-                                        <div class="input-group">
-                                            <input type="password" name="password" class="form-control" placeholder="Password" minlength="6" required>
-                                            <span class="input-group-text"><i data-feather="lock"></i></span>
-                                        </div>
+                                    <div class="form-group position-relative">
+                                        <label for="password">Password<span class="text-danger">*</span></label>
+                                        <input type="password" name="password" id="password" class="form-control"
+                                               placeholder="Enter Password" required
+                                               data-parsley-minlength="6"
+                                               data-parsley-minlength-message="Password must be at least 6 characters long."
+                                               data-parsley-trigger="keyup">
+                                                <!-- Show Password Button -->
+                                                {{-- <button type="button" id="togglePassword" class="btn btn-link position-absolute"
+                                                style="top: 45%; right: 10px;">
+                                            <i class="fa fa-eye" style="color: #6c757d;"></i> <!-- Eye Icon to show/hide password -->
+                                        </button> --}}
+                                        @error('password')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -279,7 +328,8 @@
                                     <div class="form-group">
                                         <label>Role</label>
                                         <div class="input-group">
-                                            <input type="text" name="role_id" class="form-control" value="3" readonly>
+                                            <input type="text" class="form-control" value="{{ $role->name ?? 'User' }}" readonly>
+                                            <input type="hidden" name="role_id" value="3">
                                             <span class="input-group-text"><i data-feather="shield"></i></span>
                                         </div>
                                     </div>
@@ -287,54 +337,66 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Status</label>
-                                        <div class="input-group">
-                                            <select name="status" class="form-control" required>
-                                                <option value="active" class="active">Active</option>
-                                                <option value="inactive">Inactive</option>
-                                            </select>
-                                            <span class="input-group-text"><i data-feather="check-circle"></i></span>
+                                        <label for="status">Status <span class="text-danger">*</span></label>
+                                        <div class="d-flex">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="status" id="status_Active" value="1"
+                                                    {{ old('status') == '1' ? 'checked' : '' }} required data-parsley-required="true" data-parsley-errors-container="#radio-error">
+                                                <label class="form-check-label" for="status_Active">Active</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="status" id="status_Inactive" value="0"
+                                                    {{ old('status') == '0' ? 'checked' : '' }} required>
+                                                <label class="form-check-label" for="status_Inactive">Inactive</label>
+                                            </div>
                                         </div>
+                                        <!-- Display error message below radio buttons -->
+                                        <div id="radio-error" class="text-danger"></div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Zip Code</label>
-                                        <div class="input-group">
-                                            <input type="text" name="zip_code" class="form-control" placeholder="Enter zip code" required>
-                                            <span class="input-group-text"><i data-feather="map-pin"></i></span>
-                                        </div>
+                                        <label for="zip_code">ZIP Code<span class="text-danger">*</span></label>
+                                        <input type="text" name="zip_code" id="zip_code" class="form-control"
+                                               placeholder="Enter ZIP Code" value="{{ old('zip_code') }}"
+                                               data-parsley-type="digits" data-parsley-trigger="keyup" required>
+                                        @error('zip_code')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Profile Image</label>
-                                        <div class="input-group">
-                                            <input type="file" name="img" class="form-control" accept="image/*">
-                                            <span class="input-group-text"><i data-feather="image"></i></span>
-                                        </div>
+                                        <label for="img">Profile Picture<span class="text-danger">*</span></label>
+                                        <input type="file" name="img" id="img" class="form-control" accept="image/*" required>
+                                        @error('image')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>Address</label>
-                                        <div class="input-group">
-                                            <textarea name="address" class="form-control" placeholder="Enter address" required></textarea>
-                                            <span class="input-group-text"><i data-feather="home"></i></span>
-                                        </div>
+                                        <label for="address">Address<span class="text-danger">*</span></label>
+                                        <input type="text" name="address" id="address" class="form-control"
+                                               placeholder="Enter Address" value="{{ old('address') }}"
+                                               data-parsley-trigger="keyup" required>
+                                        @error('address')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>Description</label>
-                                        <div class="input-group">
-                                            <textarea name="description" class="form-control" placeholder="Enter description" required></textarea>
-                                            <span class="input-group-text"><i data-feather="edit-3"></i></span>
-                                        </div>
+                                        <label for="description">Description<span class="text-danger">*</span></label>
+                                        <textarea name="description" id="description" class="form-control" rows="3"
+                                                  placeholder="Enter Description" data-parsley-trigger="keyup" required>{{ old('description') }} </textarea>
+                                        @error('description')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -344,7 +406,6 @@
                                 </div>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>
@@ -629,6 +690,39 @@
         var formattedDate = year + '-' + month + '-' + day;
         console.log(formattedDate); // This is now in Y-m-d format
     });
+
+    $(document).ready(function() {
+        $('form').parsley({
+            errorsContainer: function (ParsleyField) {
+                return ParsleyField.$element.closest('.form-group').find('.error-message');
+            }
+        });
+    });
+
+    // $(document).ready(function() {
+    //     $('#signUpForm').parsley();
+
+    //     window.Parsley.on('field:error', function() {
+    //         var $field = this.$element;
+    //         var $errorContainer = $field.closest('.form-group').find('.error-message');
+
+    //         // Remove previous error messages
+    //         $errorContainer.html('');
+
+    //         // Append new error messages
+    //         this.getErrorsMessages().forEach(function(error) {
+    //             $errorContainer.append('<span class="text-danger">' + error + '</span>');
+    //         });
+    //     });
+
+    //     window.Parsley.on('field:success', function() {
+    //         var $field = this.$element;
+    //         var $errorContainer = $field.closest('.form-group').find('.error-message');
+
+    //         // Remove error messages on success
+    //         $errorContainer.html('');
+    //     });
+    // });
 
 </script>
 </body>

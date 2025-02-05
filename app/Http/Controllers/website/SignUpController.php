@@ -17,8 +17,12 @@ class SignUpController extends Controller
 {
     public function index(Request $request)
     {
-        return view('frontend.signup');
+        // Get the role name for role_id = 3
+        $role = Role::where('id', 3)->first();
+
+        return view('frontend.signup', compact('role'));
     }
+
 
     public function store(Request $request)
     {

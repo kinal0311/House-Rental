@@ -11,28 +11,9 @@
     <title>House Rental</title>
 
     @include('frontend.layoutcss')
-<style>
-
-    /* Red background for invalid inputs */
-    .is-invalid, .is-invalid:focus {
-        background-color: #f8d7da !important; /* Bootstrap danger background */
-        border-color: #dc3545 !important; /* Red border */
-    }
-
-    /* Red error messages */
-    .parsley-errors-list {
-        color: #dc3545;
-        font-size: 14px;
-        list-style: none;
-        padding: 5px 0 0;
-        margin: 0;
-    }
-
-</style>
 </head>
 
 <body>
-
     <!-- Loader start -->
     <div class="loader-wrapper">
         <div class="row loader-img">
@@ -43,136 +24,135 @@
     </div>
     <!-- Loader end -->
 
-    <!-- header start -->
-    <header class="inner-page">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="menu">
-                        <div class="brand-logo">
-                                <img src="{{ asset ('sheltos/assets/images/logo/2.png') }}" alt="" class="img-fluid">
-                        </div>
-                        <nav>
-                            <div class="main-navbar">
-                                <div id="mainnav">
-                                    <div class="toggle-nav"><i class="fa fa-bars sidebar-bar"></i></div>
+        <!-- header start -->
+        <header class="inner-page">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="menu">
+                            <div class="brand-logo">
+                                    <img src="{{ asset ('sheltos/assets/images/logo/2.png') }}" alt="" class="img-fluid">
+                            </div>
+                            <nav>
+                                <div class="main-navbar">
+                                    <div id="mainnav">
+                                        <div class="toggle-nav"><i class="fa fa-bars sidebar-bar"></i></div>
+                                        <ul class="nav-menu">
+                                            <li class="back-btn">
+                                                <div class="mobile-back text-end">
+                                                    <span>Back</span>
+                                                    <i aria-hidden="true" class="fa fa-angle-right ps-2"></i>
+                                                </div>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a href="javascript:void(0)" class="nav-link menu-title">Home</a>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a href="{{ route('listing') }}" class="nav-link menu-title">Listing</a>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a href="{{ route('agent-grid') }}" class="nav-link menu-title">Agents</a>
+                                            </li>
+                                            <li class="mega-menu">
+                                                <a href="{{ route('sale-property') }}" class="nav-link menu-title">
+                                                    For Sale
+                                                </a>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a href="{{ route('rent-property') }}" class="nav-link menu-title">For Rent</a>
+                                            </li>
+                                            {{-- <li class="dropdown">
+                                                <a href="javascript:void(0)" class="nav-link menu-title">agent</a>
+                                            </li> --}}
+                                            <li class="dropdown">
+                                                <a href="{{ route('contect') }}" class="nav-link menu-title">Contact</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </nav>
+                            <ul class="header-right">
+                                <li class="right-menu">
                                     <ul class="nav-menu">
-                                        <li class="back-btn">
-                                            <div class="mobile-back text-end">
-                                                <span>Back</span>
-                                                <i aria-hidden="true" class="fa fa-angle-right ps-2"></i>
-                                            </div>
+                                        <li class="dropdown language">
+                                            <a href="javascript:void(0)">
+                                                <i data-feather="globe"></i>
+                                            </a>
+                                            <ul class="nav-submenu">
+                                                <li><a href="javascript:void(0)">English</a></li>
+                                                <li><a href="javascript:void(0)">French</a></li>
+                                                <li><a href="javascript:void(0)">Arabic</a></li>
+                                                <li><a href="javascript:void(0)">Spanish</a></li>
+                                            </ul>
                                         </li>
                                         <li class="dropdown">
-                                            <a href="javascript:void(0)" class="nav-link menu-title">Home</a>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a href="{{ route('listing') }}" class="nav-link menu-title">Listing</a>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a href="{{ route('agent-grid') }}" class="nav-link menu-title">Agents</a>
-                                        </li>
-                                        <li class="mega-menu">
-                                            <a href="{{ route('sale-property') }}" class="nav-link menu-title">
-                                                For Sale
+                                            <a href="user-favourites.html">
+                                                <i data-feather="heart"></i>
                                             </a>
                                         </li>
-                                        <li class="dropdown">
-                                            <a href="{{ route('rent-property') }}" class="nav-link menu-title">For Rent</a>
+                                        <li class="dropdown cart">
+                                            <a href="javascript:void(0)">
+                                                <i data-feather="shopping-cart"></i>
+                                            </a>
+                                            <ul class="nav-submenu">
+                                                <li>
+                                                    <div class="media">
+                                                        <img src="../assets/images/property/2.jpg" class="img-fluid" alt="">
+                                                        <div class="media-body">
+                                                            <a href="single-property-8.html"><h5>Magnolia Ranch</h5></a>
+                                                            <span>$120.00*</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="close-circle">
+                                                        <a href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="media">
+                                                        <img src="../assets/images/property/3.jpg" class="img-fluid" alt="">
+                                                        <div class="media-body">
+                                                            <a href="single-property-8.html"><h5>Magnolia Ranch</h5></a>
+                                                            <span>$140.00*</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="close-circle">
+                                                        <a href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="total">
+                                                        <h5>Subtotal :- <span class="float-end">$260.00</span></h5>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </li>
-                                        {{-- <li class="dropdown">
-                                            <a href="javascript:void(0)" class="nav-link menu-title">agent</a>
-                                        </li> --}}
+                                        <li class="dropdown currency">
+                                            <a href="javascript:void(0)">
+                                                <i data-feather="dollar-sign"></i>
+                                            </a>
+                                            <ul class="nav-submenu">
+                                                <li><a href="javascript:void(0)">Dollar</a></li>
+                                                <li><a href="javascript:void(0)">Euro</a></li>
+                                                <li><a href="javascript:void(0)">Pound</a></li>
+                                                <li><a href="javascript:void(0)">Yuan</a></li>
+                                            </ul>
+                                        </li>
                                         <li class="dropdown">
-                                            <a href="{{ route('contect') }}" class="nav-link menu-title">Contact</a>
+                                            <a href="login.html">
+                                                <i data-feather="user"></i>
+                                            </a>
                                         </li>
                                     </ul>
-                                </div>
-                            </div>
-                        </nav>
-                        <ul class="header-right">
-                            <li class="right-menu">
-                                <ul class="nav-menu">
-                                    <li class="dropdown language">
-                                        <a href="javascript:void(0)">
-                                            <i data-feather="globe"></i>
-                                        </a>
-                                        <ul class="nav-submenu">
-                                            <li><a href="javascript:void(0)">English</a></li>
-                                            <li><a href="javascript:void(0)">French</a></li>
-                                            <li><a href="javascript:void(0)">Arabic</a></li>
-                                            <li><a href="javascript:void(0)">Spanish</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="user-favourites.html">
-                                            <i data-feather="heart"></i>
-                                        </a>
-                                    </li>
-                                    <li class="dropdown cart">
-                                        <a href="javascript:void(0)">
-                                            <i data-feather="shopping-cart"></i>
-                                        </a>
-                                        <ul class="nav-submenu">
-                                            <li>
-                                                <div class="media">
-                                                    <img src="../assets/images/property/2.jpg" class="img-fluid" alt="">
-                                                    <div class="media-body">
-                                                        <a href="single-property-8.html"><h5>Magnolia Ranch</h5></a>
-                                                        <span>$120.00*</span>
-                                                    </div>
-                                                </div>
-                                                <div class="close-circle">
-                                                    <a href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="media">
-                                                    <img src="../assets/images/property/3.jpg" class="img-fluid" alt="">
-                                                    <div class="media-body">
-                                                        <a href="single-property-8.html"><h5>Magnolia Ranch</h5></a>
-                                                        <span>$140.00*</span>
-                                                    </div>
-                                                </div>
-                                                <div class="close-circle">
-                                                    <a href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="total">
-                                                    <h5>Subtotal :- <span class="float-end">$260.00</span></h5>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown currency">
-                                        <a href="javascript:void(0)">
-                                            <i data-feather="dollar-sign"></i>
-                                        </a>
-                                        <ul class="nav-submenu">
-                                            <li><a href="javascript:void(0)">Dollar</a></li>
-                                            <li><a href="javascript:void(0)">Euro</a></li>
-                                            <li><a href="javascript:void(0)">Pound</a></li>
-                                            <li><a href="javascript:void(0)">Yuan</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="login.html">
-                                            <i data-feather="user"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </header>
-    <!--  header end -->
+        </header>
+        <!--  header end -->
 
-
-    <!-- breadcrumb start -->
+        <!-- breadcrumb start -->
     <section class="breadcrumb-section p-0">
         <img src="{{ asset('sheltos/assets/images/inner-background.jpg') }}" class="bg-img img-fluid" alt="">
         <div class="container">
@@ -190,6 +170,7 @@
         </div>
     </section>
     <!-- breadcrumb end -->
+
 
     <!-- submit property section start -->
     <section class="property-wizard">
@@ -323,10 +304,10 @@
                                                     <input type="number" class="form-control" name="area" placeholder="85" required data-parsley-type="number" data-parsley-required-message="Area is required">
                                                 </div>
 
-                                                <div class="form-group col-sm-4">
+                                                {{-- <div class="form-group col-sm-4">
                                                     <label>Price<span class="text-danger">*</span></label>
                                                     <input type="number" class="form-control" name="price" placeholder="$3000" required data-parsley-type="number" data-parsley-required-message="Price is required">
-                                                </div>
+                                                </div> --}}
 
 
                                                 <div class="form-group col-sm-4">
@@ -348,7 +329,7 @@
                                                 </div>
 
                                                 <div class="text-end mt-3">
-                                                    <button type="button" class="btn btn-gradient next-btn color-2 btn-pill"  data-next-step="2">Next<i class="fas fa-arrow-right ms-2"></i></button>
+                                                    <button type="button" class="btn btn-gradient next1 color-2 btn-pill"  data-next-step="2">Next<i class="fas fa-arrow-right ms-2"></i></button>
                                                 </div>
 
                                             </form>
@@ -394,8 +375,8 @@
                                                 </div> --}}
 
                                                 <div class="next-btn d-flex mt-3">
-                                                    <button type="button" class="btn btn-dashed color-2 prev-btn btn-pill"  data-prev-step="1"><i class="fas fa-arrow-left me-2"></i> Previous</button>
-                                                    <button type="submit" class="btn btn-gradient next-btn color-2 btn-pill"  data-next-step="3">Next<i class="fas fa-arrow-right ms-2"></i></button>
+                                                    <button type="button" class="btn btn-dashed prev1 color-2 prev-btn btn-pill"  data-prev-step="1"><i class="fas fa-arrow-left me-2"></i> Previous</button>
+                                                    <button type="button" class="btn btn-gradient next2 color-2 btn-pill"  data-next-step="3">Next<i class="fas fa-arrow-right ms-2"></i></button>
                                                 </div>
                                             </form>
 
@@ -404,13 +385,13 @@
                                             <h2>Gallery</h2>
                                             <p class="font-roboto">Add your property Media</p>
                                             <label>Media<span class="text-danger">*</span></label>
-                                            <form class="dropzone" action="" method="POST" id="multiFileUpload" action="https://themes.pixelstrap.com/upload.php">
+                                            {{-- <form class="dropzone" action="" method="POST" id="multiFileUpload" action="https://themes.pixelstrap.com/upload.php">
                                                 <div class="dz-message needsclick">
                                                     <i class="fas fa-cloud-upload-alt"></i>
                                                     <h6>Drop files here or click to upload.</h6>
                                                     <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span>
                                                 </div>
-                                            </form>
+                                            </form> --}}
 
                                             <form id="galleryForm" class="row gx-3" data-parsley-validate>
                                                 <div class="form-group col-sm-12">
@@ -435,8 +416,8 @@
                                                 </div>
 
                                                 <div class="next-btn d-flex mt-3">
-                                                    <button type="button" class="btn btn-dashed color-2 prev-btn btn-pill" data-prev-step="2"><i class="fas fa-arrow-left me-2"></i> Previous</button>
-                                                    <button type="submit" class="btn next-btn btn-gradient color-2 btn-pill"  data-next-step="4">Next<i class="fas fa-arrow-right ms-2"></i></button>
+                                                    <button type="button" class="btn prev2 btn-dashed color-2 prev-btn btn-pill" data-prev-step="2"><i class="fas fa-arrow-left me-2"></i> Previous</button>
+                                                    <button type="button" class="btn next3 btn-gradient color-2 btn-pill"  data-next-step="4">Next<i class="fas fa-arrow-right ms-2"></i></button>
                                                 </div>
                                             </form>
                                         </div>
@@ -454,7 +435,7 @@
                                                             Residences can be classified by and how they are connected to neighbouring residences and land.
                                                             Different types of housing tenure can be used for the same physical type.
                                                         </p>
-                                                        <button type="submit" class="btn btn-gradient color-2 step-again btn-pill">Add new property</button>
+                                                        <button type="button" class="btn btn-gradient color-2 step-again btn-pill">Add new property</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -469,8 +450,8 @@
     </section>
     <!-- submit property section end -->
 
-    <!-- footer start -->
-    <footer>
+     <!-- footer start -->
+     <footer>
         <div class="footer footer-bg">
             <div class="container">
                 <div class="row">
@@ -575,7 +556,7 @@
                                         <p class="mb-0">
                                             Real estate investing involves the purchase, Improvement of realty, management and sale or rental of real estate for profit.
                                         </p>
-                                        <form>
+                                        <form data-parsley-validate>
                                             <div class="input-group">
                                                 <input type="email" class="form-control" placeholder="Email Address" required>
                                                 <span class="input-group-apend">
@@ -735,127 +716,13 @@
 
     @yield('script')
     @include('frontend.footer-script')
-
+    <script>
+    var submitPropertyeUrl = "{{ route('submit-property.store') }}";
+    </script>
     {{-- wizardjs --}}
-    <script src="{{ URL::asset('sheltos/assets/js/wizard.js/form-wizard.js') }}"></script>
+    {{-- <script src="{{ URL::asset('sheltos/assets/js/wizard.js/form-wizard.js') }}"></script> --}}
+    {{-- <script src="{{ URL::asset('sheltos/assets/js/property-wizard.js') }}"></script> --}}
 
-<script>
-// $(document).ready(function() {
-
-
-   /*  $('#basicForm').submit(function(e) {
-        e.preventDefault(); // Prevent default form submission
-
-        var formData = $(this).serialize(); // Serialize form data
-
-        $.ajax({
-            type: "POST",
-            url: '{{ route('submit-property.store') }}', // Define your Laravel route
-            data: formData,
-            success: function(response) {
-                console.log(response);
-                // Transition to the next step
-                $('.step-1').hide();
-                $('.step-2').show();
-            },
-            error: function(xhr, status, error) {
-                if (xhr.status === 422) {
-                    var errors = xhr.responseJSON.errors; // Get validation errors from response
-                    var errorMessages = '';
-                    for (var field in errors) {
-                        errorMessages += errors[field].join('<br>'); // Join errors for each field
-                    }
-                    alert('Validation errors: ' + errorMessages); // Show error message
-                } else {
-                    alert('Error: ' + error);
-                }
-            }
-        });
-    }); */
-
-
-
-    // Handle the address form submission (step 2)
-    // $('#addressForm').submit(function(e) {
-    //     e.preventDefault(); // Prevent default form submission
-
-    //     var formData = $(this).serialize(); // Serialize form data
-
-    //     $.ajax({
-    //         type: "POST",
-    //         url: '{{ route('submit-property.store') }}', // Define your Laravel route
-    //         data: formData,
-    //         success: function(response) {
-    //             console.log(response);
-    //             // Transition to the next step
-    //             $('.step-2').hide();
-    //             $('.step-3').show();
-    //         },
-    //         error: function(xhr, status, error) {
-    //             alert('Error: ' + error);
-    //         }
-    //     });
-    // });
-
-    // // Handle the gallery form submission (step 3)
-    // $('#galleryForm').submit(function(e) {
-    //     e.preventDefault(); // Prevent default form submission
-
-    //     var formData = $(this).serialize(); // Serialize form data
-
-    //     $.ajax({
-    //         type: "POST",
-    //         url: '{{ route('submit-property.store') }}', // Define your Laravel route
-    //         data: formData,
-    //         success: function(response) {
-    //             console.log(response);
-    //             // Transition to the next step
-    //             $('.step-3').hide();
-    //             $('.step-4').show();
-    //         },
-    //         error: function(xhr, status, error) {
-    //             alert('Error: ' + error);
-    //         }
-    //     });
-    // });
-
-    // // Handle final form submission (step 4)
-    // $('#submitForm').submit(function(e) {
-    //     e.preventDefault(); // Prevent default form submission
-
-    //     var formData = $(this).serialize(); // Serialize form data
-
-    //     $.ajax({
-    //         type: "POST",
-    //         url: '{{ route('submit-property.store') }}', // Define your Laravel route
-    //         data: formData,
-    //         success: function(response) {
-    //             console.log(response);
-    //             // Display a success message or reset the wizard
-    //             alert('Property submitted successfully!');
-    //             window.location.reload(); // Reset or redirect after successful submission
-    //         },
-    //         error: function(xhr, status, error) {
-    //             alert('Error: ' + error);
-    //         }
-    //     });
-    // });
-
-    // // Handle file uploads (if using Dropzone.js for multi-file upload in gallery form)
-    // $("#multiFileUpload").dropzone({
-    //     url: "/your-laravel-upload-route", // Define the route for handling uploads
-    //     success: function(file, response) {
-    //         console.log(response);
-    //     },
-    //     error: function(file, errorMessage) {
-    //         console.log("File upload error: " + errorMessage);
-    //     }
-    // });
-
-// });
-
-
-</script>
 </body>
 
 <!-- Mirrored from themes.pixelstrap.com/sheltos/main/submit-property.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 27 Jan 2025 12:55:06 GMT -->
