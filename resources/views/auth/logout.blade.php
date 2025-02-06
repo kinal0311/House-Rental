@@ -40,7 +40,7 @@
                                     <p style="color: red;">{{ session('error') }}</p>
                                     @endif
 
-                                    <form method="POST" action="{{ route('login.post') }}" id="loginForm" data-parsley-validate>
+                                <form method="POST" action="{{ route('login.post') }}" id="loginForm" data-parsley-validate>
 
                                     @csrf
 

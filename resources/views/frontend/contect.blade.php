@@ -49,7 +49,7 @@
                                             </div>
                                         </li>
                                         <li class="dropdown">
-                                            <a href="javascript:void(0)" class="nav-link menu-title">Home</a>
+                                            <a href="{{ route('home') }}" class="nav-link menu-title">Home</a>
                                         </li>
                                         <li class="dropdown">
                                             <a href="{{ route('listing') }}" class="nav-link menu-title">Listing</a>
@@ -142,7 +142,7 @@
                                         </ul>
                                     </li>
                                     <li class="dropdown">
-                                        <a href="login.html">
+                                        <a href="{{ route('login-user') }}">
                                             <i data-feather="user"></i>
                                         </a>
                                     </li>
@@ -165,7 +165,7 @@
                     <h2>Contact us</h2>
                     <nav aria-label="breadcrumb" class="theme-breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Contact us</li>
                         </ol>
                     </nav>
@@ -474,10 +474,10 @@
                     </div>
                     <div class="col-xl-6 col-md-6 text-end">
                         <ul class="sub-footer-link">
-                            <li><a href="layout-2.html">Home</a></li>
+                            <li><a href="{{ route('home') }}">Home</a></li>
                             <li><a href="terms-conditions.html">Terms</a></li>
                             <li><a href="privacy-policy.html">Privacy policy</a></li>
-                            <li><a href="contact-2.html">Contact</a></li>
+                            <li><a href="{{ route('contect') }}">Contact</a></li>
                         </ul>
                     </div>
                 </div>

@@ -24,12 +24,12 @@ Route::get('/', [LayoutController::class, 'index'])->name('home');
 
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('login', [AuthController::class, 'postLogin'])->name('login.post');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => 'auth'], function () {
 Route::get('register', [AuthController::class, 'registration'])->name('register');
 Route::post('register', [AuthController::class, 'postRegistration'])->name('register.post');
 Route::get('master', [AuthController::class, 'master'])->name('master')->middleware('auth');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('account', [AuthController::class, 'myAccount'])->name('account')->middleware('auth');
 Route::post('account', [AuthController::class, 'updateAccount'])->name('account.update')->middleware('auth');
 });
@@ -90,6 +90,7 @@ Route::get('single-property', [SinglePropertyController::class, 'index'])->name(
 Route::get('/single-property/{id}', [SinglePropertyController::class, 'show'])->name('single-property.show');
 Route::get('/agent-profile/{id}', [AgentProfileController::class, 'show'])->name('agent-profile');
 Route::get('listing', [ListingController::class, 'index'])->name('listing');
+Route::get('/search-properties', [ListingController::class, 'searchProperties'])->name('searchProperties');
 Route::get('agent-grid', [AgentGridController::class, 'index'])->name('agent-grid');
 Route::get('sale-property', [SalePropertyController::class, 'index'])->name('sale-property');
 Route::get('rent-property', [RentPropertyController::class, 'index'])->name('rent-property');

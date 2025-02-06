@@ -44,7 +44,14 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="max_rooms">Max Rooms<span class="text-danger">*</span></label>
-                                    <input type="number" name="max_rooms" id="max_rooms" class="form-control" placeholder="Enter Max Rooms" value="{{ $property->max_rooms }}">
+                                    <select class="form-control" name="max_rooms"  id="max_rooms" required placeholder="Enter Max Rooms" data-parsley-type="number" data-parsley-type-message="Please enter a valid number.">
+                                        <option value="1" {{ $property->max_rooms == '1' ? 'selected' : '' }}>1</option>
+                                        <option value="2" {{ $property->max_rooms == '2' ? 'selected' : '' }}>2</option>
+                                        <option value="3" {{ $property->max_rooms == '3' ? 'selected' : '' }}>3</option>
+                                        <option value="4" {{ $property->max_rooms == '4' ? 'selected' : '' }}>4</option>
+                                        <option value="5"{{ $property->max_rooms == '5' ? 'selected' : '' }}>5</option>
+                                        <option value="6"{{ $property->max_rooms == '6' ? 'selected' : '' }}>6</option>
+                                    </select>
                                     @error('max_rooms')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -57,7 +64,14 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="beds">Beds<span class="text-danger">*</span></label>
-                                    <input type="number" name="beds" id="beds" class="form-control" placeholder="Enter Number of Beds" value="{{ $property->beds }}">
+                                    <select class="form-control" name="beds"  id="beds" required placeholder="Enter Number of Beds" data-parsley-type="number" data-parsley-type-message="Please enter a valid number.">
+                                        <option value="1" {{ $property->beds == '1' ? 'selected' : '' }}>1</option>
+                                        <option value="2" {{ $property->beds == '2' ? 'selected' : '' }}>2</option>
+                                        <option value="3" {{ $property->beds == '3' ? 'selected' : '' }}>3</option>
+                                        <option value="4" {{ $property->beds == '4' ? 'selected' : '' }}>4</option>
+                                        <option value="5" {{ $property->beds == '5' ? 'selected' : '' }}>5</option>
+                                        <option value="6" {{ $property->beds == '6' ? 'selected' : '' }}>6</option>
+                                    </select>
                                     @error('beds')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -68,7 +82,14 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="baths">Baths<span class="text-danger">*</span></label>
-                                    <input type="number" name="baths" id="baths" class="form-control" placeholder="Enter Number of Baths" value="{{ $property->baths }}">
+                                    <select class="form-control" name="baths"  id="baths"  required placeholder="Enter Number of Baths" data-parsley-type="number" data-parsley-type-message="Please enter a valid number.">
+                                        <option value="1" {{ $property->baths == '1' ? 'selected' : '' }}>1</option>
+                                        <option value="2" {{ $property->baths == '2' ? 'selected' : '' }}>2</option>
+                                        <option value="3" {{ $property->baths == '3' ? 'selected' : '' }}>3</option>
+                                        <option value="4" {{ $property->baths == '4' ? 'selected' : '' }}>4</option>
+                                        <option value="5" {{ $property->baths == '5' ? 'selected' : '' }}>5</option>
+                                        <option value="6" {{ $property->baths == '6' ? 'selected' : '' }}>6</option>
+                                    </select>
                                     @error('baths')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror

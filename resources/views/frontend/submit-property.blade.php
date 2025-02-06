@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
 <!-- Mirrored from themes.pixelstrap.com/sheltos/main/submit-property.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 27 Jan 2025 12:55:06 GMT -->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -9,13 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>House Rental</title>
-
-    @include('frontend.layoutcss')
-<style>
-
+    <style>
     /* Red background for invalid inputs */
     .is-invalid, .is-invalid:focus {
-        background-color: #f8d7da !important; /* Bootstrap danger background */
+        background-color: none !important; /* Bootstrap danger background */
         border-color: #dc3545 !important; /* Red border */
     }
 
@@ -28,11 +23,33 @@
         margin: 0;
     }
 
-</style>
+    .upload-img-box {
+        max-width: 95px;
+        height: 105px;
+        border-radius: 18px;
+        width: 100%;
+    }
+    .upload-box .img-bg {
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%;
+        background-color: #f7f2e9;
+    }
+    .upload-img-box .delete-image-btn {
+        top: 1px;
+        right: 0px;
+        padding: 2px 5px;
+        font-size: 12px;
+        width: 30px;
+        height: 30px;
+        background-color: transparent;
+        border: none;
+    }
+    </style>
+    @include('frontend.layoutcss')
 </head>
 
 <body>
-
     <!-- Loader start -->
     <div class="loader-wrapper">
         <div class="row loader-img">
@@ -43,136 +60,135 @@
     </div>
     <!-- Loader end -->
 
-    <!-- header start -->
-    <header class="inner-page">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="menu">
-                        <div class="brand-logo">
-                                <img src="{{ asset ('sheltos/assets/images/logo/2.png') }}" alt="" class="img-fluid">
-                        </div>
-                        <nav>
-                            <div class="main-navbar">
-                                <div id="mainnav">
-                                    <div class="toggle-nav"><i class="fa fa-bars sidebar-bar"></i></div>
+        <!-- header start -->
+        <header class="inner-page">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="menu">
+                            <div class="brand-logo">
+                                    <img src="{{ asset ('sheltos/assets/images/logo/2.png') }}" alt="" class="img-fluid">
+                            </div>
+                            <nav>
+                                <div class="main-navbar">
+                                    <div id="mainnav">
+                                        <div class="toggle-nav"><i class="fa fa-bars sidebar-bar"></i></div>
+                                        <ul class="nav-menu">
+                                            <li class="back-btn">
+                                                <div class="mobile-back text-end">
+                                                    <span>Back</span>
+                                                    <i aria-hidden="true" class="fa fa-angle-right ps-2"></i>
+                                                </div>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a href="{{ route('home') }}" class="nav-link menu-title">Home</a>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a href="{{ route('listing') }}" class="nav-link menu-title">Listing</a>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a href="{{ route('agent-grid') }}" class="nav-link menu-title">Agents</a>
+                                            </li>
+                                            <li class="mega-menu">
+                                                <a href="{{ route('sale-property') }}" class="nav-link menu-title">
+                                                    For Sale
+                                                </a>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a href="{{ route('rent-property') }}" class="nav-link menu-title">For Rent</a>
+                                            </li>
+                                            {{-- <li class="dropdown">
+                                                <a href="javascript:void(0)" class="nav-link menu-title">agent</a>
+                                            </li> --}}
+                                            <li class="dropdown">
+                                                <a href="{{ route('contect') }}" class="nav-link menu-title">Contact</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </nav>
+                            <ul class="header-right">
+                                <li class="right-menu">
                                     <ul class="nav-menu">
-                                        <li class="back-btn">
-                                            <div class="mobile-back text-end">
-                                                <span>Back</span>
-                                                <i aria-hidden="true" class="fa fa-angle-right ps-2"></i>
-                                            </div>
+                                        <li class="dropdown language">
+                                            <a href="javascript:void(0)">
+                                                <i data-feather="globe"></i>
+                                            </a>
+                                            <ul class="nav-submenu">
+                                                <li><a href="javascript:void(0)">English</a></li>
+                                                <li><a href="javascript:void(0)">French</a></li>
+                                                <li><a href="javascript:void(0)">Arabic</a></li>
+                                                <li><a href="javascript:void(0)">Spanish</a></li>
+                                            </ul>
                                         </li>
                                         <li class="dropdown">
-                                            <a href="javascript:void(0)" class="nav-link menu-title">Home</a>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a href="{{ route('listing') }}" class="nav-link menu-title">Listing</a>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a href="{{ route('agent-grid') }}" class="nav-link menu-title">Agents</a>
-                                        </li>
-                                        <li class="mega-menu">
-                                            <a href="{{ route('sale-property') }}" class="nav-link menu-title">
-                                                For Sale
+                                            <a href="user-favourites.html">
+                                                <i data-feather="heart"></i>
                                             </a>
                                         </li>
-                                        <li class="dropdown">
-                                            <a href="{{ route('rent-property') }}" class="nav-link menu-title">For Rent</a>
+                                        <li class="dropdown cart">
+                                            <a href="javascript:void(0)">
+                                                <i data-feather="shopping-cart"></i>
+                                            </a>
+                                            <ul class="nav-submenu">
+                                                <li>
+                                                    <div class="media">
+                                                        <img src="../assets/images/property/2.jpg" class="img-fluid" alt="">
+                                                        <div class="media-body">
+                                                            <a href="single-property-8.html"><h5>Magnolia Ranch</h5></a>
+                                                            <span>$120.00*</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="close-circle">
+                                                        <a href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="media">
+                                                        <img src="../assets/images/property/3.jpg" class="img-fluid" alt="">
+                                                        <div class="media-body">
+                                                            <a href="single-property-8.html"><h5>Magnolia Ranch</h5></a>
+                                                            <span>$140.00*</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="close-circle">
+                                                        <a href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="total">
+                                                        <h5>Subtotal :- <span class="float-end">$260.00</span></h5>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </li>
-                                        {{-- <li class="dropdown">
-                                            <a href="javascript:void(0)" class="nav-link menu-title">agent</a>
-                                        </li> --}}
+                                        <li class="dropdown currency">
+                                            <a href="javascript:void(0)">
+                                                <i data-feather="dollar-sign"></i>
+                                            </a>
+                                            <ul class="nav-submenu">
+                                                <li><a href="javascript:void(0)">Dollar</a></li>
+                                                <li><a href="javascript:void(0)">Euro</a></li>
+                                                <li><a href="javascript:void(0)">Pound</a></li>
+                                                <li><a href="javascript:void(0)">Yuan</a></li>
+                                            </ul>
+                                        </li>
                                         <li class="dropdown">
-                                            <a href="{{ route('contect') }}" class="nav-link menu-title">Contact</a>
+                                            <a href="{{ route('login-user') }}">
+                                                <i data-feather="user"></i>
+                                            </a>
                                         </li>
                                     </ul>
-                                </div>
-                            </div>
-                        </nav>
-                        <ul class="header-right">
-                            <li class="right-menu">
-                                <ul class="nav-menu">
-                                    <li class="dropdown language">
-                                        <a href="javascript:void(0)">
-                                            <i data-feather="globe"></i>
-                                        </a>
-                                        <ul class="nav-submenu">
-                                            <li><a href="javascript:void(0)">English</a></li>
-                                            <li><a href="javascript:void(0)">French</a></li>
-                                            <li><a href="javascript:void(0)">Arabic</a></li>
-                                            <li><a href="javascript:void(0)">Spanish</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="user-favourites.html">
-                                            <i data-feather="heart"></i>
-                                        </a>
-                                    </li>
-                                    <li class="dropdown cart">
-                                        <a href="javascript:void(0)">
-                                            <i data-feather="shopping-cart"></i>
-                                        </a>
-                                        <ul class="nav-submenu">
-                                            <li>
-                                                <div class="media">
-                                                    <img src="../assets/images/property/2.jpg" class="img-fluid" alt="">
-                                                    <div class="media-body">
-                                                        <a href="single-property-8.html"><h5>Magnolia Ranch</h5></a>
-                                                        <span>$120.00*</span>
-                                                    </div>
-                                                </div>
-                                                <div class="close-circle">
-                                                    <a href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="media">
-                                                    <img src="../assets/images/property/3.jpg" class="img-fluid" alt="">
-                                                    <div class="media-body">
-                                                        <a href="single-property-8.html"><h5>Magnolia Ranch</h5></a>
-                                                        <span>$140.00*</span>
-                                                    </div>
-                                                </div>
-                                                <div class="close-circle">
-                                                    <a href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="total">
-                                                    <h5>Subtotal :- <span class="float-end">$260.00</span></h5>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown currency">
-                                        <a href="javascript:void(0)">
-                                            <i data-feather="dollar-sign"></i>
-                                        </a>
-                                        <ul class="nav-submenu">
-                                            <li><a href="javascript:void(0)">Dollar</a></li>
-                                            <li><a href="javascript:void(0)">Euro</a></li>
-                                            <li><a href="javascript:void(0)">Pound</a></li>
-                                            <li><a href="javascript:void(0)">Yuan</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="login.html">
-                                            <i data-feather="user"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </header>
-    <!--  header end -->
+        </header>
+        <!--  header end -->
 
-
-    <!-- breadcrumb start -->
+        <!-- breadcrumb start -->
     <section class="breadcrumb-section p-0">
         <img src="{{ asset('sheltos/assets/images/inner-background.jpg') }}" class="bg-img img-fluid" alt="">
         <div class="container">
@@ -191,6 +207,7 @@
     </section>
     <!-- breadcrumb end -->
 
+
     <!-- submit property section start -->
     <section class="property-wizard">
         <div class="container">
@@ -199,278 +216,284 @@
                     <div class="wizard-step-container row">
                        <div class="col-xxl-3 col-lg-4">
                            <div class="theme-card">
-                            <ul class="wizard-steps">
-                                <li class="step-container step-1 active" data-step="1">
-                                    <div class="media">
-                                        <div class="step-icon">
-                                            <i data-feather="chevron-right"></i>
-                                            <span>1</span>
+                                <ul class="wizard-steps">
+                                    <li class="step-container step-1 active" data-step="1">
+                                        <div class="media">
+                                            <div class="step-icon">
+                                                <i data-feather="chevron-right"></i>
+                                                <span>1</span>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5>General</h5>
+                                                <h6>Basic Information</h6>
+                                            </div>
                                         </div>
-                                        <div class="media-body">
-                                            <h5>General</h5>
-                                            <h6>Basic Information</h6>
+                                    </li>
+                                    <li class="step-container step-2" data-step="2">
+                                        <div class="media">
+                                            <div class="step-icon">
+                                                <i data-feather="chevron-right"></i>
+                                                <span>2</span>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5>Address</h5>
+                                                <h6>Add your place</h6>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="step-container step-2" data-step="2">
-                                    <div class="media">
-                                        <div class="step-icon">
-                                            <i data-feather="chevron-right"></i>
-                                            <span>2</span>
+                                    </li>
+                                    <li class="step-container step-3" data-step="3">
+                                        <div class="media">
+                                            <div class="step-icon">
+                                                <i data-feather="chevron-right"></i>
+                                                <span>3</span>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5>Gallery</h5>
+                                                <h6>Add your media</h6>
+                                            </div>
                                         </div>
-                                        <div class="media-body">
-                                            <h5>Address</h5>
-                                            <h6>Add your place</h6>
+                                    </li>
+                                    <li class="step-container step-4" data-step="4">
+                                        <div class="media">
+                                            <div class="step-icon">
+                                                <i data-feather="chevron-right"></i>
+                                                <span>4</span>
+                                            </div>
+                                            <div class="media-body">
+                                                <h5>Confirmation</h5>
+                                                <h6>Complete details</h6>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="step-container step-3" data-step="3">
-                                    <div class="media">
-                                        <div class="step-icon">
-                                            <i data-feather="chevron-right"></i>
-                                            <span>3</span>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5>Gallery</h5>
-                                            <h6>Add your media</h6>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="step-container step-4" data-step="4">
-                                    <div class="media">
-                                        <div class="step-icon">
-                                            <i data-feather="chevron-right"></i>
-                                            <span>4</span>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5>Confirmation</h5>
-                                            <h6>Complete details</h6>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                                    </li>
+                                </ul>
                            </div>
                        </div>
-
-                            <div class="wizard-form-details col-xxl-9 col-lg-8">
-                                <div class="theme-card my-3">
-
-                                        <div class="wizard-step wizard-step-1 d-block">
-                                            <h2>General</h2>
-                                            <p class="font-roboto">Basic information about property</p>
-                                            <form class="row gx-3" action="" method="POST" id="basicForm" data-parsley-validate>
-                                                @csrf
-                                                <div class="form-group col-sm-4">
-                                                    <label>Property Type<span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" name="property_type" placeholder="Villa" required data-parsley-required-message="Property type is required">
-                                                </div>
-
-                                                <div class="form-group col-sm-4">
-                                                    <label>Property Status<span class="text-danger">*</span></label>
-                                                    <select class="form-control" name="property_status" required data-parsley-required-message="Select a property status">
-                                                        <option value="">Status</option>
-                                                        <option value="For Sale">For Sale</option>
-                                                        <option value="For Rent">For Rent</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="form-group col-sm-4">
-                                                    <label>Property Price<span class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control" name="property_price" placeholder="$2800" required data-parsley-type="number" data-parsley-required-message="Property price is required">
-                                                </div>
-
-                                                <div class="form-group col-sm-4">
-                                                    <label>Max Rooms<span class="text-danger">*</span></label>
-                                                    <select class="form-control" name="max_rooms" required data-parsley-required-message="Select the number of rooms">
-                                                        <option value="">Max Rooms</option>
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                        <option value="4">4</option>
-                                                        <option value="5">5</option>
-                                                        <option value="6">6</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="form-group col-sm-4">
-                                                    <label>Beds<span class="text-danger">*</span></label>
-                                                    <select class="form-control" name="beds" required data-parsley-required-message="Select the number of beds">
-                                                        <option value="">Beds</option>
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                        <option value="4">4</option>
-                                                        <option value="5">5</option>
-                                                        <option value="6">6</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="form-group col-sm-4">
-                                                    <label>Baths<span class="text-danger">*</span></label>
-                                                    <select class="form-control" name="baths" required data-parsley-required-message="Select the number of baths">
-                                                        <option value="">Baths</option>
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                        <option value="4">4</option>
-                                                        <option value="5">5</option>
-                                                        <option value="6">6</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="form-group col-sm-4">
-                                                    <label>Area (sq ft)<span class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control" name="area" placeholder="85" required data-parsley-type="number" data-parsley-required-message="Area is required">
-                                                </div>
-
-                                                <div class="form-group col-sm-4">
-                                                    <label>Price<span class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control" name="price" placeholder="$3000" required data-parsley-type="number" data-parsley-required-message="Price is required">
-                                                </div>
-
-
-                                                <div class="form-group col-sm-4">
-                                                    <label for="agent_id">Agent<span class="text-danger">*</span></label>
-                                                    <select name="agent_id" id="agent_id" class="form-control p-2" required data-parsley-required-message="Please select an agent.">
-                                                        <option value="" disabled selected>Select Agent</option>
-                                                        @foreach($agents as $agent)
-                                                            <option value="{{ $agent->id }}" {{ old('agent_id') == $agent->id ? 'selected' : '' }}>
-                                                                {{ $agent->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-
-                                                <div class="form-group col-sm-12">
-                                                    <label>Description<span class="text-danger">*</span></label>
-                                                    <textarea class="form-control" rows="4" name="description" required data-parsley-required-message="Description is required"></textarea>
-                                                </div>
-
-                                                <div class="text-end mt-3">
-                                                    <button type="button" class="btn btn-gradient next-btn color-2 btn-pill"  data-next-step="2">Next<i class="fas fa-arrow-right ms-2"></i></button>
-                                                </div>
-
-                                            </form>
-                                        </div>
-                                        <div class="wizard-step wizard-step-2 d-none">
-                                            <h2>Address</h2>
-                                            <p class="font-roboto">Add your property Location</p>
-                                            <form class="row gx-3" action="" method="POST" id="addressForm" data-parsley-validate>
-                                                @csrf
-
-                                                <!-- Address -->
-                                                <div class="form-group col-sm-6">
-                                                    <label>Address<span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" name="address" placeholder="Address of your property" required
-                                                        data-parsley-required-message="Address is required" data-parsley-maxlength="255">
-                                                </div>
-
-                                                <!-- Zip Code -->
-                                                <div class="form-group col-sm-6">
-                                                    <label>Zip code<span class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control" name="zip_code" placeholder="39702" required
-                                                        data-parsley-type="number" data-parsley-required-message="Zip code is required"
-                                                        data-parsley-min="1" data-parsley-min-message="Zip code must be valid">
-                                                </div>
-
-                                                <!-- City -->
-
-                                                <div class="form-group col-sm-6">
-                                                    <label>City<span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" name="city" placeholder="City" required
-                                                        data-parsley-required-message="City is required" data-parsley-maxlength="255">
-                                                </div>
-
-                                                <!-- Google Maps iframe -->
-                                                <div class="col-sm-12">
-                                                    <iframe title="realestate location" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.1583091352!2d-74.11976373946229!3d40.69766374859258!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew+York%2C+NY%2C+USA!5e0!3m2!1sen!2sin!4v1563449626439!5m2!1sen!2sin"
-                                                            allowfullscreen></iframe>
-                                                </div>
-
-                                                <!-- Submit Button -->
-                                                {{-- <div class="text-end mt-3">
-                                                    <button type="submit" class="btn btn-gradient color-2 btn-pill">Submit<i class="fas fa-arrow-right ms-2"></i></button>
-                                                </div> --}}
-
-                                                <div class="next-btn d-flex mt-3">
-                                                    <button type="button" class="btn btn-dashed color-2 prev-btn btn-pill"  data-prev-step="1"><i class="fas fa-arrow-left me-2"></i> Previous</button>
-                                                    <button type="submit" class="btn btn-gradient next-btn color-2 btn-pill"  data-next-step="3">Next<i class="fas fa-arrow-right ms-2"></i></button>
-                                                </div>
-                                            </form>
-
-                                        </div>
-                                        <div class="wizard-step wizard-step-3 d-none">
-                                            <h2>Gallery</h2>
-                                            <p class="font-roboto">Add your property Media</p>
-                                            <label>Media<span class="text-danger">*</span></label>
-                                            <form class="dropzone" action="" method="POST" id="multiFileUpload" action="https://themes.pixelstrap.com/upload.php">
-                                                <div class="dz-message needsclick">
-                                                    <i class="fas fa-cloud-upload-alt"></i>
-                                                    <h6>Drop files here or click to upload.</h6>
-                                                    <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span>
-                                                </div>
-                                            </form>
-
-                                            <form id="galleryForm" class="row gx-3" data-parsley-validate>
-                                                <div class="form-group col-sm-12">
-                                                    <label>Additional features</label>
-                                                    <div class="feature-checkbox">
-                                                        <label for="chk-ani">
-                                                            <input class="checkbox_animated color-2" id="chk-ani" type="checkbox" name="features[]" value="Emergency Exit" required data-parsley-required-message="Select at least one feature"> Emergency Exit
-                                                        </label>
-                                                        <label for="chk-ani1">
-                                                            <input class="checkbox_animated color-2" id="chk-ani1" type="checkbox" name="features[]" value="CCTV" required data-parsley-required-message="Select at least one feature"> CCTV
-                                                        </label>
-                                                        <label for="chk-ani2">
-                                                            <input class="checkbox_animated color-2" id="chk-ani2" type="checkbox" name="features[]" value="Free Wi-Fi" required data-parsley-required-message="Select at least one feature"> Free Wi-Fi
-                                                        </label>
-                                                        <label for="chk-ani3">
-                                                            <input class="checkbox_animated color-2" id="chk-ani3" type="checkbox" name="features[]" value="Free Parking In The Area" required data-parsley-required-message="Select at least one feature"> Free Parking In The Area
-                                                        </label>
-                                                        <label for="chk-ani4">
-                                                            <input class="checkbox_animated color-2" id="chk-ani4" type="checkbox" name="features[]" value="Air Conditioning" required data-parsley-required-message="Select at least one feature"> Air Conditioning
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="next-btn d-flex mt-3">
-                                                    <button type="button" class="btn btn-dashed color-2 prev-btn btn-pill" data-prev-step="2"><i class="fas fa-arrow-left me-2"></i> Previous</button>
-                                                    <button type="submit" class="btn next-btn btn-gradient color-2 btn-pill"  data-next-step="4">Next<i class="fas fa-arrow-right ms-2"></i></button>
-                                                </div>
-                                            </form>
+                        <div class="wizard-form-details col-xxl-9 col-lg-8">
+                            <div class="theme-card my-3">
+                                <div class="wizard-step wizard-step-1 d-block">
+                                    <h2>General</h2>
+                                    <p class="font-roboto">Basic information about property</p>
+                                    <form class="row gx-3" action="" method="POST" id="basicForm" data-parsley-validate>
+                                        @csrf
+                                        <div class="form-group col-sm-4">
+                                            <label>Property Type<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="property_type" placeholder="Villa" required data-parsley-required-message="Property type is required">
                                         </div>
 
-                                        <!-- Step 4: Confirmation -->
-                                        <div class="wizard-step wizard-step-4 d-none">
-                                            <form id="submitForm" action="" method="POST">
-                                                @csrf
-                                                <div class="complete-details">
-                                                    <div>
-                                                        <img src="https://themes.pixelstrap.com/sheltos/assets/images/inner-pages/4.svg" class="img-fluid" alt="">
-                                                        <h3>Thank you !!</h3>
-                                                        <h6>Congratulations, your property has been submitted</h6>
-                                                        <p class="font-roboto">
-                                                            Residences can be classified by and how they are connected to neighbouring residences and land.
-                                                            Different types of housing tenure can be used for the same physical type.
-                                                        </p>
-                                                        <button type="submit" class="btn btn-gradient color-2 step-again btn-pill">Add new property</button>
-                                                    </div>
-                                                </div>
-                                            </form>
+                                        <div class="form-group col-sm-4">
+                                            <label>Property Status<span class="text-danger">*</span></label>
+                                            <select class="form-control" name="status" required data-parsley-required-message="Select a property status">
+                                                <option value="">Status</option>
+                                                <option value="Sale">For Sale</option>
+                                                <option value="Rent">For Rent</option>
+                                            </select>
                                         </div>
+
+                                        <div class="form-group col-sm-4">
+                                            <label>Property Price<span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" name="price" placeholder="$2800" required data-parsley-type="number" data-parsley-required-message="Property price is required">
+                                        </div>
+
+                                        <div class="form-group col-sm-4">
+                                            <label>Max Rooms<span class="text-danger">*</span></label>
+                                            <select class="form-control" name="max_rooms" required data-parsley-required-message="Select the number of rooms">
+                                                <option value="">Max Rooms</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group col-sm-4">
+                                            <label>Beds<span class="text-danger">*</span></label>
+                                            <select class="form-control" name="beds" required data-parsley-required-message="Select the number of beds">
+                                                <option value="">Beds</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group col-sm-4">
+                                            <label>Baths<span class="text-danger">*</span></label>
+                                            <select class="form-control" name="baths" required data-parsley-required-message="Select the number of baths">
+                                                <option value="">Baths</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group col-sm-4">
+                                            <label>Area (sq ft)<span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" name="area" placeholder="85" required data-parsley-type="number" data-parsley-required-message="Area is required">
+                                        </div>
+
+                                        {{-- <div class="form-group col-sm-4">
+                                            <label>Price<span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" name="price" placeholder="$3000" required data-parsley-type="number" data-parsley-required-message="Price is required">
+                                        </div> --}}
+
+
+                                        <div class="form-group col-sm-4">
+                                            <label for="agent_id">Agent<span class="text-danger">*</span></label>
+                                            <select name="agent_id" id="agent_id" class="form-control p-2" required data-parsley-required-message="Please select an agent.">
+                                                <option value="" disabled selected>Select Agent</option>
+                                                @foreach($agents as $agent)
+                                                    <option value="{{ $agent->id }}" {{ old('agent_id') == $agent->id ? 'selected' : '' }}>
+                                                        {{ $agent->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+
+                                        <div class="form-group col-sm-12">
+                                            <label>Description<span class="text-danger">*</span></label>
+                                            <textarea class="form-control" rows="4" name="description" required data-parsley-required-message="Description is required"></textarea>
+                                        </div>
+
+                                        <div class="text-end mt-3">
+                                            <button type="button" class="btn btn-gradient next1 color-2 btn-pill"  data-next-step="2">Next<i class="fas fa-arrow-right ms-2"></i></button>
+                                        </div>
+
+                                    </form>
+                                </div>
+                                <div class="wizard-step wizard-step-2 d-none">
+                                    <h2>Address</h2>
+                                    <p class="font-roboto">Add your property Location</p>
+                                    <form class="row gx-3" action="" method="POST" id="addressForm" data-parsley-validate>
+                                        @csrf
+
+                                        <!-- Address -->
+                                        <div class="form-group col-sm-6">
+                                            <label>Address<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="address" placeholder="Address of your property" required
+                                                data-parsley-required-message="Address is required" data-parsley-maxlength="255">
+                                        </div>
+
+                                        <!-- Zip Code -->
+                                        <div class="form-group col-sm-6">
+                                            <label>Zip code<span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" name="zip_code" placeholder="39702" required
+                                                data-parsley-type="number" data-parsley-required-message="Zip code is required"
+                                                data-parsley-min="1" data-parsley-min-message="Zip code must be valid">
+                                        </div>
+
+                                        <!-- City -->
+
+                                        <div class="form-group col-sm-6">
+                                            <label>City<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="city" placeholder="City" required
+                                                data-parsley-required-message="City is required" data-parsley-maxlength="255">
+                                        </div>
+
+                                        <!-- Google Maps iframe -->
+                                        <div class="col-sm-12">
+                                            <iframe title="realestate location" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.1583091352!2d-74.11976373946229!3d40.69766374859258!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew+York%2C+NY%2C+USA!5e0!3m2!1sen!2sin!4v1563449626439!5m2!1sen!2sin"
+                                                    allowfullscreen></iframe>
+                                        </div>
+
+                                        <div class="next-btn d-flex mt-3">
+                                            <button type="button" class="btn btn-dashed prev1 color-2 prev-btn btn-pill"  data-prev-step="1"><i class="fas fa-arrow-left me-2"></i> Previous</button>
+                                            <button type="button" class="btn btn-gradient next2 color-2 btn-pill"  data-next-step="3">Next<i class="fas fa-arrow-right ms-2"></i></button>
+                                        </div>
+                                    </form>
 
                                 </div>
+                                <div class="wizard-step wizard-step-3 d-none">
+                                    <h2>Gallery</h2>
+                                    <p class="font-roboto">Add your property Media</p>
+                                    {{-- <label>Media<span class="text-danger">*</span></label> --}}
+                                    {{-- <form class="dropzone" action="" method="POST" id="multiFileUpload" data-parsley-validate>
+                                        <div class="dz-message needsclick">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <h6>Drop files here or click to upload.</h6>
+                                            <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span>
+                                        </div>
+                                    </form> --}}
+
+                                    <form id="galleryForm" class="row gx-3" enctype="multipart/form-data" data-parsley-validate>
+                                        {{-- <input type="hidden" name="property_id" id="property_id" > --}}
+                                        <div class="form-group upload-btn-box mb-0">
+                                            <label>Media<span class="text-danger">*</span></label>
+                                            <input type="file" class="form-control" name="image_url" multiple id="image_url"
+                                                   accept="image/*"
+                                                   data-parsley-required="true"
+                                                   required
+                                                   data-parsley-required-message="Please upload at least one image."
+                                                   data-parsley-file-type-message="Only image files are allowed."
+                                                   data-parsley-errors-container="#images-error"
+                                                   data-parsley-filemimetypes="image/jpeg, image/png, image/jpg, image/heic, image/heif, image/webp">
+                                            <div id="images-error"></div>
+                                            <div id="image-previews" class="d-flex flex-wrap gap-3"></div>
+                                        </div>
+
+                                        <div class="form-group col-sm-12">
+                                            <label>Additional features</label>
+                                            <div class="feature-checkbox" >
+                                                <label for="chk-ani">
+                                                    <input class="checkbox_animated color-2" id="chk-ani" type="checkbox" name="additional_features[]" value="Emergency Exit" required data-parsley-required-message="Select at least one feature"> Emergency Exit
+                                                </label>
+                                                <label for="chk-ani1">
+                                                    <input class="checkbox_animated color-2" id="chk-ani1" type="checkbox" name="additional_features[]" value="CCTV" required data-parsley-required-message="Select at least one feature"> CCTV
+                                                </label>
+                                                <label for="chk-ani2">
+                                                    <input class="checkbox_animated color-2" id="chk-ani2" type="checkbox" name="additional_features[]" value="Free Wi-Fi" required data-parsley-required-message="Select at least one feature"> Free Wi-Fi
+                                                </label>
+                                                <label for="chk-ani3">
+                                                    <input class="checkbox_animated color-2" id="chk-ani3" type="checkbox" name="additional_features[]" value="Free Parking In The Area" required data-parsley-required-message="Select at least one feature"> Free Parking In The Area
+                                                </label>
+                                                <label for="chk-ani4">
+                                                    <input class="checkbox_animated color-2" id="chk-ani4" type="checkbox" name="additional_features[]" value="Air Conditioning" required data-parsley-required-message="Select at least one feature"> Air Conditioning
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="next-btn d-flex mt-3">
+                                            <button type="button" class="btn prev2 btn-dashed color-2 prev-btn btn-pill" data-prev-step="2"><i class="fas fa-arrow-left me-2"></i> Previous</button>
+                                            <button type="button" class="btn next3 btn-gradient color-2 btn-pill"  data-next-step="4">Next<i class="fas fa-arrow-right ms-2"></i></button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- Step 4: Confirmation -->
+                                <div class="wizard-step wizard-step-4 d-none">
+                                    <form id="submitForm" action="" method="POST">
+                                        @csrf
+                                        <div class="complete-details">
+                                            <div>
+                                                <img src="https://themes.pixelstrap.com/sheltos/assets/images/inner-pages/4.svg" class="img-fluid" alt="">
+                                                <h3>Thank you !!</h3>
+                                                <h6>Congratulations, your property has been submitted</h6>
+                                                <p class="font-roboto">
+                                                    Residences can be classified by and how they are connected to neighbouring residences and land.
+                                                    Different types of housing tenure can be used for the same physical type.
+                                                </p>
+                                                <button type="button" class="btn btn-gradient color-2 step-again btn-pill">Add new property</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
+                        </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </section>
     <!-- submit property section end -->
 
-    <!-- footer start -->
-    <footer>
+     <!-- footer start -->
+     <footer>
         <div class="footer footer-bg">
             <div class="container">
                 <div class="row">
@@ -575,7 +598,7 @@
                                         <p class="mb-0">
                                             Real estate investing involves the purchase, Improvement of realty, management and sale or rental of real estate for profit.
                                         </p>
-                                        <form>
+                                        <form data-parsley-validate>
                                             <div class="input-group">
                                                 <input type="email" class="form-control" placeholder="Email Address" required>
                                                 <span class="input-group-apend">
@@ -661,10 +684,10 @@
                     </div>
                     <div class="col-xl-6 col-md-6 text-end">
                         <ul class="sub-footer-link">
-                            <li><a href="layout-2.html">Home</a></li>
+                            <li><a href="{{ route('home') }}">Home</a></li>
                             <li><a href="terms-conditions.html">Terms</a></li>
                             <li><a href="privacy-policy.html">Privacy policy</a></li>
-                            <li><a href="contact-2.html">Contact</a></li>
+                            <li><a href="{{ route('contect') }}">Contact</a></li>
                         </ul>
                     </div>
                 </div>
@@ -735,127 +758,37 @@
 
     @yield('script')
     @include('frontend.footer-script')
+    <script>
+        var submitPropertyeUrl = "{{ route('submit-property.store') }}";
+            // Apply validation styling on each form during step transitions
 
-    {{-- wizardjs --}}
-    <script src="{{ URL::asset('sheltos/assets/js/wizard.js/form-wizard.js') }}"></script>
+        // Preview image before upload
+        $('#image_url').on('change', function (e) {
+            const files = e.target.files;
+            const previewContainer = $('#image-previews');
+            previewContainer.empty(); // Clear previous previews
 
-<script>
-// $(document).ready(function() {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
 
+                reader.onload = function (event) {
+                    const image = $('<img>', {
+                        src: event.target.result,
+                        class: 'img-thumbnail',
+                        style: 'width: 100px; height: 100px; object-fit: cover;',
+                    });
+                    previewContainer.append(image);
+                };
 
-   /*  $('#basicForm').submit(function(e) {
-        e.preventDefault(); // Prevent default form submission
-
-        var formData = $(this).serialize(); // Serialize form data
-
-        $.ajax({
-            type: "POST",
-            url: '{{ route('submit-property.store') }}', // Define your Laravel route
-            data: formData,
-            success: function(response) {
-                console.log(response);
-                // Transition to the next step
-                $('.step-1').hide();
-                $('.step-2').show();
-            },
-            error: function(xhr, status, error) {
-                if (xhr.status === 422) {
-                    var errors = xhr.responseJSON.errors; // Get validation errors from response
-                    var errorMessages = '';
-                    for (var field in errors) {
-                        errorMessages += errors[field].join('<br>'); // Join errors for each field
-                    }
-                    alert('Validation errors: ' + errorMessages); // Show error message
-                } else {
-                    alert('Error: ' + error);
-                }
+                reader.readAsDataURL(file);
             }
         });
-    }); */
 
 
-
-    // Handle the address form submission (step 2)
-    // $('#addressForm').submit(function(e) {
-    //     e.preventDefault(); // Prevent default form submission
-
-    //     var formData = $(this).serialize(); // Serialize form data
-
-    //     $.ajax({
-    //         type: "POST",
-    //         url: '{{ route('submit-property.store') }}', // Define your Laravel route
-    //         data: formData,
-    //         success: function(response) {
-    //             console.log(response);
-    //             // Transition to the next step
-    //             $('.step-2').hide();
-    //             $('.step-3').show();
-    //         },
-    //         error: function(xhr, status, error) {
-    //             alert('Error: ' + error);
-    //         }
-    //     });
-    // });
-
-    // // Handle the gallery form submission (step 3)
-    // $('#galleryForm').submit(function(e) {
-    //     e.preventDefault(); // Prevent default form submission
-
-    //     var formData = $(this).serialize(); // Serialize form data
-
-    //     $.ajax({
-    //         type: "POST",
-    //         url: '{{ route('submit-property.store') }}', // Define your Laravel route
-    //         data: formData,
-    //         success: function(response) {
-    //             console.log(response);
-    //             // Transition to the next step
-    //             $('.step-3').hide();
-    //             $('.step-4').show();
-    //         },
-    //         error: function(xhr, status, error) {
-    //             alert('Error: ' + error);
-    //         }
-    //     });
-    // });
-
-    // // Handle final form submission (step 4)
-    // $('#submitForm').submit(function(e) {
-    //     e.preventDefault(); // Prevent default form submission
-
-    //     var formData = $(this).serialize(); // Serialize form data
-
-    //     $.ajax({
-    //         type: "POST",
-    //         url: '{{ route('submit-property.store') }}', // Define your Laravel route
-    //         data: formData,
-    //         success: function(response) {
-    //             console.log(response);
-    //             // Display a success message or reset the wizard
-    //             alert('Property submitted successfully!');
-    //             window.location.reload(); // Reset or redirect after successful submission
-    //         },
-    //         error: function(xhr, status, error) {
-    //             alert('Error: ' + error);
-    //         }
-    //     });
-    // });
-
-    // // Handle file uploads (if using Dropzone.js for multi-file upload in gallery form)
-    // $("#multiFileUpload").dropzone({
-    //     url: "/your-laravel-upload-route", // Define the route for handling uploads
-    //     success: function(file, response) {
-    //         console.log(response);
-    //     },
-    //     error: function(file, errorMessage) {
-    //         console.log("File upload error: " + errorMessage);
-    //     }
-    // });
-
-// });
+    </script>
 
 
-</script>
 </body>
 
 <!-- Mirrored from themes.pixelstrap.com/sheltos/main/submit-property.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 27 Jan 2025 12:55:06 GMT -->

@@ -74,24 +74,52 @@
 
         var form = $(this).closest('form').parsley().validate(); // Initialize Parsley on the form
         if (form) {
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-            // Serialize multiple forms
-            var form1Data = $("#basicForm").serialize();
-            // console.log(form1Data);
-            var form2Data = $("#addressForm").serialize();
-            var form3Data = $("#galleryForm").serialize();
-            var form4Data = $("#submitForm").serialize();
+            // Serialize other forms (non-file fields)
+            var form1Data = $("#basicForm").serializeArray();  // Serialize as an array
+            var form2Data = $("#addressForm").serializeArray();
+            var form4Data = $("#submitForm").serializeArray();
 
-            // Combine the serialized data
-            var combinedData = form1Data + '&' + form2Data + '&' + form3Data + '&' + form4Data;
+            // FormData for file input (gallery form)
+            var form3Data = new FormData(document.getElementById("galleryForm"));  // Form 3 data for file inputs
 
+            // Append data from other forms (regular fields) to the FormData object
+            form1Data.forEach(function(field) {
+                form3Data.append(field.name, field.value);
+            });
+
+            form2Data.forEach(function(field) {
+                form3Data.append(field.name, field.value);
+            });
+
+            form4Data.forEach(function(field) {
+                form3Data.append(field.name, field.value);
+            });
+
+            // Append CSRF token manually
+            form3Data.append('_token', csrfToken);
+
+            // Debug: Log the final FormData content (optional)
+            for (let [key, value] of form3Data.entries()) {
+                console.log(key, value);
+            }
             $.ajax({
                 type: "POST",
                 url: submitPropertyeUrl,
-                data: combinedData,
-                success: function(data){
-                    console.log(data);
-                 }
+                data: form3Data,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    console.log("Success:", response);
+                    if (response.success) {
+                        window.location.href = response.redirect; // Redirect to home page
+                    }
+                }
+                ,
+                error: function(xhr) {
+                    console.log("Error:", xhr.responseJSON); // Logs validation errors
+                }
             });
             $('.step-1').addClass('active').removeClass('disabled');
             $('.step-2, .step-3, .step-4').removeClass('active').removeClass('disabled');

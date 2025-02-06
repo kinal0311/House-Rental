@@ -97,11 +97,18 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        Session::flush();
-        Auth::logout();
+        // Check if it's a GET request, and if so, redirect to login
+        if (request()->isMethod('get')) {
+            return redirect()->route('login');
+        }
 
-        return redirect('logout')->with('success', 'Logged out successfully.');
+        // Proceed with logging out if it's a POST request
+        Session::flush(); // Clears session data
+        Auth::logout();   // Logs out the user
+
+        return redirect()->route('login')->with('success', 'Logged out successfully.');
     }
+
 
     public function myAccount()
     {

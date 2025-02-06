@@ -37,7 +37,7 @@
    <script src="{{ URL::asset('sheltos/assets/js/customizer.js') }}"></script>
 
    <!-- Color-picker js-->
-   <script src="{{ URL::asset('sheltos/assets/js/color/layout3.js') }}"></script>
+   <script src="{{ URL::asset('sheltos/assets/js/color/single-property.js') }}"></script>
 
     <!-- Include jQuery UI (if you're using jQuery UI Slider) -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>

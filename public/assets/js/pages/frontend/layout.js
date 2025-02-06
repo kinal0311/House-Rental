@@ -1,5 +1,6 @@
 
 $(document).ready(function(){
+
     // Initialize Slick Slider for Property Images
     $('.slider-for').slick({
         slidesToShow: 1,

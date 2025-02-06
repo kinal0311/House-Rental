@@ -53,10 +53,14 @@
             <div class="dropdown-divider"></div>
 
             <!-- item-->
-            <a href="{{ route('logout') }}" class="dropdown-item notify-item">
-                <i class="fe-log-out"></i>
-                <span>Logout</span>
-            </a>
+            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                @csrf
+                <button type="submit" class="dropdown-item notify-item">
+                    <i class="fe-log-out"></i>
+                    <span>Logout</span>
+                </button>
+            </form>
+
 
         </div>
     </li>
@@ -127,3 +131,23 @@
 </ul>
 </div>
 <!-- end Topbar -->
+@yield('script')
+<script>
+    $('#logoutLink').on('click', function (e) {
+        e.preventDefault(); // Prevent default anchor click behavior
+
+        $.ajax({
+            url: '{{ route('logout') }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                window.location.href = '{{ route('login') }}'; // Redirect to login page or handle as needed
+            },
+            error: function(error) {
+                alert('An error occurred while logging out.');
+            }
+        });
+    });
+</script>

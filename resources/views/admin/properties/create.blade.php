@@ -50,9 +50,18 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="max_rooms">Max Rooms<span class="text-danger">*</span></label>
-                                    <input type="number" name="max_rooms" id="max_rooms" class="form-control" required placeholder="Enter Max Rooms" data-parsley-type="number" data-parsley-type-message="Please enter a valid number.">
+                                    <select class="form-control" name="max_rooms"  id="max_rooms" required placeholder="Enter Max Rooms" data-parsley-type="number" data-parsley-type-message="Please enter a valid number.">
+                                        <option value="">Max Rooms</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                    </select>
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="row">
@@ -60,7 +69,15 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="beds">Beds<span class="text-danger">*</span></label>
-                                    <input type="number" name="beds" id="beds" class="form-control" required placeholder="Enter Number of Beds" data-parsley-type="number" data-parsley-type-message="Please enter a valid number.">
+                                    <select class="form-control" name="beds"  id="beds" required placeholder="Enter Number of Beds" data-parsley-type="number" data-parsley-type-message="Please enter a valid number.">
+                                        <option value="">Beds</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -68,7 +85,15 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="baths">Baths<span class="text-danger">*</span></label>
-                                    <input type="number" name="baths" id="baths" class="form-control" required placeholder="Enter Number of Baths" data-parsley-type="number" data-parsley-type-message="Please enter a valid number.">
+                                    <select class="form-control" name="baths"  id="baths"  required placeholder="Enter Number of Baths" data-parsley-type="number" data-parsley-type-message="Please enter a valid number.">
+                                        <option value="">Baths</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -88,15 +113,15 @@
                                     <label for="status">Status<span class="text-danger">*</span></label>
                                     <div class="d-flex">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="status" id="status_sale" value="sale" required data-parsley-errors-container="#statusError" data-parsley-required-message="Please select a status.">
+                                            <input class="form-check-input" type="radio" name="status" id="status_sale" value="Sale" required data-parsley-errors-container="#statusError" data-parsley-required-message="Please select a status.">
                                             <label class="form-check-label" for="status_sale">Sale</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="status" id="status_sold" value="sold">
+                                            <input class="form-check-input" type="radio" name="status" id="status_sold" value="Sold">
                                             <label class="form-check-label" for="status_sold">Sold</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="status" id="status_rent" value="rent">
+                                            <input class="form-check-input" type="radio" name="status" id="status_rent" value="Rent">
                                             <label class="form-check-label" for="status_rent">Rent</label>
                                         </div>
                                     </div>

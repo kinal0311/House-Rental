@@ -68,7 +68,7 @@
                                             </div>
                                         </li>
                                         <li class="dropdown">
-                                            <a href="javascript:void(0)" class="nav-link menu-title">Home</a>
+                                            <a href="{{ route('home') }}" class="nav-link menu-title">Home</a>
                                         </li>
                                         <li class="dropdown">
                                             <a href="{{ route('listing') }}" class="nav-link menu-title">Listing</a>
@@ -446,7 +446,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
-                                            <button type="button" onclick="document.location='list-left-sidebar.html'" class="btn btn-gradient color-6 mt-3">Search</button>
+                                            <a href="{{ route('listing') }}" id="search-btn" class="btn btn-gradient color-6 mt-3">Search</a>
                                         </div>
                                     </div>
                                 </div>
@@ -773,7 +773,7 @@
                                 <div class="find-cities bg-size">
                                     @php
                                         // Get the first property image for the first property in the city
-                                        $firstImage = $properties->firstWhere('city', $city->city)->images->first()->image_url ?? 'layout-9.png';
+                                        $firstImage = $properties->firstWhere('city', $city->city)->images->first()->image_url ?? 'banner-3.png';
                                     @endphp
 
                                     <!-- Display the image -->
