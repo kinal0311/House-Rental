@@ -52,16 +52,16 @@
 
             <div class="dropdown-divider"></div>
 
-            <!-- item-->
-            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+           <!-- Hidden Logout Form -->
+            <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
-                <button type="submit" class="dropdown-item notify-item">
-                    <i class="fe-log-out"></i>
-                    <span>Logout</span>
-                </button>
             </form>
 
-
+            <!-- Visible Logout Button -->
+            <a href="javascript:void(0);" id="logoutBtn" class="dropdown-item notify-item">
+                <i class="fe-log-out"></i>
+                <span>Logout</span>
+            </a>
         </div>
     </li>
 </ul>
@@ -133,21 +133,7 @@
 <!-- end Topbar -->
 @yield('script')
 <script>
-    $('#logoutLink').on('click', function (e) {
-        e.preventDefault(); // Prevent default anchor click behavior
-
-        $.ajax({
-            url: '{{ route('logout') }}',
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                window.location.href = '{{ route('login') }}'; // Redirect to login page or handle as needed
-            },
-            error: function(error) {
-                alert('An error occurred while logging out.');
-            }
-        });
+    document.getElementById('logoutBtn').addEventListener('click', function () {
+        document.getElementById('logoutForm').submit();
     });
 </script>

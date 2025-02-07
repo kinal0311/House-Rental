@@ -93,6 +93,10 @@
 <script src="{{ URL::asset('assets/libs/jquery-knob/jquery.knob.min.js')}}"></script>
 <script src="{{ URL::asset('assets/libs/jquery-sparkline/jquery.sparkline.min.js')}}"></script>
 
+{{-- Notiflix --}}
+<script src="{{ URL::asset('assets/libs/notiflix/notiflix-2.1.2.js')}}"></script>
+<script src="{{ URL::asset('assets/libs/notiflix/notiflix.js')}}"></script>
+
 <!-- App scripts -->
 <script src="{{ URL::asset('assets/js/app.min.js')}}"></script>
 
@@ -121,6 +125,22 @@
 <!-- CSRF Token for AJAX -->
 <script>
     var csrfToken = "{{ csrf_token() }}";
+</script>
+<script type="text/javascript">
+     // Prevent the user from going back
+    window.history.forward();
+
+    // When the back button is pressed, keep the user on the current page
+    window.onload = function () {
+        setTimeout(function () {
+            window.history.forward();
+        }, 0);
+    }
+
+    // Optionally, listen for the 'popstate' event (this is triggered when the back button is pressed)
+    window.onpopstate = function () {
+        window.history.forward();
+    }
 </script>
 
 @yield('script')

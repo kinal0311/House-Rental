@@ -264,7 +264,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="phone_number">Phone Number<span class="text-danger">*</span></label>
-                                        <input type="text" name="phone_number" id="phone_number" class="form-control" maxlength="15"
+                                        <input type="text" name="phone_number" id="phone_number" class="form-control" maxlength="20"
                                                placeholder="Enter Phone Number" value="{{ old('phone_number') }}"
                                                data-parsley-length="[10, 20]"
                                                data-parsley-length-message="Phone number must be between 10 and 15 digits."
@@ -328,9 +328,12 @@
                                     <div class="form-group">
                                         <label>Role</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" value="{{ $role->name ?? 'User' }}" readonly>
-                                            <input type="hidden" name="role_id" value="3">
-                                            <span class="input-group-text"><i data-feather="shield"></i></span>
+                                            <select class="form-control" name="role_id">
+                                                <option value="">Select Role</option>
+                                                <option value="2" {{ $role->name == 'Agent' ? 'selected' : '' }}>Agent</option>
+                                                <option value="3" {{ $role->name == 'User' ? 'selected' : '' }}>User</option>
+                                            </select>
+                                            {{-- <span class="input-group-text"><i data-feather="shield"></i></span> --}}
                                         </div>
                                     </div>
                                 </div>

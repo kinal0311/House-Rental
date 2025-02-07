@@ -248,7 +248,7 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <select class="form-control" name="bed" id="bed">
+                                            <select class="form-control" name="beds" id="beds">
                                                 <option value="">Bed</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
@@ -261,7 +261,7 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <select class="form-control" name="bath" id="bath">
+                                            <select class="form-control" name="baths" id="baths">
                                                 <option value="">Bath</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
@@ -272,73 +272,96 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
+                                    {{-- <div class="col-lg-4">
                                         <div class="price-range">
                                             <label for="amount">Price : </label>
-                                            <input type="text" id="amount" readonly>
+                                            <input type="text" id="amount" name="price" readonly>
                                             <div id="slider-range" class="theme-range-2"></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="price-range">
                                             <label for="amount">Area : </label>
-                                            <input type="text" id="amount1" readonly>
+                                            <input type="text" id="amount1" name="area" readonly>
                                             <div id="slider-range1" class="theme-range-2"></div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-12 text-end">
                                         <button type="button" class="mt-3 btn btn-gradient color-2 btn-pill" id="search-btn">Search Property</button>
                                     </div>
                                 </div>
                     </div>
-                     <!-- Property List -->
-                    <div class="property-2 column-sm zoom-gallery property-label property-grid row grid">
-                        @foreach($properties as $property)
-                        <div class="col-xl-4 col-md-6 grid-item wow fadeInUp {{ $property->status }}">
-                            <div class="property-box">
-                                <div class="property-image">
-                                    <div class="property-slider">
-                                        @foreach($property->images as $image)
-                                        <a href="javascript:void(0)">
-                                            <img src="{{ URL::asset($image->image_url) }}" class="bg-img" alt="">
-                                        </a>
-                                        @endforeach
-                                    </div>
-                                    <div class="labels-left">
-                                        <div>
-                                            <span class="label label-shadow
-                                                @if($property->status == 'Sale') bg-info
-                                                @elseif($property->status == 'Sold') bg-danger
-                                                @elseif($property->status == 'Rent') bg-success
-                                                @endif
-                                            ">{{ $property->status }}</span>
+                    {{-- <div class="property-2 column-sm zoom-gallery property-label property-grid row grid" id="property-item">
+                        <div id="properties-list">
+                            <!-- The property items will be loaded here after AJAX search -->
+                            @foreach($properties as $property)
+                                <div class="property-item">
+                                    <h5>{{ $property->status }}</h5>
+                                    <p>{{ $property->property_type }}</p>
+                                    <p>{{ $property->address }}</p>
+                                    <p>{{ $property->max_rooms }}</p>
+                                    <span>{{ $property->beds }}</span>
+                                    <span>{{ $property->baths }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div> --}}
+
+                    <!-- This is the container where the filtered properties will be loaded via AJAX -->
+                    {{-- <div id="properties-list"></div> --}}
+                    <div id="properties-list">
+                        <div class="property-2 column-sm zoom-gallery property-label property-grid row grid" id="property-item">
+                            @if($properties->isEmpty())
+                                <p>No properties found.</p>
+                            @else
+                            @foreach($properties as $property)
+                            <div class="col-xl-4 col-md-6 grid-item wow fadeInUp {{ $property->status }}">
+                                <div class="property-box">
+                                    <div class="property-image">
+                                        <div class="property-slider">
+                                            @foreach($property->images as $image)
+                                            <a href="javascript:void(0)">
+                                                <img src="{{ URL::asset($image->image_url) }}" class="bg-img" alt="">
+                                            </a>
+                                            @endforeach
+                                        </div>
+                                        <div class="labels-left">
+                                            <div>
+                                                <span class="label label-shadow
+                                                    @if($property->status == 'Sale') bg-info
+                                                    @elseif($property->status == 'Sold') bg-danger
+                                                    @elseif($property->status == 'Rent') bg-success
+                                                    @endif
+                                                ">{{ $property->status }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="seen-data">
+                                            <i data-feather="camera"></i>
+                                            <span>{{ $property->images->count() }}</span>
                                         </div>
                                     </div>
-                                    <div class="seen-data">
-                                        <i data-feather="camera"></i>
-                                        <span>{{ $property->images->count() }}</span>
-                                    </div>
-                                </div>
 
-                                <div class="property-details">
-                                    <span class="font-roboto">{{ $property->city }}</span>
-                                    <a href="single-property-8.html">
-                                        <h3>{{ $property->address }}</h3>
-                                    </a>
-                                    <h6>${{ $property->price }}*</h6>
-                                    <p class="font-roboto">{{ $property->description }}</p>
-                                    <ul>
-                                        <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/double-bed.svg" class="img-fluid" alt="">Bed : {{ $property->beds }}</li>
-                                        <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : {{ $property->baths }}</li>
-                                        <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : {{ $property->area }}</li>
-                                    </ul>
-                                    <div class="property-btn d-flex">
-                                        <button type="button" onclick="document.location='single-property-8.html'" class="btn btn-dashed btn-pill color-2">Details</button>
+                                    <div class="property-details">
+                                        <span class="font-roboto">{{ $property->city }}</span>
+                                        <a href="single-property-8.html">
+                                            <h3>{{ $property->address }}</h3>
+                                        </a>
+                                        <h6>${{ $property->price }}*</h6>
+                                        <p class="font-roboto">{{ $property->description }}</p>
+                                        <ul>
+                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/double-bed.svg" class="img-fluid" alt="">Bed : {{ $property->beds }}</li>
+                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : {{ $property->baths }}</li>
+                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : {{ $property->area }}</li>
+                                        </ul>
+                                        <div class="property-btn d-flex">
+                                            <button type="button" onclick="document.location='single-property-8.html'" class="btn btn-dashed btn-pill color-2">Details</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            @endforeach
+                            @endif
                         </div>
-                        @endforeach
                     </div>
                 </div>
             </div>
@@ -613,61 +636,70 @@
 @yield('script')
 @include('frontend.footer-script')
 <script>
-var searchPropertyUrl = {{ route('searchProperties')}}
-document.addEventListener('DOMContentLoaded', function() {
-    // Select the search button
-    const searchButton = document.getElementById('search-btn');
+// $('#search-btn').click(function() {
+//     // console.log('btn click...');
+//     // Collect filter values
+//     var status = $('#status').val();
+//     var property_type = $('#property_type').val();
+//     var address = $('#address').val();
+//     var max_rooms = $('#max_rooms').val();
+//     var beds = $('#beds').val();
+//     var baths = $('#baths').val();
+//     // var price_range = $('#slider-range').slider("value"); // Assuming the slider range
+//     // var area_range = $('#slider-range1').slider("value");
+//     var searchUrl="{{ route('searchProperties') }}";
+//     // alert(searchUrl);
+//     // Send AJAX request
+//     $.ajax({
+//         url: searchUrl, // Your route
+//         method: 'GET', // Or POST if needed
+//         data: {
+//             status: status,
+//             property_type: property_type,
+//             address: address,
+//             max_rooms: max_rooms,
+//             beds: beds,
+//             baths: baths,
+//             // price_range: price_range,
+//             // area_range: area_range
+//         },
+//         success: function(response) {
+//             // Assuming `response` contains the filtered properties in HTML format
+//             $('#properties-list').html(response);
+//         },
+//         error: function(xhr, status, error) {
+//             console.log(error);
+//         }
+//     });
+// });
+$('#search-btn').click(function() {
+    var status = $('#status').val();
+    var property_type = $('#property_type').val();
+    var address = $('#address').val();
+    var max_rooms = $('#max_rooms').val();
+    var beds = $('#beds').val();
+    var baths = $('#baths').val();
 
-    // Attach click event listener to the search button
-    searchButton.addEventListener('click', function(e) {
-        e.preventDefault(); // Prevent default anchor behavior
+    var searchUrl = "{{ route('searchProperties') }}";  // Your route name
 
-        // Collect form data
-        const status = document.getElementById('status').value;
-        const property_type = document.getElementById('property_type').value;
-        const address = document.getElementById('address').value;
-        const max_rooms = document.getElementById('max_rooms').value;
-        const bed = document.getElementById('bed').value;
-        const bath = document.getElementById('bath').value;
-        const price = document.getElementById('amount').value;  // Get value of price slider
-        const area = document.getElementById('amount1').value;  // Get value of area slider
-
-        // Debugging log to check if values are collected properly
-        console.log({
-            status,
-            property_type,
-            address,
-            max_rooms,
-            bed,
-            bath,
-            price,
-            area
-        });
-
-        // If you want to send this data to a backend (example using fetch)
-        const url = '/search-properties';  // Adjust this URL to match your route
-
-        const params = new URLSearchParams({
-            status,
-            property_type,
-            address,
-            max_rooms,
-            bed,
-            bath,
-            price,
-            area
-        });
-
-        // Send AJAX request
-        fetch(url + '?' + params.toString())
-            .then(response => response.json()) // Assuming your backend returns JSON
-            .then(data => {
-                // Handle the response, here we assume `data` is the HTML content
-                document.getElementById('property-2').innerHTML = data.html;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+    $.ajax({
+        url: searchUrl,
+        method: 'GET',
+        data: {
+            status: status,
+            property_type: property_type,
+            address: address,
+            max_rooms: max_rooms,
+            beds: beds,
+            baths: baths
+        },
+        success: function(response) {
+            // Update the property list with the new HTML
+            $('#properties-list').html(response.html);  // Insert the HTML into the container
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+        }
     });
 });
 

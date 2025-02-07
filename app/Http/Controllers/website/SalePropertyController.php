@@ -14,7 +14,7 @@ class SalePropertyController extends Controller
 
     public function index(Request $request)
     {
-        $properties = Property::where('status', 'Sale')->paginate(10); // Fetch only properties for Sale
+        $properties = Property::where('status', 'Sale')->get(); // Fetch only properties for Sale
         $images = PropertyImg::all();
         $agents = User::where('role_id', 2)->get();
 

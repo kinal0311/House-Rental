@@ -45,6 +45,9 @@
 
 
 @endsection
+{{-- Notiflix --}}
+<script src="{{ URL::asset('assets/libs/notiflix/notiflix-2.1.2.js')}}"></script>
+<script src="{{ URL::asset('assets/libs/notiflix/notiflix.js')}}"></script>
 @section('script')
 <script>
     var dateTableUrl = "{{ route('admin.admin.get.data') }}";

@@ -5,6 +5,9 @@
         <meta charset="utf-8" />
         <title>Login</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="0">
 
             <!-- Notiflix -->
             <link href="{{asset('assets\libs\notiflix\notiflix-2.1.2.css')}}" rel="stylesheet" type="text/css" />
@@ -45,12 +48,12 @@
 
                                     <div class="form-group mb-3">
                                         <label for="emailaddress">Email address</label>
-                                        <input class="form-control" type="email" name='email' id="emailaddress" required="" placeholder="Enter your email" data-parsley-type="email">
+                                        <input class="form-control" type="email" name='email' id="emailaddress" required="" placeholder="Enter your email" data-parsley-type="email" autocomplete="off">
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label for="password">Password</label>
-                                        <input class="form-control" type="password" name='password' required="" id="password" placeholder="Enter your password" data-parsley-minlength="6">
+                                        <input class="form-control" type="password" name='password' required="" id="password" placeholder="Enter your password" data-parsley-minlength="6" autocomplete="off">
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -124,30 +127,54 @@
         <!-- Notiflix -->
         <script src="{{ URL::asset('assets\libs\notiflix\notiflix-2.1.2.js')}}"></script>
 
-         <!-- Custom Script to Show Notifications -->
          <script>
-            // Show error notification if there is a session error
             @if(session('error'))
-                Notiflix.Notify.Failure('{{ session('error') }}');
+            Notiflix.Notify.Failure('{{ session('error') }}');
             @endif
-
-            // Initialize Parsley validation
             $('#loginForm').parsley();
 
-            // Show success or failure on form submission
-            $('#loginForm').on('submit', function(e) {
-                e.preventDefault(); // Prevent the default form submission
+$('#loginForm').on('submit', function(e) {
+    e.preventDefault();
 
-                var form = $(this);
-                if (form.parsley().isValid()) {
-                    // If the form is valid, show a success notification
+    var form = $(this);
+
+    // First, check if the form is valid according to Parsley
+    if (form.parsley().isValid()) {
+
+        // Perform AJAX login request
+        $.ajax({
+            url: form.attr('action'),  // The login route in the form action
+            method: 'POST',
+            data: form.serialize(),  // Serialize the form data
+            success: function(response) {
+                if (response.success) {
+                    // If login is successful, redirect to the 'master' page
+                    window.location.href = response.redirect;
                     Notiflix.Notify.Success('Form is valid. Logging in...');
-                    form.off('submit').submit();  // Allow form submission after valid check
-                } else {
-                    // If the form is invalid, show a failure notification
-                    Notiflix.Notify.Failure('Please fix the errors in the form.');
                 }
-            });
+            },
+            error: function(xhr) {
+                var errorMessage = 'Login failed. Please try again.';
+
+                // Check for error response from the backend
+                if (xhr.status === 401) {
+                    errorMessage = 'Invalid email or password.';
+                } else if (xhr.status === 403) {
+                    errorMessage = xhr.responseJSON.message || 'You do not have permission to access this page.';
+                }
+
+                // Display the failure notification with the appropriate error message
+                Notiflix.Notify.Failure(errorMessage);
+            }
+        });
+    } else {
+        // If the form is invalid (based on Parsley), show a failure notification
+        Notiflix.Notify.Failure('Please fix the errors in the form.');
+    }
+});
+
+
+
         </script>
     </body>
 </html>

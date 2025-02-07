@@ -191,19 +191,6 @@
                                 <span class="show-result">Showing <span>1-15 of 69</span> Listings</span>
                             </div>
                             <ul class="grid-list-filter d-flex">
-                                <li>
-                                    <div class="dropdown">
-                                        <span class="dropdown-toggle font-rubik" data-bs-toggle="dropdown"><span>Sort by
-                                                Newest</span> <i class="fas fa-angle-down ms-lg-3 ms-2"></i></span>
-                                        <div class="dropdown-menu text-start">
-                                            <a class="dropdown-item" href="javascript:void(0)">Sort by Newest</a>
-                                            <a class="dropdown-item" href="javascript:void(0)">Sort by Oldest</a>
-                                            <a class="dropdown-item" href="javascript:void(0)">Sory by featured</a>
-                                            <a class="dropdown-item" href="javascript:void(0)">Sort by price (Low to
-                                                high)</a>
-                                        </div>
-                                    </div>
-                                </li>
                                 <li class="collection-grid-view">
                                     <ul>
                                         <li><img src="../assets/images/icon/2.png" alt="" class="product-2-layout-view"></li>
@@ -293,9 +280,9 @@
                             @endforeach
                         </div>
                     </div>
-                    <nav class="theme-pagination">
+                    {{-- <nav class="theme-pagination">
                         {{ $properties->links('pagination::bootstrap-5') }}
-                        {{-- <ul class="pagination">
+                        <ul class="pagination">
                             <li class="page-item">
                                 <a class="page-link" href="javascript:void(0)" aria-label="Previous">
                                     <span aria-hidden="true">«</span>
@@ -311,8 +298,8 @@
                                     <span class="sr-only">Next</span>
                                 </a>
                             </li>
-                        </ul> --}}
-                    </nav>
+                        </ul>
+                    </nav> --}}
                     {{-- <nav class="theme-pagination">
                         <ul class="pagination">
                             <li class="page-item">

@@ -19,12 +19,21 @@ use App\Http\Controllers\website\ContectController;
 use App\Http\Controllers\website\SubmitPropertyController;
 use App\Http\Controllers\website\LoginController;
 use App\Http\Controllers\website\SignUpController;
+// use App\Http\Middleware\CheckPermission;
 
 Route::get('/', [LayoutController::class, 'index'])->name('home');
 
+// Route::get('admin/profile', function () {
+//     return view('admin.profile');
+// })->middleware(CheckPermission::class);
+
+// Route::get('admin/dashboard', function () {
+//     return view('admin.dashboard');
+// })->middleware('check.permission');
+
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('login', [AuthController::class, 'postLogin'])->name('login.post');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');;
 
 Route::group(['middleware' => 'auth'], function () {
 Route::get('register', [AuthController::class, 'registration'])->name('register');
@@ -90,6 +99,7 @@ Route::get('single-property', [SinglePropertyController::class, 'index'])->name(
 Route::get('/single-property/{id}', [SinglePropertyController::class, 'show'])->name('single-property.show');
 Route::get('/agent-profile/{id}', [AgentProfileController::class, 'show'])->name('agent-profile');
 Route::get('listing', [ListingController::class, 'index'])->name('listing');
+// Route::get('/search-properties', [PropertyController::class, 'searchProperties']);
 Route::get('/search-properties', [ListingController::class, 'searchProperties'])->name('searchProperties');
 Route::get('agent-grid', [AgentGridController::class, 'index'])->name('agent-grid');
 Route::get('sale-property', [SalePropertyController::class, 'index'])->name('sale-property');
@@ -101,8 +111,6 @@ Route::get('login-user', [LoginController::class, 'index'])->name('login-user');
 Route::post('login-user', [LoginController::class, 'postLogin'])->name('login-user.post');
 Route::get('signup-user', [SignUpController::class, 'index'])->name('signup-user');
 Route::post('signup-user', [SignUpController::class, 'store'])->name('user.store');
-
-
 
 
 ?>

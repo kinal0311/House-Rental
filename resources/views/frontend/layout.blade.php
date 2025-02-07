@@ -150,16 +150,10 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li class="dropdown currency">
-                                        <a href="javascript:void(0)">
-                                            <i data-feather="dollar-sign"></i>
+                                    <li class="dropdown">
+                                        <a href="{{ route('login')}}">
+                                            <i class="fa-solid fa-desktop" style="color: #ffffff;"></i>
                                         </a>
-                                        <ul class="nav-submenu">
-                                            <li><a href="javascript:void(0)">Dollar</a></li>
-                                            <li><a href="javascript:void(0)">Euro</a></li>
-                                            <li><a href="javascript:void(0)">Pound</a></li>
-                                            <li><a href="javascript:void(0)">Yuan</a></li>
-                                        </ul>
                                     </li>
                                     <li class="dropdown">
                                         <a href="{{ route('login-user')}}">
@@ -471,7 +465,7 @@
                     </div>
 
                     <div class="listing-hover-property row">
-                        @foreach($properties as $property)
+                        @foreach($properties->take(3) as $property)
                         <div class="col-xl-4 col-md-6 wow fadeInUp">
                             <div class="property-box">
                                   <!-- Get the first image related to the current property -->
@@ -631,7 +625,7 @@
                     </div>
 
                     <div class="property-2 row column-space color-6">
-                        @foreach($properties as $property)
+                        @foreach($properties->take(6) as $property)
                         <div class="col-xl-4 col-md-6 wow fadeInUp">
                             <div class="property-box">
                                 <div class="property-image">
@@ -768,7 +762,7 @@
                         <hr>
                     </div>
                     <div class="row">
-                        @foreach($cities as $city)
+                        @foreach($cities->take(8) as $city)
                             <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 wow fadeInUp">
                                 <div class="find-cities bg-size">
                                     @php
@@ -835,7 +829,7 @@
                         <div class="col-md-12">
                             <div class="about-1 about-wrap arrow-white color-6">
                                 <div class="agent-slider">
-                                    @foreach ($agents as $agent)
+                                    @foreach ($agents->take(6) as $agent)
                                     <div class="agent-item">
                                         <div class="about-content d-flex align-items-center w-100">
                                             <!-- Image Section -->

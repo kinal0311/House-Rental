@@ -163,31 +163,29 @@ var tableVar = $('#propertyImgDataTable').DataTable({
 function deletePropertyImg(id) {
     var url = deleteRowUrl.replace(':id', id); // Replace ':id' with the actual ID
 
-    // Use Notiflix for the confirmation box
-    Notiflix.Confirm.Show(
-        'Confirm Deletion',  // Title of the confirmation box
-        'Are you sure you want to delete this image?',  // Message
-        'Yes',  // Text for the confirm button
-        'No',   // Text for the cancel button
-        function() {  // Callback function for confirm action
-            // Send an AJAX request to delete the property image
+    Notiflix.Confirm.show(
+        'Confirm Deletion',
+        'Are you sure you want to delete this image?',
+        'Yes',
+        'No',
+        function() {
+
             $.ajax({
-                url: url,  // The URL with the property ID
+                url: url,
                 type: 'DELETE',
                 data: {
-                    _token: csrfToken,  // CSRF token for security
+                    _token: csrfToken,
                 },
                 success: function(response) {
-                    tableVar.ajax.reload();  // Reload the table after deletion
-                    Notiflix.Notify.Success('Image deleted successfully.');  // Success notification
+                    tableVar.ajax.reload();
+                    Notiflix.Notify.Success('Property image deleted successfully.');
                 },
                 error: function(jqXHR, ajaxOptions, thrownError) {
-                    Notiflix.Notify.Failure('Error deleting image.');  // Error notification
+                    Notiflix.Notify.Failure('Error deleting image.');
                 }
             });
         },
-        function() {  // Callback function for cancel action
-            // Action when the user clicks "No" (nothing to do)
+        function() {
         }
     );
 }

@@ -16,6 +16,10 @@ class AuthController extends Controller
      */
     public function index()
     {
+        if (Auth::check()) {
+            // Redirect logged-in users to the master page
+            return redirect('master')->with('success', 'You are already logged in!');
+        }
         return view('auth.login');
     }
 
@@ -31,27 +35,31 @@ class AuthController extends Controller
      * Handle login request.
      */
     public function postLogin(Request $request)
-    {
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-        $credentials = $request->only('email', 'password');
-// dd($credentials);
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            // dd($user);
-            if (in_array($user->role_id, [1, 2])) {
-                return redirect('master')->with('success', 'Successfully logged in!');
-            }
+    $credentials = $request->only('email', 'password');
 
-            Auth::logout();
-            return redirect('login')->withErrors(['access' => 'You do not have access to the master.']);
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+
+        if (in_array($user->role_id, [1, 2])) {
+            // If login successful and user has proper role
+            return response()->json(['success' => true, 'redirect' => route('master')]);
         }
 
-        return redirect('login')->withErrors(['credentials' => 'Invalid email or password.']);
+        // If user role is not authorized
+        Auth::logout();
+        return response()->json(['success' => false, 'message' => 'You do not have access to the master.'], 403);
     }
+
+    // If credentials are invalid
+    return response()->json(['success' => false, 'message' => 'Invalid email or password.'], 401);
+}
+
 
     /**
      * Handle registration request.
@@ -95,17 +103,13 @@ class AuthController extends Controller
     /**
      * Logout user.
      */
-    public function logout()
+    public function logout(Request $request)
     {
-        // Check if it's a GET request, and if so, redirect to login
-        if (request()->isMethod('get')) {
-            return redirect()->route('login');
-        }
+        // Clear session and logout
+        Session::flush();
+        Auth::logout();
 
-        // Proceed with logging out if it's a POST request
-        Session::flush(); // Clears session data
-        Auth::logout();   // Logs out the user
-
+        // Redirect to login page
         return redirect()->route('login')->with('success', 'Logged out successfully.');
     }
 

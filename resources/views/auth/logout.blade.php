@@ -46,12 +46,12 @@
 
                                     <div class="form-group mb-3">
                                         <label for="emailaddress">Email address</label>
-                                        <input class="form-control" type="email" name='email' id="emailaddress" required="" placeholder="Enter your email" data-parsley-type="email">
+                                        <input class="form-control" type="email" name='email' id="emailaddress" required="" placeholder="Enter your email" data-parsley-type="email" autocomplete="off">
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label for="password">Password</label>
-                                        <input class="form-control" type="password" name='password' required="" id="password" placeholder="Enter your password" data-parsley-minlength="6">
+                                        <input class="form-control" type="password" name='password' required="" id="password" placeholder="Enter your password" data-parsley-minlength="6" autocomplete="off">
                                     </div>
 
                                     <div class="form-group mb-3">

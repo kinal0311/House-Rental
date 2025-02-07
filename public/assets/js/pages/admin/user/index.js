@@ -85,31 +85,29 @@ var tableVar = $('#userDataTable').DataTable({
 function deleteUser(id) {
     var url = deleteRowUrl.replace(':id', id);  // Replace the placeholder with actual ID
 
-     // Use Notiflix for the confirmation box
-     Notiflix.Confirm.Show(
-        'Confirm Deletion',  // Title of the confirmation box
-        'Are you sure you want to delete this property?',  // Message
-        'Yes',  // Text for the confirm button
-        'No',   // Text for the cancel button
-        function() {  // Callback function for confirm action
-            // Send an AJAX request to delete the property
+    Notiflix.Confirm.show(
+        'Confirm Deletion',
+        'Are you sure you want to delete this user?',
+        'Yes',
+        'No',
+        function() {
+
             $.ajax({
-                url: url,  // The URL with the property ID
+                url: url,
                 type: 'DELETE',
                 data: {
-                    _token: csrfToken,  // CSRF token for security
+                    _token: csrfToken,
                 },
                 success: function(response) {
-                    tableVar.ajax.reload();  // Reload the table after deletion
-                    Notiflix.Notify.Success('User deleted successfully.');  // Success notification
+                    tableVar.ajax.reload();
+                    Notiflix.Notify.Success('User deleted successfully.');
                 },
                 error: function(jqXHR, ajaxOptions, thrownError) {
-                    Notiflix.Notify.Failure('Error deleting user.');  // Error notification
+                    Notiflix.Notify.Failure('Error deleting User.');
                 }
             });
         },
-        function() {  // Callback function for cancel action
-            // Action when the user clicks "No" (nothing to do)
+        function() {
         }
     );
 }
