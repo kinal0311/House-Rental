@@ -654,10 +654,10 @@
                                         <span>{{ $property->images->count() }}</span>
                                     </div>
                                     <div class="overlay-property-box">
-                                        <a href="compare.html" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Compare">
-                                            <i data-feather="shuffle"></i>
+                                        <a href="" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Add Cart">
+                                            <i data-feather="shopping-cart"></i>
                                         </a>
-                                        <a href="user-favourites.html" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="wishlist">
+                                        <a href="" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist">
                                             <i data-feather="heart"></i>
                                         </a>
                                     </div>

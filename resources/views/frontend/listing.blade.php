@@ -11,7 +11,16 @@
     <title>House Rental</title>
 
 @include('frontend.layoutcss')
+<style>
+.property-slider img {
+    width: 100%; /* Makes images responsive */
+    height: 250px; /* Set your desired height */
+    object-fit: cover; /* Ensures images cover the area without stretching */
+    border-radius: 10px; /* Optional: Rounds image corners */
+}
 
+
+</style>
 </head>
 
 <body>
@@ -98,7 +107,7 @@
                                         <a href="javascript:void(0)">
                                             <i data-feather="shopping-cart"></i>
                                         </a>
-                                        <ul class="nav-submenu">
+                                        {{-- <ul class="nav-submenu">
                                             <li>
                                                 <div class="media">
                                                     <img src="../assets/images/property/2.jpg" class="img-fluid" alt="">
@@ -128,7 +137,7 @@
                                                     <h5>Subtotal :- <span class="float-end">$260.00</span></h5>
                                                 </div>
                                             </li>
-                                        </ul>
+                                        </ul> --}}
                                     </li>
                                     <li class="dropdown currency">
                                         <a href="javascript:void(0)">
@@ -211,7 +220,9 @@
                         </div>
                     </div>
                     <div class="left-sidebar filter-bottom-content">
-                        <h6 class="d-lg-none d-block text-end"><a href="javascript:void(0)"
+                        <form id="filter-form" method="GET">
+                            @csrf
+                            <h6 class="d-lg-none d-block text-end"><a href="javascript:void(0)"
                                 class="close-filter-bottom">Close filter</a></h6>
                                 <div class="row">
                                     <div class="col-lg-4">
@@ -225,7 +236,7 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="property_type" id="property_type" placeholder="Property Type">
+                                            <input type="text" class="form-control" name="property_type" id="property_type" style="color: #878787; " placeholder="Property Type">
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
@@ -272,7 +283,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-lg-4">
+                                    <div class="col-lg-4">
                                         <div class="price-range">
                                             <label for="amount">Price : </label>
                                             <input type="text" id="amount" name="price" readonly>
@@ -285,11 +296,12 @@
                                             <input type="text" id="amount1" name="area" readonly>
                                             <div id="slider-range1" class="theme-range-2"></div>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                     <div class="col-12 text-end">
-                                        <button type="button" class="mt-3 btn btn-gradient color-2 btn-pill" id="search-btn">Search Property</button>
+                                        <button type="submit" class="mt-3 btn btn-gradient color-2 btn-pill" id="search-btn">Search Property</button>
                                     </div>
                                 </div>
+                        </form>
                     </div>
                     {{-- <div class="property-2 column-sm zoom-gallery property-label property-grid row grid" id="property-item">
                         <div id="properties-list">
@@ -309,8 +321,9 @@
 
                     <!-- This is the container where the filtered properties will be loaded via AJAX -->
                     {{-- <div id="properties-list"></div> --}}
-                    <div id="properties-list">
-                        <div class="property-2 column-sm zoom-gallery property-label property-grid row grid" id="property-item">
+
+
+                        <div class="property-2 column-sm zoom-gallery property-label property-grid row grid" id="properties-item">
                             @if($properties->isEmpty())
                                 <p>No properties found.</p>
                             @else
@@ -339,6 +352,16 @@
                                             <i data-feather="camera"></i>
                                             <span>{{ $property->images->count() }}</span>
                                         </div>
+                                        <div class="overlay-property-box">
+                                            <a href="javascript:void(0);" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"
+                                               onclick="addToCart({{ $property->id }}, '{{ $property->property_type }}', {{ $property->price }}, event)">
+                                                <i data-feather="shopping-cart"></i>
+                                            </a>
+                                            <a href="javascript:void(0);" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist">
+                                                <i data-feather="heart"></i>
+                                            </a>
+                                        </div>
+
                                     </div>
 
                                     <div class="property-details">
@@ -354,15 +377,15 @@
                                             <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : {{ $property->area }}</li>
                                         </ul>
                                         <div class="property-btn d-flex">
-                                            <button type="button" onclick="document.location='single-property-8.html'" class="btn btn-dashed btn-pill color-2">Details</button>
+                                            <button type="button" class="btn btn-dashed btn-pill color-2">Details</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             @endforeach
                             @endif
+
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -635,7 +658,10 @@
 
 @yield('script')
 @include('frontend.footer-script')
+<script src="https://unpkg.com/feather-icons"></script>
 <script>
+
+
 // $('#search-btn').click(function() {
 //     // console.log('btn click...');
 //     // Collect filter values
@@ -672,7 +698,9 @@
 //         }
 //     });
 // });
-$('#search-btn').click(function() {
+/* $('#search-btn').click(function(event) {
+    event.preventDefault();  // Prevent page reload
+
     var status = $('#status').val();
     var property_type = $('#property_type').val();
     var address = $('#address').val();
@@ -694,14 +722,171 @@ $('#search-btn').click(function() {
             baths: baths
         },
         success: function(response) {
-            // Update the property list with the new HTML
-            $('#properties-list').html(response.html);  // Insert the HTML into the container
+            console.log("response:::::::", response);
+            return false;
+
+            // Empty the properties list before appending new results
+            $('#properties-list').empty().append(response.html);  // Update the list with search results
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+        }
+    });
+}); */
+
+$('#search-btn').click(function(event) {
+    event.preventDefault();
+
+    var status = $('#status').val();
+    var property_type = $('#property_type').val();
+    var address = $('#address').val();
+    var max_rooms = $('#max_rooms').val();
+    var beds = $('#beds').val();
+    var baths = $('#baths').val();
+      // Extract price and area values
+    var priceMin = $("#slider-range").slider("values", 0);
+    var priceMax = $("#slider-range").slider("values", 1);
+    var areaMin = $("#slider-range1").slider("values", 0);
+    var areaMax = $("#slider-range1").slider("values", 1);
+
+    var searchUrl = "{{ route('searchProperties') }}";  // Your route name
+
+    $.ajax({
+        url: searchUrl,
+        method: 'GET',
+        data: {
+            status: status,
+            property_type: property_type,
+            address: address,
+            max_rooms: max_rooms,
+            beds: beds,
+            baths: baths,
+            price_min: priceMin,
+            price_max: priceMax,
+            area_min: areaMin,
+            area_max: areaMax
+        },
+        success: function(response) {
+            console.log("response::::::", response);
+
+            // Check if the 'html' array in the response is not empty and contains valid properties
+            if (Array.isArray(response.html) && response.html.length > 0) {
+                $('#properties-item').empty();
+
+                response.html.forEach(function(property) {
+                    console.log("property::::::", property);
+
+                        var statusClass = '';
+                        if (property.status === 'Sale') {
+                            statusClass = 'bg-info';
+                        } else if (property.status === 'Sold') {
+                            statusClass = 'bg-danger';
+                        } else if (property.status === 'Rent') {
+                            statusClass = 'bg-success';
+                        }
+
+                        var propertyHTML = `
+                        <div class="col-xl-4 col-md-6 grid-item wow fadeInUp ${property.status}">
+                            <div class="property-box">
+                                <div class="property-image">
+                                    <div class="property-slider">
+                                        ${Array.isArray(property.images) && property.images.length > 0 ? property.images.map(function(image) {
+                                            return `<a href="javascript:void(0)"><img src="${image.image_url}" class="bg-img" alt=""></a>`;
+                                        }).join('') : '<p>No images available</p>'}
+                                        </div>
+
+                                        <div class="labels-left">
+                                            <div>
+                                                <span class="label label-shadow ${statusClass}">${property.status}</span>
+                                                </div>
+                                            </div>
+                                            <div class="seen-data">
+                                                <i data-feather="camera"></i>
+                                                <span>${property.images.length}</span>
+                                                </div>
+                                                </div>
+
+                                                <div class="property-details">
+                                                    <span class="font-roboto">${property.city}</span>
+                                                    <a href="single-property-8.html">
+                                                        <h3>${property.address}</h3>
+                                                        </a>
+                                                        <h6>$${property.price}*</h6>
+                                                        <p class="font-roboto">${property.description}</p>
+                                                        <ul>
+                                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/double-bed.svg" class="img-fluid" alt="">Bed : ${property.beds}</li>
+                                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : ${property.baths}</li>
+                                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : ${property.area}</li>
+                                                            </ul>
+                                                             <div class="property-btn d-flex">
+                                                {{-- <span>August 4, 2022</span> --}}
+                                                <a href='{{ route("single-property.show", $property->id) }}' class="btn btn-dashed btn-pill color-6" tabindex="0">Details</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+
+                                // Append to DOM
+                                $('#properties-item').append(propertyHTML);
+
+                                // Initialize Slick after appending the new property
+                                $('.property-slider').not('.slick-initialized').slick({
+                                    slidesToShow: 1,
+                                slidesToScroll: 1,
+                                dots: true,
+                                arrows: true,
+                                autoplay: true,
+                                autoplaySpeed: 3000,
+                                infinite: true,
+                                prevArrow: '<button type="button" class="slick-prev">Previous</button>',
+                                nextArrow: '<button type="button" class="slick-next">Next</button>',
+                            });
+
+                            feather.replace();
+
+                        // Append the property HTML to the list
+                        // $('#properties-item').append(propertyHTML);
+                    // } else {
+                    //     console.log('No images available for property', property.id);
+                    // }
+                });
+            } else {
+                $('#properties-item').html('<p>No properties found.</p>');
+            }
         },
         error: function(xhr, status, error) {
             console.log(error);
         }
     });
 });
+
+function addToCart(propertyId, propertyType, propertyPrice, event) {
+    event.preventDefault();  // Prevents the default behavior (i.e., page reload)
+
+    $.ajax({
+        url: '{{ route('cart.add') }}',  // Your add-to-cart route
+        method: 'POST',
+        data: {
+            _token: '{{ csrf_token() }}',  // CSRF token for security
+            property_id: propertyId,      // Property ID dynamically passed
+            property_type: propertyType,  // Property Name dynamically passed
+            property_price: propertyPrice // Property Price dynamically passed
+        },
+        success: function(response) {
+            if (response.status == 'success') {
+                alert('Property added to cart!');
+                console.log(response.cart); // Optionally log the cart
+            } else {
+                alert('Error adding property to cart');
+            }
+        },
+        error: function() {
+            alert('Error occurred while adding to cart');
+        }
+    });
+}
+
 
 
 

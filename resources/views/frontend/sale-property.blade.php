@@ -7,11 +7,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sheltos - Property grid right sidebar page">
-    <meta name="keywords" content="sheltos">
-    <meta name="author" content="sheltos">
-    <link rel="icon" href="../assets/images/favicon.png" type="image/x-icon" />
-    <title>Sheltos - Property grid right sidebar page</title>
+
+    <title>House Rental</title>
 
 @include('frontend.layoutcss')
 
@@ -219,7 +216,7 @@
 
                     </div>
                     <div class="property-wrapper-grid list-view">
-                        <div class="property-2 row column-sm zoom-gallery property-label property-grid list-view">
+                        <div class="property-2 row column-sm zoom-gallery property-label property-grid list-view" id="saleProperties-item">
                             @foreach($properties as $property)
                             <div class="col-md-6 col-md-12 wow fadeInUp">
                                 <div class="property-box">
@@ -249,10 +246,10 @@
                                             <span>{{ $property->images->count() }}</span>
                                         </div>
                                         <div class="overlay-property-box">
-                                            <a href="compare.html" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Compare">
-                                                <i data-feather="shuffle"></i>
+                                            <a href="" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Add Cart">
+                                                <i data-feather="shopping-cart"></i>
                                             </a>
-                                            <a href="user-favourites.html" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="wishlist">
+                                            <a href="" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist">
                                                 <i data-feather="heart"></i>
                                             </a>
                                         </div>
@@ -331,122 +328,86 @@
                             </div>
                             <div class="advance-card">
                                 <h6>filter</h6>
-                                <div class="row gx-2">
-                                    <div class="col-12">
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle font-rubik"
-                                                data-bs-toggle="dropdown"><span>Property Status</span> <i
-                                                    class="fas fa-angle-down"></i></span>
-                                            <div class="dropdown-menu text-start">
-                                                <a class="dropdown-item" href="javascript:void(0)">Property Status</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">For Rent</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">For Sale</a>
+                                <form id="filter-form" method="GET">
+                                    @csrf
+                                    <div class="row gx-2">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <select class="form-control" name="status" id="status">
+                                                    <option value="">Status</option>
+                                                    <option value="Sale">For Sale</option>
+                                                    <option value="Rent">For Rent</option>
+                                                </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle font-rubik"
-                                                data-bs-toggle="dropdown"><span>Property Type</span> <i
-                                                    class="fas fa-angle-down"></i></span>
-                                            <div class="dropdown-menu text-start">
-                                                <a class="dropdown-item" href="javascript:void(0)">Property Type</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Apartment</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Family House</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Cottage</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Condominium</a>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="property_type" id="property_type" placeholder="Property Type">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle font-rubik"
-                                                data-bs-toggle="dropdown"><span>Property Location</span> <i
-                                                    class="fas fa-angle-down"></i></span>
-                                            <div class="dropdown-menu text-start">
-                                                <a class="dropdown-item" href="javascript:void(0)">Property Location</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Austria</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Brazil</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">New york</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">USA</a>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="address" id="address" placeholder="Property Location">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle font-rubik" data-bs-toggle="dropdown"><span>Max
-                                                    Rooms</span> <i class="fas fa-angle-down"></i></span>
-                                            <div class="dropdown-menu text-start">
-                                                <a class="dropdown-item" href="javascript:void(0)">Max Rooms</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">1</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">2</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">3</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">4</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">5</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">6</a>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <select class="form-control" name="max_rooms" id="max_rooms">
+                                                    <option value="">Max Rooms</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle font-rubik"
-                                                data-bs-toggle="dropdown"><span>Bed</span> <i
-                                                    class="fas fa-angle-down"></i></span>
-                                            <div class="dropdown-menu text-start">
-                                                <a class="dropdown-item" href="javascript:void(0)">Bed</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">1</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">2</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">3</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">4</a>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <select class="form-control" name="beds" id="beds">
+                                                    <option value="">Bed</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle font-rubik"
-                                                data-bs-toggle="dropdown"><span>Bath</span> <i
-                                                    class="fas fa-angle-down"></i></span>
-                                            <div class="dropdown-menu text-start">
-                                                <a class="dropdown-item" href="javascript:void(0)">Bath</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">1</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">2</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">3</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">4</a>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <select class="form-control" name="baths" id="baths">
+                                                    <option value="">Bath</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle font-rubik"
-                                                data-bs-toggle="dropdown"><span>Agencies</span> <i
-                                                    class="fas fa-angle-down"></i></span>
-                                            <div class="dropdown-menu text-start">
-                                                <a class="dropdown-item" href="javascript:void(0)">Agencies</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Lincoln</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Blue Sky</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Zephyr</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Premiere</a>
+                                        <div class="col-12">
+                                            <div class="price-range">
+                                                <label for="amount">Price : </label>
+                                                <input type="text" id="amount" readonly>
+                                                <div id="slider-range" class="theme-range-2"></div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="price-range">
-                                            <label for="amount">Price : </label>
-                                            <input type="text" id="amount" readonly>
-                                            <div id="slider-range" class="theme-range-2"></div>
+                                        <div class="col-12">
+                                            <div class="price-range">
+                                                <label for="amount">Area : </label>
+                                                <input type="text" id="amount1" readonly>
+                                                <div id="slider-range1" class="theme-range-2"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" class="mt-3 btn btn-gradient color-2 btn-pill" id="search-btn3">Search</button>
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <div class="price-range">
-                                            <label for="amount">Area : </label>
-                                            <input type="text" id="amount1" readonly>
-                                            <div id="slider-range1" class="theme-range-2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <a href="list-left-sidebar.html" class="btn btn-gradient color-2 btn-block btn-pill mt-2">Search </a>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                             <div class="advance-card">
                                 <h6>Category</h6>
@@ -792,7 +753,134 @@
 
 @yield('script')
 @include('frontend.footer-script')
+<script>
+    $('#search-btn3').click(function(event) {
+        event.preventDefault();
 
+        // var status = $('#status').val();
+        var property_type = $('#property_type').val();
+        var address = $('#address').val();
+        var max_rooms = $('#max_rooms').val();
+        var beds = $('#beds').val();
+        var baths = $('#baths').val();
+          // Extract price and area values
+        var priceMin = $("#slider-range").slider("values", 0);
+        var priceMax = $("#slider-range").slider("values", 1);
+        var areaMin = $("#slider-range1").slider("values", 0);
+        var areaMax = $("#slider-range1").slider("values", 1);
+
+        var searchUrl = "{{ route('saleSearchProperties') }}";  // Your route name
+
+        $.ajax({
+            url: searchUrl,
+            method: 'GET',
+            data: {
+                // status: status,
+                property_type: property_type,
+                address: address,
+                max_rooms: max_rooms,
+                beds: beds,
+                baths: baths,
+                price_min: priceMin,
+                price_max: priceMax,
+                area_min: areaMin,
+                area_max: areaMax
+            },
+            success: function(response) {
+                console.log("response::::::", response);
+
+                // Check if the 'html' array in the response is not empty and contains valid properties
+                if (Array.isArray(response.html) && response.html.length > 0) {
+                    $('#saleProperties-item').empty();
+
+                    response.html.forEach(function(property) {
+                        console.log("sale-property::::::", property);
+
+                            var statusClass = '';
+                            if (property.status === 'Sale') {
+                                statusClass = 'bg-info';
+                            } else if (property.status === 'Sold') {
+                                statusClass = 'bg-danger';
+                            } else if (property.status === 'Rent') {
+                                statusClass = 'bg-success';
+                            }
+
+                            var propertyHTML = `
+                            <div class="col-xl-4 col-md-6 grid-item wow fadeInUp ${property.status}">
+                                <div class="property-box">
+                                    <div class="property-image">
+                                        <div class="property-slider">
+                                            ${Array.isArray(property.images) && property.images.length > 0 ? property.images.map(function(image) {
+                                                return `<a href="javascript:void(0)"><img src="${image.image_url}" class="bg-img" alt=""></a>`;
+                                            }).join('') : '<p>No images available</p>'}
+                                            </div>
+
+                                            <div class="labels-left">
+                                                <div>
+                                                    <span class="label label-shadow ${statusClass}">${property.status}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="seen-data">
+                                                    <i data-feather="camera"></i>
+                                                    <span>${property.images.length}</span>
+                                                    </div>
+                                                    </div>
+
+                                                    <div class="property-details">
+                                                        <span class="font-roboto">${property.city}</span>
+                                                        <a href="single-property-8.html">
+                                                            <h3>${property.address}</h3>
+                                                            </a>
+                                                            <h6>$${property.price}*</h6>
+                                                            <p class="font-roboto">${property.description}</p>
+                                                            <ul>
+                                                                <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/double-bed.svg" class="img-fluid" alt="">Bed : ${property.beds}</li>
+                                                                <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : ${property.baths}</li>
+                                                                <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : ${property.area}</li>
+                                                                </ul>
+                                                <div class="property-btn d-flex">
+                                                    {{-- <span>August 4, 2022</span> --}}
+                                                    <a href='{{ route("single-property.show", $property->id) }}' class="btn btn-dashed btn-pill color-6" tabindex="0">Details</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    `;
+
+                                    // Append to DOM
+                                    $('#saleProperties-item').append(propertyHTML);
+
+                                    // Initialize Slick after appending the new property
+                                    $('.property-slider').not('.slick-initialized').slick({
+                                        slidesToShow: 1,
+                                    slidesToScroll: 1,
+                                    dots: true,
+                                    arrows: true,
+                                    autoplay: true,
+                                    autoplaySpeed: 3000,
+                                    infinite: true,
+                                    prevArrow: '<button type="button" class="slick-prev">Previous</button>',
+                                    nextArrow: '<button type="button" class="slick-next">Next</button>',
+                                });
+
+                                feather.replace();
+
+                            // Append the property HTML to the list
+                            // $('#properties-item').append(propertyHTML);
+                        // } else {
+                        //     console.log('No images available for property', property.id);
+                        // }
+                    });
+                } else {
+                    $('#saleProperties-item').html('<p>No properties found.</p>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+</script>
 </body>
 
 

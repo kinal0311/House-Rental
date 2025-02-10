@@ -19,6 +19,8 @@ use App\Http\Controllers\website\ContectController;
 use App\Http\Controllers\website\SubmitPropertyController;
 use App\Http\Controllers\website\LoginController;
 use App\Http\Controllers\website\SignUpController;
+use App\Http\Controllers\website\CartController;
+
 // use App\Http\Middleware\CheckPermission;
 
 Route::get('/', [LayoutController::class, 'index'])->name('home');
@@ -103,7 +105,11 @@ Route::get('listing', [ListingController::class, 'index'])->name('listing');
 Route::get('/search-properties', [ListingController::class, 'searchProperties'])->name('searchProperties');
 Route::get('agent-grid', [AgentGridController::class, 'index'])->name('agent-grid');
 Route::get('sale-property', [SalePropertyController::class, 'index'])->name('sale-property');
+Route::get('/search-sale-properties', [SalePropertyController::class, 'searchProperties'])->name('saleSearchProperties');
+
 Route::get('rent-property', [RentPropertyController::class, 'index'])->name('rent-property');
+Route::get('/search-rent-properties', [RentPropertyController::class, 'searchProperties'])->name('rentSearchProperties');
+
 Route::get('contect', [ContectController::class, 'index'])->name('contect');
 Route::get('submit-property', [SubmitPropertyController::class, 'index'])->name('submit-property');
 Route::post('submit-property', [SubmitPropertyController::class, 'store'])->name('submit-property.store');
@@ -112,5 +118,5 @@ Route::post('login-user', [LoginController::class, 'postLogin'])->name('login-us
 Route::get('signup-user', [SignUpController::class, 'index'])->name('signup-user');
 Route::post('signup-user', [SignUpController::class, 'store'])->name('user.store');
 
-
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
 ?>

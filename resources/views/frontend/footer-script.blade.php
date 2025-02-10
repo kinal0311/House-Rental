@@ -90,6 +90,7 @@
 {{-- <script src="{{ URL::asset('sheltos/assets/js/wizard.js/bs-stepper.min.js') }}"></script>
 <script src="{{ URL::asset('sheltos/assets/js/wizard.js/form-wizard.min.js') }}"></script> --}}
 
+<script src="https://unpkg.com/feather-icons"></script>
 
 <script>
     var csrfToken = "{{ csrf_token() }}";
