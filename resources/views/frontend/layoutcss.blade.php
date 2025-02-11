@@ -25,6 +25,8 @@ rel="stylesheet">
   {{-- Notiflix --}}
   {{-- <script src="{{ URL::asset('sheltos/assets/js/notiflix/notiflix-2.1.2.css') }}"></script> --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-3.2.5.min.css">
+  <!-- Include Notiflix CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notiflix@3.2.2/dist/notiflix-3.2.2.min.css">
 
 <!-- Include the jQuery UI CSS -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">

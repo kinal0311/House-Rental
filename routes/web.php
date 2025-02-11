@@ -118,5 +118,11 @@ Route::post('login-user', [LoginController::class, 'postLogin'])->name('login-us
 Route::get('signup-user', [SignUpController::class, 'index'])->name('signup-user');
 Route::post('signup-user', [SignUpController::class, 'store'])->name('user.store');
 
-Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::middleware('auth')->group(function () {
+    Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
+    Route::post('/cart', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
+});
+
 ?>

@@ -48,8 +48,9 @@ class SignUpController extends Controller
 
             $request->img->move(public_path('assets/images/users'), $imageName);
 
-            $requestData['img'] = 'assets/images/users/' . $imageName;
+            $validatedData['img'] = 'assets/images/users/' . $imageName;
         }
+        // dd( $validatedData['img']);
 
         User::create($validatedData);
 

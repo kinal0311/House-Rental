@@ -26,7 +26,7 @@ class PropertyController extends Controller
     {
 
         $requestData = $request->safe()->all();
-// dd($requestData->all());
+        // dd($requestData->all());
         Property::create($requestData);
 
         return redirect()->route('admin.properties.index')

@@ -7,18 +7,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>House Rental</title>
 
-@include('frontend.layoutcss')
-<style>
-.property-slider img {
-    width: 100%; /* Makes images responsive */
-    height: 250px; /* Set your desired height */
-    object-fit: cover; /* Ensures images cover the area without stretching */
-    border-radius: 10px; /* Optional: Rounds image corners */
-}
-
+    @include('frontend.layoutcss')
+    <style>
+    .property-slider img {
+        width: 100%; /* Makes images responsive */
+        height: 250px; /* Set your desired height */
+        object-fit: cover; /* Ensures images cover the area without stretching */
+        border-radius: 10px; /* Optional: Rounds image corners */
+    }
 
 </style>
 </head>
@@ -42,7 +41,7 @@
                 <div class="col">
                     <div class="menu">
                         <div class="brand-logo">
-                            <a href="https://themes.pixelstrap.com/sheltos/index.html">
+                            <a href="{{ route('home') }}    ">
                                 <img src="../assets/images/logo/2.png" alt="" class="img-fluid">
                             </a>
                         </div>
@@ -104,7 +103,7 @@
                                         </a>
                                     </li>
                                     <li class="dropdown cart">
-                                        <a href="javascript:void(0)">
+                                        <a href="{{ route('cart.show')}}">
                                             <i data-feather="shopping-cart"></i>
                                         </a>
                                         {{-- <ul class="nav-submenu">
@@ -323,69 +322,70 @@
                     {{-- <div id="properties-list"></div> --}}
 
 
-                        <div class="property-2 column-sm zoom-gallery property-label property-grid row grid" id="properties-item">
-                            @if($properties->isEmpty())
-                                <p>No properties found.</p>
-                            @else
-                            @foreach($properties as $property)
-                            <div class="col-xl-4 col-md-6 grid-item wow fadeInUp {{ $property->status }}">
-                                <div class="property-box">
-                                    <div class="property-image">
-                                        <div class="property-slider">
-                                            @foreach($property->images as $image)
-                                            <a href="javascript:void(0)">
-                                                <img src="{{ URL::asset($image->image_url) }}" class="bg-img" alt="">
-                                            </a>
-                                            @endforeach
+                    <div class="property-2 column-sm zoom-gallery property-label property-grid row grid" id="properties-item">
+                        @if($properties->isEmpty())
+                            <p>No properties found.</p>
+                        @else
+                        @foreach($properties as $property)
+                        <div class="col-xl-4 col-md-6 grid-item wow fadeInUp {{ $property->status }}">
+                            <div class="property-box">
+                                <div class="property-image">
+                                    <div class="property-slider">
+                                        @foreach($property->images as $image)
+                                        <a href="javascript:void(0)">
+                                            <img src="{{ URL::asset($image->image_url) }}" class="bg-img" alt="">
+                                        </a>
+                                        @endforeach
+                                    </div>
+                                    <div class="labels-left">
+                                        <div>
+                                            <span class="label label-shadow
+                                                @if($property->status == 'Sale') bg-info
+                                                @elseif($property->status == 'Sold') bg-danger
+                                                @elseif($property->status == 'Rent') bg-success
+                                                @endif
+                                            ">{{ $property->status }}</span>
                                         </div>
-                                        <div class="labels-left">
-                                            <div>
-                                                <span class="label label-shadow
-                                                    @if($property->status == 'Sale') bg-info
-                                                    @elseif($property->status == 'Sold') bg-danger
-                                                    @elseif($property->status == 'Rent') bg-success
-                                                    @endif
-                                                ">{{ $property->status }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="seen-data">
-                                            <i data-feather="camera"></i>
-                                            <span>{{ $property->images->count() }}</span>
-                                        </div>
-                                        <div class="overlay-property-box">
-                                            <a href="javascript:void(0);" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"
-                                               onclick="addToCart({{ $property->id }}, '{{ $property->property_type }}', {{ $property->price }}, event)">
-                                                <i data-feather="shopping-cart"></i>
-                                            </a>
-                                            <a href="javascript:void(0);" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist">
-                                                <i data-feather="heart"></i>
-                                            </a>
-                                        </div>
+                                    </div>
+                                    <div class="seen-data">
+                                        <i data-feather="camera"></i>
+                                        <span>{{ $property->images->count() }}</span>
+                                    </div>
+                                    <div class="overlay-property-box">
+                                        <a href="javascript:void(0);" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"
+                                        onclick="addToCart({{ $property->id }}, event)">
+                                            <i data-feather="shopping-cart"></i>
+                                        </a>
 
+                                        <a href="javascript:void(0);" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist">
+                                            <i data-feather="heart"></i>
+                                        </a>
                                     </div>
 
-                                    <div class="property-details">
-                                        <span class="font-roboto">{{ $property->city }}</span>
-                                        <a href="single-property-8.html">
-                                            <h3>{{ $property->address }}</h3>
-                                        </a>
-                                        <h6>${{ $property->price }}*</h6>
-                                        <p class="font-roboto">{{ $property->description }}</p>
-                                        <ul>
-                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/double-bed.svg" class="img-fluid" alt="">Bed : {{ $property->beds }}</li>
-                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : {{ $property->baths }}</li>
-                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : {{ $property->area }}</li>
-                                        </ul>
-                                        <div class="property-btn d-flex">
-                                            <button type="button" class="btn btn-dashed btn-pill color-2">Details</button>
-                                        </div>
+                                </div>
+
+                                <div class="property-details">
+                                    <span class="font-roboto">{{ $property->city }}</span>
+                                    <a href="#">
+                                        <h3>{{ $property->address }}</h3>
+                                    </a>
+                                    <h6>${{ $property->price }}*</h6>
+                                    <p class="font-roboto">{{ $property->description }}</p>
+                                    <ul>
+                                        <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/double-bed.svg" class="img-fluid" alt="">Bed : {{ $property->beds }}</li>
+                                        <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : {{ $property->baths }}</li>
+                                        <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : {{ $property->area }}</li>
+                                    </ul>
+                                    <div class="property-btn d-flex">
+                                        {{-- <span>August 4, 2022</span> --}}
+                                        <a href="{{ route('single-property.show', $property->id) }}" class="btn btn-dashed btn-pill color-6" tabindex="0">Details</a>
                                     </div>
                                 </div>
                             </div>
-                            @endforeach
-                            @endif
-
                         </div>
+                        @endforeach
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -656,8 +656,8 @@
     </div>
     <!-- customizer end -->
 
-@yield('script')
 @include('frontend.footer-script')
+@yield('script')
 <script src="https://unpkg.com/feather-icons"></script>
 <script>
 
@@ -861,33 +861,63 @@ $('#search-btn').click(function(event) {
     });
 });
 
-function addToCart(propertyId, propertyType, propertyPrice, event) {
-    event.preventDefault();  // Prevents the default behavior (i.e., page reload)
+function addToCart(propertyId, event) {
+    event.preventDefault(); // Prevent default behavior (if inside a link)
 
     $.ajax({
-        url: '{{ route('cart.add') }}',  // Your add-to-cart route
-        method: 'POST',
+        url: "{{ route('cart.add') }}", // Ensure this route is correctly set in web.php
+        method: "POST",
         data: {
-            _token: '{{ csrf_token() }}',  // CSRF token for security
-            property_id: propertyId,      // Property ID dynamically passed
-            property_type: propertyType,  // Property Name dynamically passed
-            property_price: propertyPrice // Property Price dynamically passed
+            _token: $('meta[name="csrf-token"]').attr("content"), // CSRF Token
+            property: { id: propertyId } // Send correct property ID
         },
         success: function(response) {
-            if (response.status == 'success') {
-                alert('Property added to cart!');
-                console.log(response.cart); // Optionally log the cart
+            if (response.status === "success") {
+                // Show success notification
+                if (response.cart.length > 0 && response.cart.some(item => item.property_id === propertyId)) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Property already in cart!',
+                        text: 'This property is already added to your cart.',
+                        showConfirmButton: true
+                    });
+                } else {
+                    // Display success message using SweetAlert2
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Property added to cart successfully!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+
+                // Update cart count dynamically
+                $("#cart-count").text(response.cart.length);
+
+                // Update cart dropdown (if any)
+                $("#cart-container").html(response.cartHTML);
             } else {
-                alert('Error adding property to cart');
+                // Show error notification when property is sold or another issue
+                Swal.fire({
+                    icon: 'sold-error',
+                    title: 'Oops...',
+                    text: response.message || 'Error adding property to cart',
+                    showConfirmButton: true
+                });
             }
         },
-        error: function() {
-            alert('Error occurred while adding to cart');
+        error: function(xhr) {
+            console.error(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Error occurred while adding to cart',
+                showConfirmButton: true
+            });
         }
     });
 }
-
-
 
 
 </script>

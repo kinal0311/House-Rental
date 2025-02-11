@@ -1,28 +1,22 @@
-
     <!-- Loader start -->
     <div class="loader-wrapper">
-        <div class="row loader-text">
+        <div class="row loader-img">
             <div class="col-12">
-                <img src="{{ URL::asset('sheltos/assets/images/loader/loader.gif') }}" class="img-fluid" alt="">
-            </div>
-            <div class="col-12">
-                <div>
-                    <h3 class="mb-0">Please wait Real estate Template loading...</h3>
-                </div>
+                <img src="{{ URL::asset('sheltos/assets/images/loader/loader-2.gif') }}" class="img-fluid" alt="">
             </div>
         </div>
     </div>
     <!-- Loader end -->
 
     <!-- header start -->
-    <header class="header-1 header-6">
+    <header class="inner-page">
         <div class="container">
             <div class="row">
                 <div class="col">
                     <div class="menu">
                         <div class="brand-logo">
                             <a href="{{ route('home') }}">
-                                <img src="{{ URL::asset('sheltos/assets/images/logo/6.png')}}" alt="" class="img-fluid">
+                                <img src="{{ URL::asset('sheltos/assets/images/logo/2.png')}}" alt="" class="img-fluid">
                             </a>
                         </div>
                         <nav>
@@ -64,7 +58,7 @@
                             </div>
                         </nav>
                         <ul class="header-right">
-                            <li class="right-menu color-6">
+                            <li class="right-menu">
                                 <ul class="nav-menu">
                                     <li class="dropdown language">
                                         <a href="javascript:void(0)">
@@ -124,7 +118,7 @@
                                         </a>
                                     </li>
                                     <li class="dropdown">
-                                        <a href="{{ route('login-user')}}">
+                                        <a href="{{ route('login-user') }}">
                                             <i data-feather="user"></i>
                                         </a>
                                     </li>

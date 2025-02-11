@@ -1,9 +1,17 @@
-        {{-- All js --}}
+{{-- All js --}}
 
    <!-- latest jquery-->
    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
    <script src="{{ URL::asset('sheltos/assets/js/jquery-3.6.0.min.js') }}"></script>
    <script src="{{ URL::asset('sheltos/assets/js/parsleyjs/parsley.min.js') }}"></script>
+   <!-- Notiflix JS -->
+   <script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-aio-3.2.5.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.3/dist/notiflix-3.2.3.min.js"></script>
+<!-- Add this to your <head> tag -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+   <!-- Include Notiflix JS -->
+<script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.2/dist/notiflix-3.2.2.min.js"></script>
    <!-- popper js-->
    <script src="{{ URL::asset('sheltos/assets/js/popper.min.js') }}"></script>
 
@@ -83,8 +91,6 @@
   {{-- Notiflix --}}
   {{-- <script src="{{ URL::asset('sheltos/assets/js/notiflix/notiflix-2.1.2.js') }}"></script>
   <script src="{{ URL::asset('sheltos/assets/js/notiflix/notiflix.js') }}"></script> --}}
-  <!-- Notiflix JS -->
-<script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-aio-3.2.5.min.js"></script>
 
 {{-- wizard js --}}
 {{-- <script src="{{ URL::asset('sheltos/assets/js/wizard.js/bs-stepper.min.js') }}"></script>

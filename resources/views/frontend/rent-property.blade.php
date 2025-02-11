@@ -103,10 +103,10 @@
                                         </a>
                                     </li>
                                     <li class="dropdown cart">
-                                        <a href="javascript:void(0)">
+                                        <a href="{{ route('cart.show')}}">
                                             <i data-feather="shopping-cart"></i>
                                         </a>
-                                        <ul class="nav-submenu">
+                                        {{-- <ul class="nav-submenu">
                                             <li>
                                                 <div class="media">
                                                     <img src="../assets/images/property/2.jpg" class="img-fluid" alt="">
@@ -136,7 +136,7 @@
                                                     <h5>Subtotal :- <span class="float-end">$260.00</span></h5>
                                                 </div>
                                             </li>
-                                        </ul>
+                                        </ul> --}}
                                     </li>
                                     <li class="dropdown currency">
                                         <a href="javascript:void(0)">
@@ -417,10 +417,7 @@
                                             <span>{{ $property->images->count() }}</span>
                                         </div>
                                         <div class="overlay-property-box">
-                                            <a href="" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Add Cart">
-                                                <i data-feather="shopping-cart"></i>
-                                            </a>
-                                            <a href="" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist">
+                                            <a  class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist">
                                                 <i data-feather="heart"></i>
                                             </a>
                                         </div>
