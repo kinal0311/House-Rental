@@ -20,6 +20,7 @@ class AuthController extends Controller
             // Redirect logged-in users to the master page
             return redirect('master')->with('success', 'You are already logged in!');
         }
+
         return view('auth.login');
     }
 
@@ -43,16 +44,14 @@ class AuthController extends Controller
 
     $credentials = $request->only('email', 'password');
 
-    if (Auth::attempt($credentials)) {
-        $user = Auth::user();
-
+    if (Auth::guard('admin')->attempt($credentials)) {
         if (in_array($user->role_id, [1, 2])) {
             // If login successful and user has proper role
-            return response()->json(['success' => true, 'redirect' => route('master')]);
+            return response()->json(['success' => true, 'redirect' => route('admin.master')]);
         }
 
         // If user role is not authorized
-        Auth::logout();
+        Auth::guard('admin')->logout();
         return response()->json(['success' => false, 'message' => 'You do not have access to the master.'], 403);
     }
 
@@ -87,11 +86,11 @@ class AuthController extends Controller
 
     public function master()
     {
-        if (Auth::check()) {
-            $user = Auth::user();
+        if (Auth::guard('admin')->check()) {
+            $user = Auth::guard('admin')->user();
 
             if (in_array($user->role_id, [1, 2])) {
-                return view('master');
+                return view('layout.partials.master');
             }
 
             return redirect('login')->withErrors(['access' => 'You do not have access to the master.']);
@@ -107,7 +106,7 @@ class AuthController extends Controller
     {
         // Clear session and logout
         Session::flush();
-        Auth::logout();
+        Auth::guard('admin')->logout();
 
         // Redirect to login page
         return redirect()->route('login')->with('success', 'Logged out successfully.');
@@ -116,7 +115,7 @@ class AuthController extends Controller
 
     public function myAccount()
     {
-        $user = Auth::user(); // Get logged-in user details
+        $user = Auth::guard('admin')->user(); // Get logged-in user details
         return view('auth.account', compact('user')); // Pass user data to the view
     }
 
@@ -136,7 +135,7 @@ class AuthController extends Controller
             'zip_code' => 'required|string|max:10',
         ]);
 
-        $user = Auth::user();
+        $user = Auth::guard('admin')->user();
         $user->name = $request->name;
         $user->role_id = $request->role_id;
         $user->email = $request->email;

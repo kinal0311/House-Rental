@@ -95,11 +95,11 @@
                                             <div class="agent-overlay"></div>
                                             <div class="overlay-content">
                                                 <ul>
-                                                    <li><a href="https://accounts.google.com/"><img src="../assets/images/about/icon-1.png" alt=""></a>
+                                                    <li><a href="https://accounts.google.com/"><img src="{{ URL::asset('sheltos/assets/images/about/icon-1.png')}}" alt=""></a>
                                                     </li>
-                                                    <li><a href="https://twitter.com/"><img src="../assets/images/about/icon-2.png" alt=""></a>
+                                                    <li><a href="https://twitter.com/"><img src="{{ URL::asset('sheltos/assets/images/about/icon-2.png')}}" alt=""></a>
                                                     </li>
-                                                    <li><a href="https://www.facebook.com/"><img src="../assets/images/about/icon-3.png" alt=""></a>
+                                                    <li><a href="https://www.facebook.com/"><img src="{{ URL::asset('sheltos/assets/images/about/icon-3.png')}}" alt=""></a>
                                                     </li>
                                                 </ul>
                                                 <span>Connect</span>
@@ -159,7 +159,7 @@
                                         <div class="form-group">
                                             <textarea placeholder="Message" class="form-control" rows="3"></textarea>
                                         </div>
-                                        <button type="submit" onclick="document.location='user-listing.html'" class="btn btn-gradient color-2 btn-block btn-pill">Submit
+                                        <button type="submit" onclick="document.location='#'" class="btn btn-gradient color-2 btn-block btn-pill">Submit
                                             Request</button>
                                     </form>
                                 </div>
@@ -168,21 +168,21 @@
                                 <h6>Featured</h6>
                                 <div class="feature-slider">
                                     <div>
-                                        <img src="../assets/images/property/4.jpg" class="bg-img" alt="">
+                                        <img src="{{ URL::asset('sheltos/assets/images/property/4.jpg')}}" class="bg-img" alt="">
                                         <div class="bottom-feature">
                                             <h5>Neverland</h5>
                                             <h6>$13,000 <small>/ start from</small></h6>
                                         </div>
                                     </div>
                                     <div>
-                                        <img src="../assets/images/property/16.jpg" class="bg-img" alt="">
+                                        <img src="{{ URL::asset('sheltos/assets/images/property/16.jpg')}}" class="bg-img" alt="">
                                         <div class="bottom-feature">
                                             <h5>Neverland</h5>
                                             <h6>$13,000 <small>/ start from</small></h6>
                                         </div>
                                     </div>
                                     <div>
-                                        <img src="../assets/images/property/14.jpg" class="bg-img" alt="">
+                                        <img src="{{ URL::asset('sheltos/assets/images/property/14.jpg')}}" class="bg-img" alt="">
                                         <div class="bottom-feature">
                                             <h5>Neverland</h5>
                                             <h6>$13,000 <small>/ start from</small></h6>
@@ -199,7 +199,7 @@
                                     <ul>
                                         <li>
                                             <div class="media">
-                                                <img src="../assets/images/property/9.jpg" class="img-fluid" alt="">
+                                                <img src="{{ URL::asset('sheltos/assets/images/property/9.jpg')}}" class="img-fluid" alt="">
                                                 <div class="media-body">
                                                     <h5>Sea Breezes</h5>
                                                     <span>$9800 / <span>Month</span></span>
@@ -208,7 +208,7 @@
                                         </li>
                                         <li>
                                             <div class="media">
-                                                <img src="../assets/images/property/10.jpg" class="img-fluid" alt="">
+                                                <img src="{{ URL::asset('sheltos/assets/images/property/10.jpg')}}" class="img-fluid" alt="">
                                                 <div class="media-body">
                                                     <h5>Orchard House</h5>
                                                     <span>$7500 / <span>Month</span></span>
@@ -217,7 +217,7 @@
                                         </li>
                                         <li>
                                             <div class="media">
-                                                <img src="../assets/images/property/11.jpg" class="img-fluid" alt="">
+                                                <img src="{{ URL::asset('sheltos/assets/images/property/11.jpg')}}" class="img-fluid" alt="">
                                                 <div class="media-body">
                                                     <h5>Neverland</h5>
                                                     <span>$5000 / <span>Month</span></span>

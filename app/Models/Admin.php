@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -7,7 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class Admin extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, SoftDeletes;
 
@@ -26,20 +27,13 @@ class User extends Authenticatable implements JWTSubject
         'img'
     ];
 
-    // In User Model
-
+    // Check if the admin has a valid role
     public function isAdmin()
     {
         return in_array($this->role_id, [1, 2]);
     }
 
-    public function isFrontendUser()
-    {
-        return in_array($this->role_id, [1, 2, 3]);
-    }
-
-
-    // Relationships
+    // Relationships (same as the User model, if applicable)
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
@@ -58,6 +52,7 @@ class User extends Authenticatable implements JWTSubject
         }
     }
 
+    // Hide sensitive fields
     protected $hidden = [
         'password',
         'remember_token',

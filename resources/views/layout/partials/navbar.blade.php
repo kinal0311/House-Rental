@@ -20,9 +20,9 @@
 
     <li class="dropdown notification-list">
         <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-            <img src="{{ Auth::user()->img ? asset(Auth::user()->img) : '' }}" alt="user-image" class="rounded-circle">
+            <img src="{{ Auth::guard('admin')->user()->img ? asset(Auth::guard('admin')->user()->img) : '' }}" alt="user-image" class="rounded-circle">
             <span class="pro-user-name ml-1">
-               {{Auth::user()->name ?? ""}}<i class="mdi mdi-chevron-down"></i>
+               {{Auth::guard('admin')->user()->name ?? ""}}<i class="mdi mdi-chevron-down"></i>
                {{-- @dd(Auth::user()->email) --}}
             </span>
         </a>

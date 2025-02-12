@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -12,14 +13,24 @@ class AdminMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::check()){
-                return $next($request);
-            abort(403);
+        // Check if the user is authenticated and has role_id 1 or 2
+        if (Auth::guard('admin')->check() && in_array(Auth::guard('admin')->user()->role_id, [1, 2])) {
+            // For debugging purposes, you can log or print if needed
+            // Log::info('Admin user accessed');
+
+            return $next($request); // Allow access to the admin panel
         }
-        abort(401);
+
+        // Redirect non-admins to the frontend home page
+        return redirect()->route('home')->with('error', 'Access Denied!');
     }
+
 }
+
+?>

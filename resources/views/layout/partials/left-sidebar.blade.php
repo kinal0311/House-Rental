@@ -11,7 +11,7 @@
             <li class="menu-title">Navigation</li>
 
             <li>
-                <a href="{{ route('master') }}">
+                <a href="{{ route('admin.master') }}">
                     <i class="fe-airplay"></i>
                     {{-- <span class="badge badge-success badge-pill float-right">4</span> --}}
                     <span> Dashboards </span>

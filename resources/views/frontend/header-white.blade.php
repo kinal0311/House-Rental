@@ -1,44 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<!-- Mirrored from themes.pixelstrap.com/sheltos/main/single-property-8.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 27 Jan 2025 12:54:50 GMT -->
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    @include('frontend.layoutcss')
-
-    <style>
-        .slick-slide {
-            min-width: 100px !important;
-            width: auto !important;
-        }
-        .slick-track {
-            display: flex !important;
-        }
-        .slick-slide img {
-            /* width: 100%; */
-            /* height: auto; */
-            display: block;
-        }
-        .gallery-for, .gallery-nav {
-            max-width: 100%;
-            overflow: hidden;
-        }
-
-
-    </style>
-
-</head>
-
-<body>
-
     <!-- Loader start -->
     <div class="loader-wrapper">
         <div class="row loader-img">
             <div class="col-12">
-                <img src="../assets/images/loader/loader-2.gif" class="img-fluid" alt="">
+                <img src="{{ URL::asset('sheltos/assets/images/loader/loader-2.gif')}}" class="img-fluid" alt="">
             </div>
         </div>
     </div>
@@ -51,8 +15,8 @@
                 <div class="col">
                     <div class="menu">
                         <div class="brand-logo">
-                            <a href="https://themes.pixelstrap.com/sheltos/index.html">
-                                <img src="../assets/images/logo/4.png" alt="" class="img-fluid">
+                            <a href="{{ route('home')}}">
+                                <img src="{{ URL::asset('sheltos/assets/images/logo/4.png')}}" alt="" class="img-fluid">
                             </a>
                         </div>
                         <nav>
@@ -67,7 +31,7 @@
                                             </div>
                                         </li>
                                         <li class="dropdown">
-                                            <a href="javascript:void(0)" class="nav-link menu-title">Home</a>
+                                            <a href="{{ route('home') }}" class="nav-link menu-title">Home</a>
                                         </li>
                                         <li class="dropdown">
                                             <a href="{{ route('listing') }}" class="nav-link menu-title">Listing</a>
@@ -108,15 +72,15 @@
                                         </ul>
                                     </li>
                                     <li class="dropdown">
-                                        <a href="user-favourites.html">
+                                        <a href="#">
                                             <i data-feather="heart"></i>
                                         </a>
                                     </li>
                                     <li class="dropdown cart">
-                                        <a href="javascript:void(0)">
+                                        <a href="{{ auth()->check() ? route('cart.show') : route('login-user') }}">
                                             <i data-feather="shopping-cart"></i>
                                         </a>
-                                        <ul class="nav-submenu">
+                                        {{-- <ul class="nav-submenu">
                                             <li>
                                                 <div class="media">
                                                     <img src="../assets/images/property/2.jpg" class="img-fluid" alt="">
@@ -146,21 +110,20 @@
                                                     <h5>Subtotal :- <span class="float-end">$260.00</span></h5>
                                                 </div>
                                             </li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown currency">
-                                        <a href="javascript:void(0)">
-                                            <i data-feather="dollar-sign"></i>
-                                        </a>
-                                        <ul class="nav-submenu">
-                                            <li><a href="javascript:void(0)">Dollar</a></li>
-                                            <li><a href="javascript:void(0)">Euro</a></li>
-                                            <li><a href="javascript:void(0)">Pound</a></li>
-                                            <li><a href="javascript:void(0)">Yuan</a></li>
-                                        </ul>
+                                        </ul> --}}
                                     </li>
                                     <li class="dropdown">
-                                        <a href="login.html">
+                                        <a href="{{ route('login')}}">
+                                            <i data-feather="monitor"></i>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="{{ route('login-user') }}">
+                                            <i data-feather="user"></i>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="{{ auth()->check() ? route('myprofile') : route('login-user') }}">
                                             <i data-feather="user"></i>
                                         </a>
                                     </li>
@@ -172,4 +135,4 @@
             </div>
         </div>
     </header>
-    <!--  header end -->
+    <!--  header end --

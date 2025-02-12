@@ -16,6 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'web' => \App\Http\Middleware\Web::class,
+
             // 'check.permission' => \App\Http\Middleware\CheckPermission::class
         ]);
     })

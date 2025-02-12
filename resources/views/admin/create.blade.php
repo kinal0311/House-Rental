@@ -111,7 +111,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="phone_number">Phone Number<span class="text-danger">*</span></label>
-                                    <input type="text" name="phone_number" id="phone_number" class="form-control" maxlength="15"
+                                    <input type="text" name="phone_number" id="phone_number" class="form-control" maxlength="20"
                                            placeholder="Enter Phone Number" value="{{ old('phone_number') }}"
                                            data-parsley-length="[10, 20]"
                                            data-parsley-length-message="Phone number must be between 10 and 15 digits."

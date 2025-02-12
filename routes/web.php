@@ -20,6 +20,8 @@ use App\Http\Controllers\website\SubmitPropertyController;
 use App\Http\Controllers\website\LoginController;
 use App\Http\Controllers\website\SignUpController;
 use App\Http\Controllers\website\CartController;
+use App\Http\Controllers\website\ProfileController;
+
 
 // use App\Http\Middleware\CheckPermission;
 
@@ -35,20 +37,27 @@ Route::get('/', [LayoutController::class, 'index'])->name('home');
 
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('login', [AuthController::class, 'postLogin'])->name('login.post');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');;
+Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
 
 Route::group(['middleware' => 'auth'], function () {
-Route::get('register', [AuthController::class, 'registration'])->name('register');
-Route::post('register', [AuthController::class, 'postRegistration'])->name('register.post');
-Route::get('master', [AuthController::class, 'master'])->name('master')->middleware('auth');
-Route::get('account', [AuthController::class, 'myAccount'])->name('account')->middleware('auth');
-Route::post('account', [AuthController::class, 'updateAccount'])->name('account.update')->middleware('auth');
+    Route::get('register', [AuthController::class, 'registration'])->name('register');
+    Route::post('register', [AuthController::class, 'postRegistration'])->name('register.post');
+    Route::get('account', [AuthController::class, 'myAccount'])->name('account')->middleware('auth');
+    Route::post('account', [AuthController::class, 'updateAccount'])->name('account.update')->middleware('auth');
 });
 
-Route::get('master', [MasterController::class, 'index'])->name('master');
+// Route::get('master', [MasterController::class, 'index'])->name('master');
 // Route::get('login', [AdminController::class, 'login'])->name('login');
 
-Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'admin', 'as' => 'admin.'], function () {
+Route::group([
+    'namespace' => 'App\Http\Controllers',
+    'prefix' => 'admin',
+    'as' => 'admin.',
+    'middleware' => ['admin']
+], function () {
+
+    Route::get('master', [AuthController::class, 'master'])->name('master');
     Route::get('admin', [AdminController::class, 'index'])->name('admin.index');
     Route::post('get-data', [AdminController::class, 'getData'])->name('admin.get.data');
     Route::get('admin-create', [AdminController::class, 'create'])->name('admin.create');
@@ -122,6 +131,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
     Route::post('/cart', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    Route::get('/myprofile', [ProfileController::class, 'myProfile'])->name('myprofile');
+    Route::post('logout-user', [ProfileController::class, 'logoutUser'])->name('logout-user');
+
 
 });
 

@@ -72,12 +72,12 @@
                                         </ul>
                                     </li>
                                     <li class="dropdown">
-                                        <a href="user-favourites.html">
+                                        <a href="#">
                                             <i data-feather="heart"></i>
                                         </a>
                                     </li>
                                     <li class="dropdown cart">
-                                        <a href="{{ route('cart.show')}}">
+                                        <a href="{{ auth()->check() ? route('cart.show') : route('login-user') }}">
                                             <i data-feather="shopping-cart"></i>
                                         </a>
                                         {{-- <ul class="nav-submenu">
@@ -114,11 +114,16 @@
                                     </li>
                                     <li class="dropdown">
                                         <a href="{{ route('login')}}">
-                                            <i class="fa-solid fa-desktop" style="color: #ffffff;"></i>
+                                            <i data-feather="monitor"></i>
                                         </a>
                                     </li>
                                     <li class="dropdown">
                                         <a href="{{ route('login-user') }}">
+                                            <i data-feather="user"></i>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="{{ auth()->check() ? route('myprofile') : route('login-user') }}">
                                             <i data-feather="user"></i>
                                         </a>
                                     </li>

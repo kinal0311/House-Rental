@@ -1,3 +1,9 @@
+{{-- @php
+    if (!auth()->check() || !in_array(auth()->user()->role_id, [1, 2])) {
+        abort(403, 'Unauthorized access');
+    }
+@endphp --}}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -126,7 +132,7 @@
 <script>
     var csrfToken = "{{ csrf_token() }}";
 </script>
-<script type="text/javascript">
+{{-- <script type="text/javascript">
      // Prevent the user from going back
     window.history.forward();
 
@@ -141,7 +147,7 @@
     window.onpopstate = function () {
         window.history.forward();
     }
-</script>
+</script> --}}
 
 @yield('script')
 

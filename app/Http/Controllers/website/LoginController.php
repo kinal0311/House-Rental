@@ -29,15 +29,23 @@ class LoginController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
+        if (Auth::guard('web')->attempt($credentials)) {
+            $user = Auth::guard('web')->user();
 
+            // Check if the user has access to the frontend (role_id 3)
             if ($user->role_id == 3) {
                 return redirect()->route('home')->with('success', 'Successfully logged in!');
+                // After successful login
+// return redirect()->intended('/dashboard');
+
             }
 
-            Auth::logout();
-            return redirect('login-user')->withErrors(['access' => 'Only users are allowed to log in.']);
+            // If the user has role_id 1 or 2, log them in for the admin panel as well
+            if (in_array($user->role_id, [1, 2])) {
+                Auth::guard('admin')->login($user);  // Log them into the admin guard
+            }
+
+            return redirect()->route('home')->with('success', 'Successfully logged in!');
         }
 
         return redirect('login-user')->withErrors(['credentials' => 'Invalid email or password.']);

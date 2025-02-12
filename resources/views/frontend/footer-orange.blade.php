@@ -129,7 +129,7 @@
                                             </a>
                                             <div class="media-body">
                                                <h6><a href="#">Real Estate Industry</a></h6>
-                                                <p class="font-roboto"><a href="blog-detail-right-sidebar.html">An Electronic version of the real estate industry.</a></p>
+                                                <p class="font-roboto"><a href="#">An Electronic version of the real estate industry.</a></p>
                                             </div>
                                         </div>
                                     </div>
@@ -141,8 +141,8 @@
                                                 </div>
                                             </a>
                                             <div class="media-body">
-                                                <h6><a href="blog-detail-left-sidebar.html">Entertaining Spaces</a></h6>
-                                                <p class="font-roboto"><a href="blog-detail-right-sidebar.html">This home provides
+                                                <h6><a href="#">Entertaining Spaces</a></h6>
+                                                <p class="font-roboto"><a href="#">This home provides
                                                     wonderful entertaining spaces.</a></p>
                                             </div>
                                         </div>
