@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\View\View;
@@ -83,33 +84,43 @@ class AdminController extends Controller
 
     public function store(AdminStoreRequest $request)
     {
+        try {
+            $requestData = $request->safe()->all();
 
-        $requestData = $request->safe()->all();
+            // Check if there's an image in the request
+            if ($request->hasFile('img')) {
+                $imageName = $request->img->getClientOriginalName();
+                $request->img->move(public_path('assets/images/users'), $imageName);
+                $requestData['img'] = 'assets/images/users/' . $imageName;
+            }
 
-        if ($request->hasFile('img')) {
+            // Create a new admin user
+            User::create($requestData);
 
-            $imageName = $request->img->getClientOriginalName();
+            // Return success response
+            return redirect()->route('admin.admin.index')->with('success', 'Admin created successfully.');
 
-            $request->img->move(public_path('assets/images/users'), $imageName);
-
-            $requestData['img'] = 'assets/images/users/' . $imageName;
+        } catch (\Exception $e) {
+            // Flash error message to session if something goes wrong
+            return redirect()->route('admin.admin.index')->with('error', 'There was an error creating the admin. Please try again.');
         }
-
-        User::create($requestData);
-
-        return redirect()->route('admin.admin.index')
-                         ->with('success', 'Admin created successfully.');
     }
 
     public function destroy($id)
     {
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
 
-        $user = User::findOrFail($id);
-
-        $user->delete();
-
-        return response()->json(['success' => 'User deleted successfully.']);
+            // Return success response
+            return response()->json(['success' => 'User deleted successfully.']);
+        } catch (\Exception $e) {
+            // Flash the error message to the session
+            return response()->json(['error' => 'Error deleting user. Please try again.'], 500);
+        }
     }
+
+
 
     public function adminEdit($id)
     {
@@ -122,7 +133,7 @@ class AdminController extends Controller
 
     public function update(AdminStoreRequest $request, $id)
     {
-
+        // dd($request->all());
         $user = User::findOrFail($id);
 
         $validatedData = $request->all();
@@ -161,21 +172,17 @@ class AdminController extends Controller
         return view('admin.view', compact('user','roles'));
     }
 
-    public function adminChangeStatus($id, Request $request)
+    public function changeStatus($id, Request $request)
     {
-        \Log::info($request->all());
-
-        $validated = $request->validate([
-            'status' => 'required|in:0,1',
-        ]);
-
         $user = User::findOrFail($id);
         $user->status = $request->status;
         $user->save();
 
-        return response()->json(['success' => true]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Status updated successfully.',
+        ]);
     }
-
 
 }
 

@@ -9,8 +9,16 @@
             {{ session('success') }}
         </div>
     @endif
-
-        <form action="{{ route('account.update') }}" method="POST">
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+        <form action="{{ route('admin.account.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="name">Name</label>
@@ -86,52 +94,37 @@
                 <input type="text" id="zip_code" name="zip_code" class="form-control" value="{{ old('zip_code', $user->zip_code) }}" required>
             </div>
 
-                                        <!-- Image Upload Field -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="image">Profile Picture</label>
-                                                <input type="file" name="img" id="img" class="form-control mb-3 w-50">
+            <!-- Image Upload Field -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="image">Profile Picture</label>
+                    <input type="file" name="img" id="img" class="form-control mb-3 w-50"  >
+                    {{-- <input type="hidden" name="img" id="existing_img" value="{{ $user->img }}"> --}}
 
-                                                <!-- Existing image preview if there is an existing image -->
-                                                @if($user->img != '')
-                                                <img class="border rounded p-0 pic_preview" src="{{URL::asset($user->img)}}" alt="your image" style="height: 200px;width: 200px; object-fit: cover;" id="existing-img"/>
-                                                @endif
+                    <!-- Existing image preview if there is an existing image -->
+                        <img class="border rounded p-0 pic_preview" src="{{$user->img ? URL::asset($user->img) : asset('assets/images/users/1737714810.png')}}" alt="your image" style="height: 200px;width: 200px; object-fit: cover;" />
 
-                                                <!-- New image preview (hidden initially) -->
-                                                <img class="border rounded p-0 pic_preview" id="new-img" style="height: 200px; width: 200px; object-fit: cover; display: none;" src="" alt="new image" />
-
-                                                @error('image')
-                                                    <div class="text-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
+                </div>
+            </div>
 
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
     </div>
 @endsection
 @section('script')
-<script>
+<script type="text/javascript">
 $('#img').on('change', function () {
-
     var file = this.files[0];
     if (file && file.type.match('image.*')) {
-        $('#existing-img').hide();  // Hide the existing image preview
-
         var reader = new FileReader();
         reader.onload = function (event) {
-            // Log to check if the file is read correctly
-            console.log(event);
-
-            // Update the new image's source and show it
-            $('#new-img').attr('src', event.target.result).show();
+            $('.pic_preview').attr('src', event.target.result);
         }
-
         reader.readAsDataURL(file);  // Trigger reading the file as a data URL
-        $('#upload-result').show();  // Show the upload result (if needed)
     } else {
         Notiflix.Notify.Warning('Please upload a valid image file.');
     }
 });
+
 </script>
 @endsection

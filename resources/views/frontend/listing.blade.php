@@ -473,22 +473,22 @@ function addToCart(propertyId, event) {
         },
         success: function(response) {
             if (response.status === "success") {
-                // Show success notification
-                if (response.cart.length > 0 && response.cart.some(item => item.property_id === propertyId)) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Property already in cart!',
-                        text: 'This property is already added to your cart.',
-                        showConfirmButton: true
-                    });
-                } else {
-                    // Display success message using SweetAlert2
+                if (response.added_to_cart) {
+                    // Property was successfully added to the cart
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
                         text: 'Property added to cart successfully!',
                         showConfirmButton: false,
                         timer: 1500
+                    });
+                } else {
+                    // Property is already in the cart
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Property already in cart!',
+                        text: 'This property is already added to your cart.',
+                        showConfirmButton: true
                     });
                 }
 
@@ -498,13 +498,22 @@ function addToCart(propertyId, event) {
                 // Update cart dropdown (if any)
                 $("#cart-container").html(response.cartHTML);
             } else {
-                // Show error notification when property is sold or another issue
-                Swal.fire({
-                    icon: 'sold-error',
-                    title: 'Oops...',
-                    text: response.message || 'Error adding property to cart',
-                    showConfirmButton: true
-                });
+                if (response.message === 'This property is sold and cannot be added to the cart.') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Property Sold',
+                        text: 'This property is sold and cannot be added to your cart.',
+                        showConfirmButton: true
+                    });
+                } else {
+                    // Show other errors
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response.message || 'Error occurred while adding to cart',
+                        showConfirmButton: true
+                    });
+                }
             }
         },
         error: function(xhr) {
@@ -518,6 +527,7 @@ function addToCart(propertyId, event) {
         }
     });
 }
+
 
 
 </script>

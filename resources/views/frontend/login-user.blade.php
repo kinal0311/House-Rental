@@ -127,47 +127,48 @@
     </section>
     <!-- section end -->
 
-@include('frontend.footer-orange')
-@yield('script')
-@include('frontend.footer-script')
-<script>
 
-    $(document).ready(function() {
-        $('#userLoginForm').parsley();
+    @include('frontend.footer-orange')
+    @yield('script')
+    @include('frontend.footer-script')
 
-        // Apply red background on error
-        $('#userLoginForm').parsley().on('field:error', function() {
-            this.$element.addClass('is-invalid'); // Add red background
-        });
+    <script>
+$(document).ready(function() {
+    $('#userLoginForm').parsley();
 
-        // Remove red background when fixed
-        $('#userLoginForm').parsley().on('field:success', function() {
-            this.$element.removeClass('is-invalid'); // Remove red background
-        });
+    // Apply red background on error
+    $('#userLoginForm').parsley().on('field:error', function() {
+        this.$element.addClass('is-invalid'); // Add red background
     });
-    // @if(session('error'))
-    //     Notiflix.Notify.Failure('{{ session('error') }}');
-    // @endif
 
-    // // Initialize Parsley validation
-    // $('#userLoginForm').parsley();
+    // Remove red background when fixed
+    $('#userLoginForm').parsley().on('field:success', function() {
+        this.$element.removeClass('is-invalid'); // Remove red background
+    });
 
-    // // Show success or failure on form submission
-    // $('#userLoginForm').on('submit', function(e) {
-    //     e.preventDefault(); // Prevent the default form submission
+    @if(session('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: {!! json_encode(session('success')) !!},
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+    @endif
 
-    //     var form = $(this);
-    //     if (form.parsley().isValid()) {
-    //         // If the form is valid, show a success notification
-    //         Notiflix.Notify.Success('Form is valid. Logging in...');
-    //         form.off('submit').submit();  // Allow form submission after valid check
-    //     } else {
-    //         // If the form is invalid, show a failure notification
-    //         Notiflix.Notify.Failure('Please fix the errors in the form.');
-    //     }
-    // });
+    @if(session('error'))
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: {!! json_encode(session('error')) !!},
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Try Again'
+        });
+    @endif
+});
 
 </script>
+
 </body>
 <!-- Mirrored from themes.pixelstrap.com/sheltos/main/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 27 Jan 2025 12:55:03 GMT -->
 </html>

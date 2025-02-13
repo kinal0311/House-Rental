@@ -26,7 +26,6 @@ class SignUpController extends Controller
 
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
             'name' => 'required',
             'role_id' => 'required',
@@ -35,26 +34,33 @@ class SignUpController extends Controller
             'phone_number'=> 'required',
             'dob'=> 'required',
             'password' => 'required|string|min:6',
-            'status' => 'required',
-            'description'=> 'required',
+            // 'status' => 'required',
+            'description'=> 'nullable',
             'address'=> 'required',
             'zip_code'=> 'required',
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-        if ($request->hasFile('img')) {
-
-            $imageName = $request->img->getClientOriginalName();
-
-            $request->img->move(public_path('assets/images/users'), $imageName);
-
-            $validatedData['img'] = 'assets/images/users/' . $imageName;
+        if (!$request->has('status')) {
+            $validatedData['status'] = 1;
         }
-        // dd( $validatedData['img']);
 
-        User::create($validatedData);
+        try {
+            if ($request->hasFile('img')) {
+                $imageName = $request->img->getClientOriginalName();
+                $request->img->move(public_path('assets/images/users'), $imageName);
+                $validatedData['img'] = 'assets/images/users/' . $imageName;
+            }
 
-        return redirect()->route('home')
-                         ->with('success', 'Admin created successfully.');
+            User::create($validatedData);
+
+            // Flash success message
+            return redirect()->route('home')->with('success', 'User created successfully.');
+
+        } catch (\Exception $e) {
+            // Flash error message
+            return redirect()->route('home')->with('error', 'There was an issue creating the user.');
+        }
     }
+
 }

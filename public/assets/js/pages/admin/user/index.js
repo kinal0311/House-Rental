@@ -113,22 +113,23 @@ function deleteUser(id) {
 }
 
 function confirmStatusChange(id, currentStatus) {
-    // Ensure currentStatus is a string for proper comparison
     currentStatus = currentStatus.toString();
+    var newStatus = (currentStatus === '0') ? '1' : '0'; // Toggle between active/inactive
 
-    // Toggle between '0' (inactive) and '1' (active)
-    var newStatus = (currentStatus === '0') ? '1' : '0';
+    var url = changeStatusUrl.replace(':id', id);  // Replace the placeholder with actual ID
 
-    // Replace the placeholder with the actual user ID in the URL
-    var url = changeStatusUrl.replace(':id', id);
-
-    // Show the confirmation dialog using Notiflix
-    Notiflix.Confirm.Show(
-        'Confirm Status Change',  // Title of the confirmation box
-        'Are you sure you want to change the status?',  // Confirmation message
-        'Yes',  // Confirm button text
-        'No',   // Cancel button text
-        function() {  // Callback for "Yes" button
+    // Show the confirmation dialog using SweetAlert2
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You are about to change the status of this user.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6', // Blue for confirm
+        cancelButtonColor: '#d33', // Red for cancel
+        confirmButtonText: 'Yes, change it!', // Text for confirm button
+        cancelButtonText: 'No, keep it' // Text for cancel button
+    }).then((result) => {
+        if (result.isConfirmed) {
             // Send AJAX request to update the status
             $.ajax({
                 url: url,  // URL with user ID
@@ -138,22 +139,32 @@ function confirmStatusChange(id, currentStatus) {
                     status: newStatus,   // New status (either 0 or 1)
                 },
                 success: function(response) {
-                    tableVar.ajax.reload();  // Reload the table to reflect the change
-                    Notiflix.Notify.Success('Status updated successfully.');  // Success message
+                    // Reload the DataTable to reflect the change
+                    tableVar.ajax.reload();
+
+                    // Show success notification with SweetAlert2
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Status Updated',
+                        text: 'The status has been updated successfully.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 },
                 error: function(jqXHR, ajaxOptions, thrownError) {
-                    // Log the error for debugging
+                    // Handle any errors from the AJAX request
                     console.error(jqXHR.responseJSON);
-                    Notiflix.Notify.Failure('Error updating status.');  // Failure message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'There was an error updating the status.',
+                        showConfirmButton: true
+                    });
                 }
             });
-        },
-        function() {  // Callback for "No" button (nothing happens)
-            // Nothing happens when user clicks "No"
         }
-    );
+    });
 }
-
 
 
 

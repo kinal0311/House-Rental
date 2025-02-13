@@ -102,9 +102,13 @@ class AgentController extends Controller
     {
         $user = User::findOrFail($id);
 
-        $user->delete();
-
-        return response()->json(['success' => 'User deleted successfully.']);
+        // Try deleting user and return a success or error message
+        try {
+            $user->delete();
+            return response()->json(['success' => 'User deleted successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to delete user.']);
+        }
     }
 
     public function agentEdit($id)
@@ -117,32 +121,53 @@ class AgentController extends Controller
 
     public function update(Request $request, $id)
     {
+        // $user = User::findOrFail($id);
+
+        // $validatedData = $request->all();
+
+        // if ($request->hasFile('img')) {
+        //     $image = $request->file('img');
+
+        //     $imageName = time() . '.' . $image->getClientOriginalExtension();
+
+        //     $image->move(public_path('assets/images/users/'), $imageName);
+
+        //     $upadeData['img'] = 'assets/images/users/' . $imageName;
+        // }
+        // $upadeData['name'] = $request['name'];
+        // $upadeData['email'] = $request['email'];
+        // $upadeData['phone_number'] = $request['phone_number'];
+        // $upadeData['dob'] = $request['dob'];
+        // $upadeData['address'] = $request['address'];
+        // $upadeData['zip_code'] = $request['zip_code'];
+        // $upadeData['gender'] = $request['gender'];
+        // $upadeData['description'] = $request['description'];
+        // $upadeData['status'] = $request['status'];
+
+        // $user->update($upadeData);
+
+        // return redirect()->route('admin.agent.index')->with('success', 'User updated successfully.');
+
         $user = User::findOrFail($id);
 
         $validatedData = $request->all();
+        $updateData = $validatedData;
 
         if ($request->hasFile('img')) {
             $image = $request->file('img');
-
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-
             $image->move(public_path('assets/images/users/'), $imageName);
 
-            $upadeData['img'] = 'assets/images/users/' . $imageName;
+            $updateData['img'] = 'assets/images/users/' . $imageName;
         }
-        $upadeData['name'] = $request['name'];
-        $upadeData['email'] = $request['email'];
-        $upadeData['phone_number'] = $request['phone_number'];
-        $upadeData['dob'] = $request['dob'];
-        $upadeData['address'] = $request['address'];
-        $upadeData['zip_code'] = $request['zip_code'];
-        $upadeData['gender'] = $request['gender'];
-        $upadeData['description'] = $request['description'];
-        $upadeData['status'] = $request['status'];
 
-        $user->update($upadeData);
-
-        return redirect()->route('admin.agent.index')->with('success', 'User updated successfully.');
+        // Try updating the user and return a success or error message
+        try {
+            $user->update($updateData);
+            return redirect()->route('admin.agent.index')->with('success', 'User updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.agent.index')->with('error', 'Failed to update user.');
+        }
     }
 
     public function show($id)
@@ -154,18 +179,15 @@ class AgentController extends Controller
         return view('admin.agent.view', compact('user','roles'));
     }
 
-    public function agentChangeStatus($id, Request $request)
+    public function agentChangeData($id, Request $request)
     {
-        \Log::info($request->all());
-
-        $validated = $request->validate([
-            'status' => 'required|in:0,1',
-        ]);
-
         $user = User::findOrFail($id);
         $user->status = $request->status;
         $user->save();
 
-        return response()->json(['success' => true]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Status updated successfully.',
+        ]);
     }
 }

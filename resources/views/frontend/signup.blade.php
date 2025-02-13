@@ -21,8 +21,7 @@
             border: none;
             color:#586167;
             border-bottom: 2px solid #eee;
-            background-color: #ffffff
-
+            background-color: #ffffff;
             border-radius: 0;
             padding-left: 0;
             box-shadow: none;
@@ -39,12 +38,12 @@
 
 
             /* Red background for invalid inputs */
-    .is-invalid, .is-invalid:focus {
-        background-color: #f8d7da;
-        /* border-bottom-color: #dc3545 !important; Red border */
-        border-bottom: 2px solid #f8d7da;
+        .is-invalid, .is-invalid:focus {
+            background-color: #f8d7da;
+            /* border-bottom-color: #dc3545 !important; Red border */
+            border-bottom: 2px solid #f8d7da;
 
-    }
+        }
 
     /* Red error messages */
     .parsley-errors-list {
@@ -79,6 +78,16 @@
             </div>
         </div>
     </section>
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <!-- breadcrumb end -->
 
     <!-- section start -->
@@ -189,8 +198,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Role</label>
-                                        <div class="input-group">
-                                            <select class="form-control" name="role_id">
+                                        <div class="input-group" required>
+                                            <select class="form-control" name="role_id" >
                                                 <option value="">Select Role</option>
                                                 <option value="2" {{ $role->name == 'Agent' ? 'selected' : '' }}>Agent</option>
                                                 <option value="3" {{ $role->name == 'User' ? 'selected' : '' }}>User</option>
@@ -198,27 +207,12 @@
                                             {{-- <span class="input-group-text"><i data-feather="shield"></i></span> --}}
                                         </div>
                                     </div>
+                                    {{-- @error('role_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror --}}
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="status">Status <span class="text-danger">*</span></label>
-                                        <div class="d-flex">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="status" id="status_Active" value="1"
-                                                    {{ old('status') == '1' ? 'checked' : '' }} required data-parsley-required="true" data-parsley-errors-container="#radio-error">
-                                                <label class="form-check-label" for="status_Active">Active</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="status" id="status_Inactive" value="0"
-                                                    {{ old('status') == '0' ? 'checked' : '' }} required>
-                                                <label class="form-check-label" for="status_Inactive">Inactive</label>
-                                            </div>
-                                        </div>
-                                        <!-- Display error message below radio buttons -->
-                                        <div id="radio-error" class="text-danger"></div>
-                                    </div>
-                                </div>
+
 
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -232,7 +226,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="img">Profile Picture<span class="text-danger">*</span></label>
                                         <input type="file" name="img" id="img" class="form-control" accept="image/*" required>
@@ -256,7 +250,7 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="description">Description<span class="text-danger">*</span></label>
+                                        <label for="description">Description<br><span class="text-danger">*required for agents</span></label>
                                         <textarea name="description" id="description" class="form-control" rows="3"
                                                   placeholder="Enter Description" data-parsley-trigger="keyup" required>{{ old('description') }} </textarea>
                                         @error('description')
@@ -301,30 +295,14 @@
         });
     });
 
-    // $(document).ready(function() {
-    //     $('#signUpForm').parsley();
-
-    //     window.Parsley.on('field:error', function() {
-    //         var $field = this.$element;
-    //         var $errorContainer = $field.closest('.form-group').find('.error-message');
-
-    //         // Remove previous error messages
-    //         $errorContainer.html('');
-
-    //         // Append new error messages
-    //         this.getErrorsMessages().forEach(function(error) {
-    //             $errorContainer.append('<span class="text-danger">' + error + '</span>');
-    //         });
-    //     });
-
-    //     window.Parsley.on('field:success', function() {
-    //         var $field = this.$element;
-    //         var $errorContainer = $field.closest('.form-group').find('.error-message');
-
-    //         // Remove error messages on success
-    //         $errorContainer.html('');
-    //     });
-    // });
+    @if (session('error'))
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '{{ session('error') }}',
+            showConfirmButton: true
+        });
+    @endif
 
 </script>
 </body>

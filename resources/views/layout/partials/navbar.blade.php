@@ -20,7 +20,7 @@
 
     <li class="dropdown notification-list">
         <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-            <img src="{{ Auth::guard('admin')->user()->img ? asset(Auth::guard('admin')->user()->img) : '' }}" alt="user-image" class="rounded-circle">
+            <img src="{{ Auth::guard('admin')->user()->img ? asset(Auth::guard('admin')->user()->img) : asset('assets/images/users/1737714810.png') }}" alt="user-image" class="rounded-circle">
             <span class="pro-user-name ml-1">
                {{Auth::guard('admin')->user()->name ?? ""}}<i class="mdi mdi-chevron-down"></i>
                {{-- @dd(Auth::user()->email) --}}
@@ -33,7 +33,7 @@
             </div>
 
             <!-- item-->
-            <a href="{{ route('account') }}" class="dropdown-item notify-item">
+            <a href="{{ route('admin.account') }}" class="dropdown-item notify-item">
                 <i class="fe-user"></i>
                 <span>My Account</span>
             </a>
@@ -131,9 +131,10 @@
 </ul>
 </div>
 <!-- end Topbar -->
-@yield('script')
+@section('script')
 <script>
     document.getElementById('logoutBtn').addEventListener('click', function () {
         document.getElementById('logoutForm').submit();
     });
 </script>
+@endsection

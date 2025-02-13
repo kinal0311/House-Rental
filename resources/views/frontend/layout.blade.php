@@ -853,7 +853,17 @@
 @yield('script')
 
 <script src="{{asset('assets/js/pages/frontend/layout.js')}}"></script>
-
+<script>
+@if (session('success'))
+Swal.fire({
+    icon: 'success',
+    title: 'Success!',
+    text: '{{ session('success') }}',
+    showConfirmButton: false,
+    timer: 1500
+});
+@endif
+</script>
 
 <!-- Mirrored from themes.pixelstrap.com/sheltos/main/layout-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 27 Jan 2025 12:54:02 GMT -->
 </html>

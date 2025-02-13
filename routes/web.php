@@ -43,8 +43,6 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middle
 Route::group(['middleware' => 'auth'], function () {
     Route::get('register', [AuthController::class, 'registration'])->name('register');
     Route::post('register', [AuthController::class, 'postRegistration'])->name('register.post');
-    Route::get('account', [AuthController::class, 'myAccount'])->name('account')->middleware('auth');
-    Route::post('account', [AuthController::class, 'updateAccount'])->name('account.update')->middleware('auth');
 });
 
 // Route::get('master', [MasterController::class, 'index'])->name('master');
@@ -58,6 +56,8 @@ Route::group([
 ], function () {
 
     Route::get('master', [AuthController::class, 'master'])->name('master');
+    Route::get('account', [AuthController::class, 'myAccount'])->name('account');
+    Route::post('update-account', [AuthController::class, 'updateAccount'])->name('account.update');
     Route::get('admin', [AdminController::class, 'index'])->name('admin.index');
     Route::post('get-data', [AdminController::class, 'getData'])->name('admin.get.data');
     Route::get('admin-create', [AdminController::class, 'create'])->name('admin.create');
@@ -66,7 +66,8 @@ Route::group([
     Route::get('admin-edit/{id}', [AdminController::class, 'adminEdit'])->name('edit');
     Route::post('admin-update/{id}', [AdminController::class, 'update'])->name('update');
     Route::get('admin-view/{id}', [AdminController::class, 'show'])->name('view');
-    Route::post('/adminChange-status/{id}', [AdminController::class, 'adminChangeStatus'])->name('adminChangeData');
+    // Route::post('admin/change-status/{id}', [AdminController::class, 'changeStatus'])->name('admin.changeStatus');
+    Route::post('changeStatus/{id}', [AdminController::class, 'changeStatus'])->name('changeStatus');
 
     Route::get('user', [UserController::class, 'index'])->name('user.index');
     Route::post('user-getdata', [UserController::class, 'getData'])->name('user.user-getdata');
@@ -74,7 +75,9 @@ Route::group([
     Route::get('user-edit/{id}', [UserController::class, 'userEdit'])->name('user.edit');
     Route::post('user-update/{id}', [UserController::class, 'update'])->name('user.update');
     Route::get('user-view/{id}', [UserController::class, 'show'])->name('user.view');
-    Route::post('/userChange-status/{id}', [UserController::class, 'userChangeStatus'])->name('userChangeData');
+    // Route::post('/userChange-status/{id}', [UserController::class, 'userChangeStatus'])->name('userChangeData');
+    Route::post('userChangeStatus/{id}', [UserController::class, 'userChangeStatus'])->name('userChangeStatus');
+
 
     Route::get('agent', [AgentController::class, 'index'])->name('agent.index');
     Route::post('agent-getdata', [AgentController::class, 'agentgetData'])->name('agent.agent-getdata');
@@ -82,7 +85,8 @@ Route::group([
     Route::get('agent-edit/{id}', [AgentController::class, 'agentEdit'])->name('agent.edit');
     Route::post('agent-update/{id}', [AgentController::class, 'update'])->name('agent.update');
     Route::get('agent-view/{id}', [AgentController::class, 'show'])->name('agent.view');
-    Route::post('/agentChange-status/{id}', [AgentController::class, 'agentChangeStatus'])->name('agentChangeData');
+    // Route::post('/agentChange-status/{id}', [AgentController::class, 'agentChangeStatus'])->name('agentChangeData');
+    Route::post('agentChangeStatus/{id}', [AgentController::class, 'agentChangeStatus'])->name('agentChangeData');
 
     Route::get('properties', [PropertyController::class, 'index'])->name('properties.index');
     Route::get('create', [PropertyController::class, 'create'])->name('properties.create');
@@ -93,6 +97,8 @@ Route::group([
     Route::get('edit/{id}', [PropertyController::class, 'propertyEdit'])->name('properties.edit');
     Route::post('update/{id}', [PropertyController::class, 'update'])->name('properties.update');
     Route::get('property-view/{id}', [PropertyController::class, 'show'])->name('properties.view');
+    // Route::post('propertyChangeStatus/{id}', [PropertyController::class, 'propertyChangeStatus'])->name('propertyChangeStatus');
+
 
     Route::get('property_Img', [PropertyImgController::class, 'index'])->name('property_image.index');
     Route::get('img_create', [PropertyImgController::class, 'create'])->name('property_image.create');

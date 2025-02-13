@@ -48,11 +48,35 @@
 {{-- Notiflix --}}
 <script src="{{ URL::asset('assets/libs/notiflix/notiflix-2.1.2.js')}}"></script>
 <script src="{{ URL::asset('assets/libs/notiflix/notiflix.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 @section('script')
+@if(session('success'))
+    <p>{{ session('success') }}</p>  <!-- For Debugging -->
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
+
+@if(session('error'))
+    <script>
+        Swal.fire({
+            title: 'Error!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
 <script>
     var dateTableUrl = "{{ route('admin.admin.get.data') }}";
     var deleteRowUrl = "{{ route('admin.destroy', ':id') }}";
-    var changeStatusUrl = "{{ route('admin.adminChangeData',':id')}}"
+    var changeStatusUrl = "{{ route('admin.changeStatus',':id')}}";
 </script>
 <script src="{{asset('assets/js/pages/admin/sub-admin/index.js')}}"></script>
 

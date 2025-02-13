@@ -155,16 +155,13 @@ class UserController extends Controller
 
     public function userChangeStatus($id, Request $request)
     {
-        \Log::info($request->all());
-
-        $validated = $request->validate([
-            'status' => 'required|in:0,1',
-        ]);
-
         $user = User::findOrFail($id);
         $user->status = $request->status;
         $user->save();
 
-        return response()->json(['success' => true]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Status updated successfully.',
+        ]);
     }
 }

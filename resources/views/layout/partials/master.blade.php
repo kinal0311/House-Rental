@@ -40,6 +40,9 @@
             <link href="{{asset('assets/libs/datatables/buttons.bootstrap4.css')}}" rel="stylesheet" type="text/css" />
             <link href="{{asset('assets/libs/datatables/select.bootstrap4.css')}}" rel="stylesheet" type="text/css" />
 
+            <!-- Add SweetAlert2 CSS -->
+            <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.15/dist/sweetalert2.min.css" rel="stylesheet">
+
     </head>
 
     <body>
@@ -92,6 +95,9 @@
                 <!--JQuery-->
 <!-- jQuery must be first -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Add SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.15/dist/sweetalert2.min.js"></script>
 
 <!-- Vendor and essential plugins -->
 <script src="{{ URL::asset('assets/js/vendor.min.js')}}"></script>

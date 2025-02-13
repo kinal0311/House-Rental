@@ -40,16 +40,32 @@ class CartController extends Controller
                                     ->where('property_id', $propertyId)
                                     ->first();
 
+            // Retrieve updated cart data
+            $cart = Cart::with('property.images')->where('user_id', $userId)->get();
+            // After checking for an existing cart item and adding it if necessary
             if (!$existingCartItem) {
                 // If it doesn't exist, add it to the cart
                 Cart::create([
                     'user_id' => $userId,
                     'property_id' => $propertyId,
                 ]);
-            }
 
-            // Retrieve updated cart data
-            $cart = Cart::with('property.images')->where('user_id', $userId)->get();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Property added to cart successfully!',
+                    'cart' => $cart,
+                    'cartHTML' => view('frontend.cart', compact('cart'))->render(),
+                    'added_to_cart' => true // Indicate that the item was added
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'This property is already in the cart.',
+                    'cart' => $cart,
+                    'cartHTML' => view('frontend.cart', compact('cart'))->render(),
+                    'added_to_cart' => false // Indicate that the item was already in the cart
+                ]);
+            }
 
             return response()->json([
                 'status' => 'success',
@@ -84,11 +100,13 @@ class CartController extends Controller
             // Get the updated cart items for the current user
             $cart = Cart::where('user_id', auth()->id())->get();
 
-            // Return the updated cart HTML to replace the old one
+            // Return the updated cart HTML and count
             return response()->json([
                 'status' => 'success',
-                'cartHTML' => view('frontend.cart', compact('cart'))->render()
+                'cartHTML' => view('frontend.cart', compact('cart'))->render(), // Render updated cart items
+                'cartCount' => $cart->count()  // Updated cart item count
             ]);
+
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -96,9 +114,6 @@ class CartController extends Controller
             ], 500);
         }
     }
-
-
-
 
 }
 

@@ -52,11 +52,35 @@
 
 
 @endsection
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@if(session('success'))
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
+
+@if(session('error'))
+    <script>
+        Swal.fire({
+            title: 'Error!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
+
 @section('script')
 <script>
     var dateTableUrl = "{{ route('admin.agent.agent-getdata') }}";
     var deleteRowUrl = "{{ route('admin.agent.destroy', ':id') }}";
-    var changeStatusUrl = "{{ route('admin.agentChangeData',':id')}}"
+    var changeStatusUrl = "{{ route('admin.agentChangeData',':id')}}";
+    // var changeStatusUrl = "{{ route('admin.changeStatus',':id')}}";
 
 </script>
 <script src="{{asset('assets/js/pages/admin/agent/index.js')}}"></script>

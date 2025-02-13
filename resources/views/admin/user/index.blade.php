@@ -52,11 +52,13 @@
 
 
 @endsection
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 @section('script')
 <script>
     var dateTableUrl = "{{ route('admin.user.user-getdata') }}";
     var deleteRowUrl = "{{ route('admin.user.destroy', ':id') }}";
-    var changeStatusUrl = "{{ route('admin.userChangeData',':id')}}"
+    var changeStatusUrl = "{{ route('admin.userChangeStatus',':id')}}";
 
 </script>
 <script src="{{asset('assets/js/pages/admin/user/index.js')}}"></script>

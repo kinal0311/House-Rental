@@ -133,45 +133,45 @@
             @endif
             $('#loginForm').parsley();
 
-$('#loginForm').on('submit', function(e) {
-    e.preventDefault();
+            $('#loginForm').on('submit', function(e) {
+                e.preventDefault();
 
-    var form = $(this);
+                var form = $(this);
 
-    // First, check if the form is valid according to Parsley
-    if (form.parsley().isValid()) {
+                // First, check if the form is valid according to Parsley
+                if (form.parsley().isValid()) {
 
-        // Perform AJAX login request
-        $.ajax({
-            url: form.attr('action'),  // The login route in the form action
-            method: 'POST',
-            data: form.serialize(),  // Serialize the form data
-            success: function(response) {
-                if (response.success) {
-                    // If login is successful, redirect to the 'master' page
-                    window.location.href = response.redirect;
-                    Notiflix.Notify.Success('Form is valid. Logging in...');
+                    // Perform AJAX login request
+                    $.ajax({
+                        url: form.attr('action'),  // The login route in the form action
+                        method: 'POST',
+                        data: form.serialize(),  // Serialize the form data
+                        success: function(response) {
+                            if (response.success) {
+                                // If login is successful, redirect to the 'master' page
+                                window.location.href = response.redirect;
+                                Notiflix.Notify.Success('Form is valid. Logging in...');
+                            }
+                        },
+                        error: function(xhr) {
+                            var errorMessage = 'Login failed. Please try again.';
+
+                            // Check for error response from the backend
+                            if (xhr.status === 401) {
+                                errorMessage = 'Invalid email or password.';
+                            } else if (xhr.status === 403) {
+                                errorMessage = xhr.responseJSON.message || 'You do not have permission to access this page.';
+                            }
+
+                            // Display the failure notification with the appropriate error message
+                            Notiflix.Notify.Failure(errorMessage);
+                        }
+                    });
+                } else {
+                    // If the form is invalid (based on Parsley), show a failure notification
+                    Notiflix.Notify.Failure('Please fix the errors in the form.');
                 }
-            },
-            error: function(xhr) {
-                var errorMessage = 'Login failed. Please try again.';
-
-                // Check for error response from the backend
-                if (xhr.status === 401) {
-                    errorMessage = 'Invalid email or password.';
-                } else if (xhr.status === 403) {
-                    errorMessage = xhr.responseJSON.message || 'You do not have permission to access this page.';
-                }
-
-                // Display the failure notification with the appropriate error message
-                Notiflix.Notify.Failure(errorMessage);
-            }
-        });
-    } else {
-        // If the form is invalid (based on Parsley), show a failure notification
-        Notiflix.Notify.Failure('Please fix the errors in the form.');
-    }
-});
+            });
 
 
 

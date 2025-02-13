@@ -54,6 +54,8 @@
 
 
 @endsection
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 @section('script')
 <script>
     var dateTableUrl = "{{ route('admin.properties.getData') }}";

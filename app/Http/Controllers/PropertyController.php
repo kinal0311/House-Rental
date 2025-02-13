@@ -161,7 +161,17 @@ class PropertyController extends Controller
         return view('admin.properties.view', compact('property'));
     }
 
+    // public function propertyChangeStatus($id, Request $request)
+    // {
+    //     $user = Property::findOrFail($id);
+    //     $user->status = $request->status;
+    //     $user->save();
 
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Status updated successfully.',
+    //     ]);
+    // }
 
 }
 ?>

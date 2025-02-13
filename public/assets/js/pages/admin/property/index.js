@@ -46,23 +46,26 @@ var tableVar = $('#propertyDataTable').DataTable({
             width: "100px",
             targets: 6, // Status column
             render: function (data, type, full, meta) {
-                // console.log('Status data:', data);  // Debugging log
+                // Define the status options and their corresponding styles
                 var status = {
                     'sale': { 'title': "Sale", 'type': 'success' },
                     'sold': { 'title': "Sold", 'type': 'danger' },
                     'rent': { 'title': "Rent", 'type': 'info' },
                 };
 
-                // Convert data to a string or check if it matches the status keys
-                var statusKey = data.toString().toLowerCase();  // Ensure it's lowercase or formatted correctly
+                // Convert the data to lowercase for comparison (in case the data is in a different case)
+                var statusKey = data.toString().toLowerCase();
 
+                // Check if the statusKey exists in the status object
                 if (typeof status[statusKey] === 'undefined') {
-                    return data;  // Fallback to the raw data if no match is found
+                    return data;  // If no match is found, return the raw data
                 }
 
+                // Return the badge with the corresponding status style and title
                 return '<span class="badge badge-' + status[statusKey].type + '">' + status[statusKey].title + '</span>';
             }
         },
+
         {
             width: "200px",
             targets: -1, // Actions column
@@ -118,26 +121,57 @@ function deleteProperty(id) {
     );
 }
 
-// // Example updateProperty function with Notiflix confirmation
-// function updateProperty(id) {
-//     $.ajax({
-//         url: url,  // The URL with the property ID
-//         type: 'PUT',  // Update request type
-//         data: {
-//             _token: csrfToken,  // CSRF token for security
-//             // Add other necessary data from the form (example: property data)
-//         },
-//         success: function(success) {
-//             if ('success') {
-//                 // Reload the table or update UI accordingly
-//                 tableVar.ajax.reload();  // Reload the table after update
-//                 Notiflix.Notify.Success('Property update successfully');  // Success notification
-//             } else {
-//                 Notiflix.Notify.Failure('Error updating property.');  // Failure notification
-//             }
-//         },
-//         error: function(jqXHR, ajaxOptions, thrownError) {
-//             Notiflix.Notify.Failure('Error updating property.');  // Error notification
+
+// function confirmStatusChange(id, currentStatus) {
+//     currentStatus = currentStatus.toString();
+//     var newStatus = (currentStatus === '0') ? '1' : '0'; // Toggle between active/inactive
+
+//     var url = changeStatusUrl.replace(':id', id);  // Replace the placeholder with actual ID
+
+//     // Show the confirmation dialog using SweetAlert2
+//     Swal.fire({
+//         title: 'Are you sure?',
+//         text: 'You are about to change the status of this user.',
+//         icon: 'warning',
+//         showCancelButton: true,
+//         confirmButtonColor: '#3085d6', // Blue for confirm
+//         cancelButtonColor: '#d33', // Red for cancel
+//         confirmButtonText: 'Yes, change it!', // Text for confirm button
+//         cancelButtonText: 'No, keep it' // Text for cancel button
+//     }).then((result) => {
+//         if (result.isConfirmed) {
+//             // Send AJAX request to update the status
+//             $.ajax({
+//                 url: url,  // URL with user ID
+//                 type: 'POST',
+//                 data: {
+//                     _token: csrfToken,  // CSRF token for security
+//                     status: newStatus,   // New status (either 0 or 1)
+//                 },
+//                 success: function(response) {
+//                     // Reload the DataTable to reflect the change
+//                     tableVar.ajax.reload();
+
+//                     // Show success notification with SweetAlert2
+//                     Swal.fire({
+//                         icon: 'success',
+//                         title: 'Status Updated',
+//                         text: 'The status has been updated successfully.',
+//                         showConfirmButton: false,
+//                         timer: 1500
+//                     });
+//                 },
+//                 error: function(jqXHR, ajaxOptions, thrownError) {
+//                     // Handle any errors from the AJAX request
+//                     console.error(jqXHR.responseJSON);
+//                     Swal.fire({
+//                         icon: 'error',
+//                         title: 'Error',
+//                         text: 'There was an error updating the status.',
+//                         showConfirmButton: true
+//                     });
+//                 }
+//             });
 //         }
 //     });
 // }
