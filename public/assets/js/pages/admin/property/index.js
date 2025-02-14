@@ -26,6 +26,16 @@ var tableVar = $('#propertyDataTable').DataTable({
     columns: [
         { data: "id" },
         { data: "property_type" },
+        {
+            data: 'image_url',
+            name: 'image_url',
+            render: function(data, type, row) {
+                if (data) {
+                    return `<img src="${data}" alt="${row.alt_text}" width="80" height="60" style="object-fit: cover;">`;
+                }
+            }
+        },
+        { data: "alt_text" },
         { data: "max_rooms" },
         { data: "beds" },
         { data: "baths" },
@@ -44,7 +54,7 @@ var tableVar = $('#propertyDataTable').DataTable({
     columnDefs: [
         {
             width: "100px",
-            targets: 6, // Status column
+            targets: 8, // Status column
             render: function (data, type, full, meta) {
                 // Define the status options and their corresponding styles
                 var status = {
@@ -67,18 +77,18 @@ var tableVar = $('#propertyDataTable').DataTable({
         },
 
         {
-            width: "200px",
+            width: "100px",
             targets: -1, // Actions column
             title: "Actions",
             orderable: false,
             render: function (data, type, full, meta) {
-                return '<a href="'+full.view_url+'" class="btn btn-danger p-1" ">\
+                return '<a href="'+full.view_url+'" class="btn btn-danger p-1 mb-1">\
                             <i class="fa-solid fa-eye"></i>\
                         </a>\
-                        <a href="'+full.edit_url+'" class="btn btn-primary p-1">\
+                        <a href="'+full.edit_url+'" class="btn btn-primary p-1 mb-1">\
                             <i class="fa-solid fa-pen-to-square"></i>\
                         </a>\
-                        <button type="button" class="btn btn-danger p-1" onclick="deleteProperty(' + data + ')">\
+                        <button type="button" class="btn btn-danger p-1 mb-1" onclick="deleteProperty(' + data + ')">\
                             <i class="fa-solid fa-trash-can"></i>\
                         </button>';
             },
@@ -94,13 +104,16 @@ var tableVar = $('#propertyDataTable').DataTable({
 function deleteProperty(id) {
     var url = deleteRowUrl.replace(':id', id);  // Use the final URL with ID
 
-    Notiflix.Confirm.show(
-        'Confirm Deletion',
-        'Are you sure you want to delete this property?',
-        'Yes',
-        'No',
-        function() {
-
+    Swal.fire({
+        title: 'Confirm Deletion',
+        text: 'Are you sure you want to delete this property?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
             $.ajax({
                 url: url,
                 type: 'DELETE',
@@ -109,16 +122,14 @@ function deleteProperty(id) {
                 },
                 success: function(response) {
                     tableVar.ajax.reload();
-                    Notiflix.Notify.Success('Property deleted successfully.');
+                    Swal.fire('Deleted!', 'Property deleted successfully.', 'success');
                 },
                 error: function(jqXHR, ajaxOptions, thrownError) {
-                    Notiflix.Notify.Failure('Error deleting property.');
+                    Swal.fire('Error!', 'Error deleting property.', 'error');
                 }
             });
-        },
-        function() {
         }
-    );
+    });
 }
 
 

@@ -100,14 +100,14 @@ Route::group([
     // Route::post('propertyChangeStatus/{id}', [PropertyController::class, 'propertyChangeStatus'])->name('propertyChangeStatus');
 
 
-    Route::get('property_Img', [PropertyImgController::class, 'index'])->name('property_image.index');
-    Route::get('img_create', [PropertyImgController::class, 'create'])->name('property_image.create');
-    Route::post('img_store', [PropertyImgController::class, 'store'])->name('property_image.store');
-    Route::post('img_getData', [PropertyImgController::class, 'getData'])->name('property_image.getData');
-    Route::delete('property_image/{id}', [PropertyImgController::class, 'destroy'])->name('property_image.destroy');
-    Route::get('image-edit/{id}', [PropertyImgController::class, 'imageEdit'])->name('property_image.edit');
-    Route::post('image-update/{id}', [PropertyImgController::class, 'update'])->name('property_image.update');
-    Route::get('image-view/{id}', [PropertyImgController::class, 'show'])->name('property_image.view');
+    // Route::get('property_Img', [PropertyImgController::class, 'index'])->name('property_image.index');
+    // Route::get('img_create', [PropertyImgController::class, 'create'])->name('property_image.create');
+    // Route::post('img_store', [PropertyImgController::class, 'store'])->name('property_image.store');
+    // Route::post('img_getData', [PropertyImgController::class, 'getData'])->name('property_image.getData');
+    // Route::delete('property_image/{id}', [PropertyImgController::class, 'destroy'])->name('property_image.destroy');
+    // Route::get('image-edit/{id}', [PropertyImgController::class, 'imageEdit'])->name('property_image.edit');
+    // Route::post('image-update/{id}', [PropertyImgController::class, 'update'])->name('property_image.update');
+    // Route::get('image-view/{id}', [PropertyImgController::class, 'show'])->name('property_image.view');
 
 });
 
@@ -138,6 +138,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
     Route::post('/cart', [CartController::class, 'removeFromCart'])->name('cart.remove');
     Route::get('/myprofile', [ProfileController::class, 'myProfile'])->name('myprofile');
+    Route::post('/myprofile-update', [ProfileController::class, 'update'])->name('update.profile');
     Route::post('logout-user', [ProfileController::class, 'logoutUser'])->name('logout-user');
 
 

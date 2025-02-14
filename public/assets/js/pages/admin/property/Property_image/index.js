@@ -96,98 +96,100 @@ $(document).ready(function () {
     });
 });
 
-var tableVar = $('#propertyImgDataTable').DataTable({
-    processing: true,
-    serverSide: true,
-    scrollX: true,
-    ajax: {
-        url: dateTableUrl, // URL to fetch data
-        type: "POST",
-        data: {
-            _token: csrfToken, // CSRF token for security
-        },
-        beforeSend: function () {
-            if (tableVar != null) {
-                tableVar.settings()[0].jqXHR.abort(); // Abort previous request before sending new
-            }
-        },
-        error: function (jqXHR, ajaxOptions, thrownError) {
-            if (jqXHR.status == 419) {
-                // Handle session timeout or CSRF errors
-            }
-        },
-    },
 
-    searchable: true,
-    order: [1, 'desc'],
-    pageLength: 10,
-    columns: [
-        { data: "id" },
-        { data: "property_type" },
-        { data: "image_url", render: function(data, type, row) {
-            // console.log("Image path:", data);
-            return `<img src="../${data}" alt="Image" width="50" height="50">`;
-        } },
-        { data: "alt_text" },
-        { data: "actions", sClass: "text-end" } // Actions column
+// var tableVar = $('#propertyImgDataTable').DataTable({
+//     processing: true,
+//     serverSide: true,
+//     scrollX: true,
+//     ajax: {
+//         url: dateTableUrl, // URL to fetch data
+//         type: "POST",
+//         data: {
+//             _token: csrfToken, // CSRF token for security
+//         },
+//         beforeSend: function () {
+//             if (tableVar != null) {
+//                 tableVar.settings()[0].jqXHR.abort(); // Abort previous request before sending new
+//             }
+//         },
+//         error: function (jqXHR, ajaxOptions, thrownError) {
+//             if (jqXHR.status == 419) {
+//                 // Handle session timeout or CSRF errors
+//             }
+//         },
+//     },
 
-    ],
-    columnDefs: [
-        {
-            width: "170px",
-            targets: -1, // Actions column
-            title: "Actions",
-            orderable: false,
-            render: function (data, type, full, meta) {
-                return `
-                <a href="${full.view_url}" class="btn btn-danger">
-                    <i class="fa-solid fa-eye"></i>
-                </a>
-                <a href="${full.edit_url}" class="btn btn-primary">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                </a>
-                <button type="button" class="btn btn-danger" onclick="deletePropertyImg(${full.id})">
-                    <i class="fa-solid fa-trash-can"></i>
-                </button>
-            `;
-            },
-        },
-    ],
-    lengthMenu: [
-        [10, 25, 100, -1],
-        [10, 25, 100, "All"]
-    ],
-});
+//     searchable: true,
+//     order: [1, 'desc'],
+//     pageLength: 10,
+//     columns: [
+//         { data: "id" },
+//         { data: "property_type" },
+//         { data: "image_url", render: function(data, type, row) {
+//             // console.log("Image path:", data);
+//             return `<img src="../${data}" alt="Image" width="50" height="50">`;
+//         } },
+//         { data: "alt_text" },
+//         { data: "actions", sClass: "text-end" } // Actions column
 
-// Example deleteProperty function with Notiflix confirmation
-function deletePropertyImg(id) {
-    var url = deleteRowUrl.replace(':id', id); // Replace ':id' with the actual ID
+//     ],
+//     columnDefs: [
+//         {
+//             width: "170px",
+//             targets: -1, // Actions column
+//             title: "Actions",
+//             orderable: false,
+//             render: function (data, type, full, meta) {
+//                 return `
+//                 <a href="${full.view_url}" class="btn btn-danger">
+//                     <i class="fa-solid fa-eye"></i>
+//                 </a>
+//                 <a href="${full.edit_url}" class="btn btn-primary">
+//                     <i class="fa-solid fa-pen-to-square"></i>
+//                 </a>
+//                 <button type="button" class="btn btn-danger" onclick="deletePropertyImg(${full.id})">
+//                     <i class="fa-solid fa-trash-can"></i>
+//                 </button>
+//             `;
+//             },
+//         },
+//     ],
+//     lengthMenu: [
+//         [10, 25, 100, -1],
+//         [10, 25, 100, "All"]
+//     ],
+// });
 
-    Notiflix.Confirm.show(
-        'Confirm Deletion',
-        'Are you sure you want to delete this image?',
-        'Yes',
-        'No',
-        function() {
+// // Example deleteProperty function with Notiflix confirmation
+// function deletePropertyImg(id) {
+//     var url = deleteRowUrl.replace(':id', id);  // Use the final URL with ID
 
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                data: {
-                    _token: csrfToken,
-                },
-                success: function(response) {
-                    tableVar.ajax.reload();
-                    Notiflix.Notify.Success('Property image deleted successfully.');
-                },
-                error: function(jqXHR, ajaxOptions, thrownError) {
-                    Notiflix.Notify.Failure('Error deleting image.');
-                }
-            });
-        },
-        function() {
-        }
-    );
-}
+//     Swal.fire({
+//         title: 'Confirm Deletion',
+//         text: 'Are you sure you want to delete this image?',
+//         icon: 'warning',
+//         showCancelButton: true,
+//         confirmButtonColor: '#d33',
+//         cancelButtonColor: '#3085d6',
+//         confirmButtonText: 'Yes, delete it!'
+//     }).then((result) => {
+//         if (result.isConfirmed) {
+//             $.ajax({
+//                 url: url,
+//                 type: 'DELETE',
+//                 data: {
+//                     _token: csrfToken,
+//                 },
+//                 success: function(response) {
+//                     tableVar.ajax.reload();
+//                     Swal.fire('Deleted!', 'Property image deleted successfully.', 'success');
+//                 },
+//                 error: function(jqXHR, ajaxOptions, thrownError) {
+//                     Swal.fire('Error!', 'Error deleting image.', 'error');
+//                 }
+//             });
+//         }
+//     });
+// }
 
 

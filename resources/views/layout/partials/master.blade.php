@@ -10,6 +10,7 @@
         <meta charset="utf-8" />
         <title>House Rental</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
             <!-- Plugins css -->
@@ -43,6 +44,33 @@
             <!-- Add SweetAlert2 CSS -->
             <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.15/dist/sweetalert2.min.css" rel="stylesheet">
 
+            <style>
+                .table-responsive {
+                    overflow-x: auto;
+                    max-height: 80vh; /* Adjust height */
+                }
+                html, body {
+      height: 100%;
+      margin: 0;
+      overflow: auto;
+    }
+
+    /* Main content container */
+    .content-page{
+      height: 100vh; /* 100% of the viewport height */
+      overflow-y: auto; /* Enables vertical scrolling */
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    .content {
+      min-height: 150%; /* Just to make the content large enough to scroll */
+    }
+
+
+
+            </style>
+
     </head>
 
     <body>
@@ -63,7 +91,7 @@
             <!-- ============================================================== -->
 
             <div class="content-page">
-                <div class="content">
+                <div class="content mb-5">
 
                     <!-- start page title -->
                     @yield('content')

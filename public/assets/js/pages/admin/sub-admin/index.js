@@ -57,13 +57,13 @@ var tableVar = $('#adminDataTable').DataTable({
             title: "Actions",
             orderable: false,
             render: function (data, type, full, meta) {
-                return '<a href="'+full.view_url+'" class="btn btn-danger" ">\
+                return '<a href="'+full.view_url+'" class="btn btn-danger p-1" ">\
                             <i class="fa-solid fa-eye"></i>\
                         </a>\
-                        <a href="'+full.edit_url+'" class="btn btn-primary" >\
+                        <a href="'+full.edit_url+'" class="btn btn-primary p-1" >\
                             <i class="fa-solid fa-pen-to-square"></i>\
                         </a>\
-                        <button type="button" class="btn btn-danger" onclick="deleteUser(' + data + ')">\
+                        <button type="button" class="btn btn-danger p-1" onclick="deleteUser(' + data + ')">\
                             <i class="fa-solid fa-trash-can"></i>\
                         </button>';
             },

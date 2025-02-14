@@ -63,13 +63,13 @@ var tableVar = $('#userDataTable').DataTable({
             title: "Actions",
             orderable: false,
             render: function (data, type, full, meta) {
-                return '<a href="'+full.view_url+'" class="btn btn-danger" ">\
+                return '<a href="'+full.view_url+'" class="btn btn-danger p-1" ">\
                             <i class="fa-solid fa-eye"></i>\
                         </a>\
-                        <a href="'+full.edit_url+'" class="btn btn-primary" >\
+                        <a href="'+full.edit_url+'" class="btn btn-primary p-1" >\
                             <i class="fa-solid fa-pen-to-square"></i>\
                         </a>\
-                        <button type="button" class="btn btn-danger" onclick="deleteUser(' + data + ')">\
+                        <button type="button" class="btn btn-danger p-1" onclick="deleteUser(' + data + ')">\
                             <i class="fa-solid fa-trash-can"></i>\
                         </button>';
             },
@@ -83,15 +83,20 @@ var tableVar = $('#userDataTable').DataTable({
 });
 
 function deleteUser(id) {
-    var url = deleteRowUrl.replace(':id', id);  // Replace the placeholder with actual ID
+    var url = deleteRowUrl.replace(':id', id); // Replace the placeholder with actual ID
 
-    Notiflix.Confirm.show(
-        'Confirm Deletion',
-        'Are you sure you want to delete this user?',
-        'Yes',
-        'No',
-        function() {
-
+    // Show confirmation dialog using SweetAlert
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You want to delete this user?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+    }).then((result) => {
+        if (result.isConfirmed) {
             $.ajax({
                 url: url,
                 type: 'DELETE',
@@ -99,18 +104,32 @@ function deleteUser(id) {
                     _token: csrfToken,
                 },
                 success: function(response) {
-                    tableVar.ajax.reload();
-                    Notiflix.Notify.Success('User deleted successfully.');
+                    tableVar.ajax.reload(); // Reload the table
+
+                    Swal.fire(
+                        'Deleted!',
+                        'User has been deleted successfully.',
+                        'success'
+                    );
                 },
                 error: function(jqXHR, ajaxOptions, thrownError) {
-                    Notiflix.Notify.Failure('Error deleting User.');
+                    Swal.fire(
+                        'Error!',
+                        'There was an error deleting the user.',
+                        'error'
+                    );
                 }
             });
-        },
-        function() {
+        } else {
+            Swal.fire(
+                'Cancelled',
+                'User deletion has been cancelled.',
+                'info'
+            );
         }
-    );
+    });
 }
+
 
 function confirmStatusChange(id, currentStatus) {
     currentStatus = currentStatus.toString();

@@ -133,6 +133,22 @@
                                             <i data-feather="user"></i>
                                         </a>
                                     </li>
+                                    {{-- <li class="dropdown">
+                                        @if(auth()->check())
+                                            <a href="{{ route('myprofile') }}">
+                                                @if(auth()->user()->img)
+
+                                                    <img src="{{ Auth::guard('web')->user()->img ? asset(Auth::guard('web')->user()->img) : asset('assets/images/users/1737714810.png') }}" alt="user-image" class="rounded-circle w-25 h-25">
+                                                @else
+                                                    <i data-feather="user"></i>
+                                                @endif
+                                            </a>
+                                        @else
+                                            <a href="{{ route('login-user') }}">
+                                                <i data-feather="user"></i>
+                                            </a>
+                                        @endif
+                                    </li> --}}
                                 </ul>
                             </li>
                         </ul>

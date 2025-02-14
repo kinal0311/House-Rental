@@ -1,4 +1,15 @@
 @extends('layout.partials.master')
+<style>
+    .btn-group {
+    display: flex;
+    justify-content: flex-start; /* Align buttons to the left */
+    gap: 5px; /* Adds space between buttons */
+}
+
+.btn-group .btn {
+    flex: 1; /* Ensure all buttons take equal space */
+}
+</style>
 @section('content')
 <div class="container-fluid">
     <div class="row mt-2">
@@ -22,12 +33,14 @@
 	<div class="row">
 		<div class="col-xl-12">
 			<div class="card">
-				<div class="card-body" >
+				<div class="card-body table-responsive" >
 					<table id="propertyDataTable" class="table table-hover mb-0" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Id</th>
                                 <th>Property Type</th>
+                                <th>Image_url</th>
+                                <th>Alt_text</th>
                                 <th>Max Rooms</th>
                                 <th>Beds</th>
                                 <th>Baths</th>
@@ -54,8 +67,30 @@
 
 
 @endsection
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
+@section('script')
+@if(session('success'))
+    <p>{{ session('success') }}</p>  <!-- For Debugging -->
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
 
+@if(session('error'))
+    <script>
+        Swal.fire({
+            title: 'Error!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
 @section('script')
 <script>
     var dateTableUrl = "{{ route('admin.properties.getData') }}";

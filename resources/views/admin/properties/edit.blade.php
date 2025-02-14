@@ -1,5 +1,30 @@
 @extends('layout.partials.master')
+<style>
 
+    .upload-img-box {
+        max-width: 95px;
+        height: 105px;
+        border-radius: 18px;
+        width: 100%;
+    }
+    .upload-box .img-bg {
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%;
+        background-color: #f7f2e9;
+    }
+    .upload-img-box .delete-image-btn {
+        top: 1px;
+        right: 0px;
+        padding: 2px 5px;
+        font-size: 12px;
+        width: 30px;
+        height: 30px;
+        background-color: transparent;
+        border: none;
+    }
+
+</style>
 @section('content')
 <div class="container-fluid">
     <div class="row mt-2">
@@ -16,8 +41,14 @@
                     <form action="{{ route('admin.properties.update', $property->id) }}" id="editPropertyForm" method="POST" enctype="multipart/form-data">
                         @csrf
                         {{-- @method('PUT') <!-- To indicate this is an update operation --> --}}
-                        <div class="row">
 
+
+                            {{-- <div class="form-group">
+                                <label for="alt_text">Alt Text</label>
+                                <input type="text" class="form-control" id="alt_text" name="alt_text" value="{{ $property->alt_text }}">
+                            </div> --}}
+
+                            <div class="row">
                             <!-- Property Type -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -260,6 +291,32 @@
                             </div>
                         </div>
 
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="image_url">Image_url<span class="text-danger">*</span></label>
+                                    <!-- Allow multiple images -->
+                                    <input type="file" name="image_url[]" id="image_url" class="form-control mb-3" multiple accept="image/*">
+
+                                    <!-- Existing image previews (if there are any) -->
+
+                                    <div id="image-previews" class="d-flex flex-wrap">
+                                        @foreach ($property->images as $image)
+                                            <div class="col-md-3 mb-3">
+                                                <img src="{{ asset($image->image_url) }}" alt="{{ $image->alt_text }}" class="img-fluid h-75 w-75">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    @if($property->images->isEmpty())
+                                        <p>No images available</p>
+                                    @endif
+
+                                    @error('image_url')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+
                         <!-- Submit Button -->
                         <div class="form-group text-right">
                             <button type="submit" id="updateProperty" class="btn btn-primary">Update</button>
@@ -274,6 +331,7 @@
 </div>
 
 @endsection
+<script src="{{asset('assets/js/pages/admin/property/property_image/index.js')}}"></script>
 
 @section('script')
     <script>

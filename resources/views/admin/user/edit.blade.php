@@ -31,6 +31,16 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="role_id">Role<span class="text-danger">*</span></label>
+                                    <input type="text" name="role_id" id="role_id" class="form-control" value="User" readonly>
+                                    @error('role_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
 
                         <div class="row">
