@@ -240,7 +240,8 @@
                                     </ul>
                                     <div class="property-btn d-flex">
                                         {{-- <span>August 4, 2022</span> --}}
-                                        <a href="{{ route('single-property.show', $property->id) }}" class="btn btn-dashed btn-pill color-6" tabindex="0">Details</a>
+                                        <a href="{{ route('single-property.show', $property->id) }}" class="btn btn-dashed btn-pill color-2" tabindex="0">Details</a>
+                                        <a href="javascript:void(0)" class="btn btn-gradient btn-pill color-2"><i class="fa-solid fa-bookmark"></i> Book Now </a>
                                     </div>
                                 </div>
                             </div>

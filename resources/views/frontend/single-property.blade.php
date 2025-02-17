@@ -150,6 +150,12 @@
                             <span class="btn btn-dashed color-2 btn-pill">Wi-fi</span>
                             <span class="btn btn-dashed color-2 ms-1 btn-pill">Swimming Pool</span>
                         </div>
+                        <div class="mt-2">
+                            <a href="javascript:void(0)" class="btn btn-gradient btn-pill color-2" onclick="checkAuth(event)">
+                                <i class="fa-solid fa-bookmark"></i> Book Now
+                            </a>
+                        </div>
+
                     </div>
                 </div>
 
@@ -173,10 +179,10 @@
                                             href="#feature">feature</a></li>
                                     <li class="nav-item"><a data-bs-toggle="tab" class="nav-link"
                                             href="#gallery">gallery</a></li>
-                                    <li class="nav-item"><a data-bs-toggle="tab" class="nav-link" href="#video">video</a>
+                                    {{-- <li class="nav-item"><a data-bs-toggle="tab" class="nav-link" href="#video">video</a>
                                     </li>
                                     <li class="nav-item"><a data-bs-toggle="tab" class="nav-link" href="#floor_plan">Floor
-                                            plan</a></li>
+                                            plan</a></li> --}}
                                     <li class="nav-item"><a data-bs-toggle="tab" class="nav-link"
                                             href="#location-map">location</a></li>
                                 </ul>
@@ -286,27 +292,35 @@
                                     </div>
                                     <div class="tab-pane fade page-section ratio3_2" id="gallery">
                                         <h4 class="content-title">Gallery</h4>
-                                        <div class="single-gallery">
-                                            <!-- Large Image Slider (Main Image) -->
-                                            <div class="gallery-for">
+
+                                        <!-- Large Image Slider (Bootstrap Carousel) -->
+                                        <div id="propertyGallery" class="carousel slide" data-bs-ride="carousel">
+                                            <div class="carousel-inner">
                                                 @foreach($property->images as $key => $image)
-                                                    <div class="large-image">
-                                                        <img src="{{ asset($image->image_url) }}" class="bg-img" alt="Property Image">
+                                                    <div class="carousel-item @if($key == 0) active @endif" style="height: 500px; opacity: none;">
+                                                        <img src="{{ asset($image->image_url) }}" class="d-block h-100 w-100" alt="Property Image">
                                                     </div>
                                                 @endforeach
                                             </div>
 
-                                            <!-- Thumbnail Images Slider -->
-                                            <div class="gallery-nav">
-                                                @foreach($property->images as $image)
-                                                    <div>
-                                                        <img src="{{ asset($image->image_url) }}" class="img-fluid thumbnail-img" alt="Thumbnail Image">
-                                                    </div>
-                                                @endforeach
-                                            </div>
+                                            <!-- Carousel Controls -->
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#propertyGallery" data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" data-bs-target="#propertyGallery" data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Next</span>
+                                            </button>
+                                        </div>
+
+                                        <!-- Thumbnail Navigation -->
+                                        <div class="mt-3 d-flex justify-content-center">
+                                            @foreach($property->images as $key => $image)
+                                                <img src="{{ asset($image->image_url) }}" class="img-thumbnail mx-1" style="width: 80px; cursor: pointer; opacity: 0.5;" alt="Thumbnail Image" onclick="changeSlide({{ $key }})">
+                                            @endforeach
                                         </div>
                                     </div>
-
                                     <div class="tab-pane fade page-section" id="location-map">
                                         <h4 class="content-title">location</h4>
                                         <iframe title="realestate location" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.1583091352!2d-74.11976373946229!3d40.69766374859258!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew+York%2C+NY%2C+USA!5e0!3m2!1sen!2sin!4v1563449626439!5m2!1sen!2sin"
@@ -932,7 +946,7 @@
 
     @include('frontend.footer-script')
     @yield('script')
-<script>
+{{-- <script>
   $(document).ready(function(){
     // Initialize Slick for large image slider
     $('.gallery-for').slick({
@@ -956,6 +970,39 @@
     });
   });
 
+</script> --}}
+
+<script>
+    function changeSlide(index) {
+        let carousel = document.querySelector('#propertyGallery');
+        let items = carousel.querySelectorAll('.carousel-item');
+        let thumbnails = document.querySelectorAll('.img-thumbnail');
+
+        items.forEach((item, i) => {
+            item.classList.remove('active');
+            item.style.opacity = '0.5';
+        });
+
+        thumbnails.forEach((thumb) => {
+            thumb.style.opacity = '0.5';
+        });
+
+        items[index].classList.add('active');
+        items[index].style.opacity = '1';
+        thumbnails[index].style.opacity = '1';
+    }
+
+    function checkAuth(event) {
+        event.preventDefault(); // Prevent default anchor action
+
+        @if(auth()->check())
+            // If user is logged in, redirect to the booking page with property ID
+            window.location.href = "{{ route('booking', $property->id) }}";
+        @else
+            // If user is not logged in, redirect to login page
+            window.location.href = "{{ route('login-user') }}";
+        @endif
+    }
 </script>
 </body>
 

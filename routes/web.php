@@ -21,6 +21,8 @@ use App\Http\Controllers\website\LoginController;
 use App\Http\Controllers\website\SignUpController;
 use App\Http\Controllers\website\CartController;
 use App\Http\Controllers\website\ProfileController;
+use App\Http\Controllers\website\BookingController;
+use App\Http\Controllers\website\PaymentController;
 
 
 // use App\Http\Middleware\CheckPermission;
@@ -140,8 +142,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/myprofile', [ProfileController::class, 'myProfile'])->name('myprofile');
     Route::post('/myprofile-update', [ProfileController::class, 'update'])->name('update.profile');
     Route::post('logout-user', [ProfileController::class, 'logoutUser'])->name('logout-user');
-
+    Route::get('/property/{id}/booking', [BookingController::class, 'show'])->name('booking');
 
 });
 
+    Route::post('/process-payment', [PaymentController::class, 'processPayment']);
 ?>

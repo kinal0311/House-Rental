@@ -16,6 +16,7 @@ rel="stylesheet">
 {{-- <link rel="stylesheet" type="text/css" href="{{ URL::asset('sheltos/assets/css/magnific-popup.css')}}" /> --}}
 
 <!-- Template css -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="{{ URL::asset('sheltos/assets/css/bootstrap.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ URL::asset('sheltos/assets/css/color1.css')}}" rel="stylesheet" type="text/css" />
 

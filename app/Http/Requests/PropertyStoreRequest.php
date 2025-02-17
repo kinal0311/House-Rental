@@ -22,21 +22,22 @@ class PropertyStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-        'property_type' => 'required',
-        'max_rooms' => 'required',
-        'beds' => 'required',
-        'baths' => 'required',
-        'price' => 'required',
-        'status' => 'required|in:Sale,Sold,Rent',
-        'area' => 'required',
-        'zip_code' => 'required',
-        'address' => 'required',
-        'city' => 'required',
-        'agent_id' => 'required|exists:users,id',
-        'description' => 'required',
-        // 'media' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image file
-         'additional_features' => 'required|array|min:1', // Ensure it's an array with at least one item
-        // 'additional_features.*' => 'string', // Validate that each feature is a string
+            'property_type' => 'required',
+            'max_rooms' => 'required',
+            'beds' => 'required',
+            'baths' => 'required',
+            'price' => 'required',
+            'status' => 'required|in:Sale,Sold,Rent',
+            'area' => 'required',
+            'zip_code' => 'required',
+            'address' => 'required',
+            'city' => 'required',
+            'agent_id' => 'required|exists:users,id',
+            'description' => 'required',
+            'additional_features' => 'required|array|min:1', // Ensure it's an array with at least one item
+            'payment_type' => 'nullable|in:1,2', // 1 for Full Payment, 2 for Token Amount
+            'token_amount' => 'nullable|numeric|min:0', // Nullable but must be a positive number if present
+            'property_status' => 'required|in:0,1', // 0 for Inactive, 1 for Active
         ];
     }
 

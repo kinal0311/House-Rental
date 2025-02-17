@@ -29,7 +29,10 @@ return new class extends Migration
             $table->string('address', 255);
             $table->string('zip_code', 20);
             $table->string('city', 255);
+            $table->tinyInteger('payment_type')->default(1);
+            $table->decimal('token_amount', 10, 2)->nullable();
             $table->text('additional_features')->nullable();
+            $table->unsignedTinyInteger('property_status')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

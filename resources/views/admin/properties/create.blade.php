@@ -213,6 +213,54 @@
                         </div>
 
                         <div class="row">
+                            <!-- Payment Type (Radio Buttons) -->
+                            <div class="col-md-6" id="payment_type_section">
+                                <div class="form-group">
+                                    <label>Payment Type<span class="text-danger">*</span></label>
+                                    <div class="d-flex">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="payment_type" id="payment_type_full" value="1" required>
+                                            <label class="form-check-label" for="payment_type_full">Full Payment</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="payment_type" id="payment_type_token" value="2">
+                                            <label class="form-check-label" for="payment_type_token">Token Amount</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Property Status (Radio Buttons) -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Property Status<span class="text-danger">*</span></label>
+                                    <div class="d-flex">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="property_status" id="property_status_active" value="1" required>
+                                            <label class="form-check-label" for="property_status_active">Active</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="property_status" id="property_status_inactive" value="0">
+                                            <label class="form-check-label" for="property_status_inactive">Inactive</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <!-- Token Amount (Input) -->
+                            <div class="col-md-6" id="token_amount_box" style="display: none;">
+                                <div class="form-group">
+                                    <label for="token_amount">Token Amount</label>
+                                    <input type="number" name="token_amount" id="token_amount" class="form-control" placeholder="Enter Token Amount" min="0" step="any" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
                             <!-- Description -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -298,5 +346,70 @@
     $(document).ready(function () {
         $('#propertyForm').parsley();
     });
+    // Handle the changes based on the selected Status
+document.querySelectorAll('input[name="status"]').forEach((elem) => {
+    elem.addEventListener("change", function () {
+        var status = document.querySelector('input[name="status"]:checked').value;
+        var fullPaymentRadio = document.getElementById("payment_type_full");
+        var tokenPaymentRadio = document.getElementById("payment_type_token");
+        var paymentTypeSection = document.getElementById("payment_type_section");
+        var tokenAmountBox = document.getElementById("token_amount_box");
+
+        // Handle Rent status: Full Payment must be selected, disable Token Amount option
+        if (status === "Rent") {
+            fullPaymentRadio.disabled = false;
+            tokenPaymentRadio.disabled = true;
+            if (!fullPaymentRadio.checked) {
+                fullPaymentRadio.checked = true;  // Automatically select Full Payment
+            }
+            paymentTypeSection.style.display = "block";  // Show Payment Type Section
+            tokenAmountBox.style.display = "none";  // Hide Token Amount field when Rent is selected
+        }
+        // Handle Sold status: Hide Payment Type Section
+        else if (status === "Sold") {
+            paymentTypeSection.style.display = "none";  // Hide Payment Type Section
+            tokenAmountBox.style.display = "none";  // Hide Token Amount field if displayed
+        }
+        // Handle Sale status: Enable both options, show Token Amount field if selected
+        else if (status === "Sale") {
+            tokenPaymentRadio.disabled = false;
+            paymentTypeSection.style.display = "block";  // Show Payment Type Section
+            if (tokenPaymentRadio.checked) {
+                tokenAmountBox.style.display = "block";  // Show Token Amount field if Token Payment is selected
+            } else {
+                tokenAmountBox.style.display = "none";  // Hide Token Amount field if Full Payment is selected
+            }
+        }
+    });
+});
+
+// Handle the changes based on the selected Payment Type
+document.querySelectorAll('input[name="payment_type"]').forEach((elem) => {
+    elem.addEventListener("change", function () {
+        var paymentType = document.querySelector('input[name="payment_type"]:checked').value;
+        var tokenAmountBox = document.getElementById("token_amount_box");
+
+        // Show or hide the Token Amount field based on the Payment Type selection
+        if (paymentType === "2") {  // Token Amount selected
+            tokenAmountBox.style.display = "block";
+        } else {  // Full Payment selected
+            tokenAmountBox.style.display = "none";
+        }
+    });
+});
+
+// Handle calculation of Token Amount (10% of Total Price)
+document.getElementById("price").addEventListener("input", function () {
+    var Price = parseFloat(this.value);
+    var tokenAmountField = document.getElementById("token_amount");
+
+    if (!isNaN(Price) && Price > 0) {
+        var tokenAmount = Price * 0.10;  // 10% of Total Price
+        tokenAmountField.value = tokenAmount.toFixed(2);  // Set the token amount to 10% of the total price
+    } else {
+        tokenAmountField.value = "";  // Clear Token Amount if Total Price is invalid
+    }
+});
+
 </script>
 @endsection

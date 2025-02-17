@@ -38,11 +38,11 @@
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Property Type</th>
-                                <th>Image_url</th>
-                                <th>Alt_text</th>
-                                <th>Max Rooms</th>
-                                <th>Beds</th>
+                                <th>Property Id</th>
+                                <th>User Id</th>
+                                <th>Payment Option</th>
+                                <th>Payment Status</th>
+                                <th>Amound</th>
                                 <th>Baths</th>
                                 <th>Price</th>
                                 <th>Status</th>

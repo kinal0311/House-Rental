@@ -66,24 +66,13 @@
                         <ul class="header-right">
                             <li class="right-menu color-6">
                                 <ul class="nav-menu">
-                                    <li class="dropdown language">
-                                        <a href="javascript:void(0)">
-                                            <i data-feather="globe"></i>
-                                        </a>
-                                        <ul class="nav-submenu">
-                                            <li><a href="javascript:void(0)">English</a></li>
-                                            <li><a href="javascript:void(0)">French</a></li>
-                                            <li><a href="javascript:void(0)">Arabic</a></li>
-                                            <li><a href="javascript:void(0)">Spanish</a></li>
-                                        </ul>
-                                    </li>
                                     <li class="dropdown">
-                                        <a href="user-favourites.html">
+                                        <a href="user-favourites.html" title="Wishlist">
                                             <i data-feather="heart"></i>
                                         </a>
                                     </li>
                                     <li class="dropdown cart">
-                                        <a href="{{ auth()->check() ? route('cart.show') : route('login-user') }}">
+                                        <a href="{{ auth()->check() ? route('cart.show') : route('login-user') }}" title="Add To Cart">
                                             <i data-feather="shopping-cart"></i>
                                         </a>
                                         {{-- <ul class="nav-submenu">
@@ -119,18 +108,19 @@
                                         </ul> --}}
                                     </li>
                                     <li class="dropdown">
-                                        <a href="{{ route('login')}}">
+                                        <a href="{{ auth()->check() ? route('myprofile') : route('login-user') }}" title="My Profile">
+                                            <i data-feather="user"></i>
+                                        </a>
+                                    </li>
+
+                                    <li class="dropdown">
+                                        <a href="{{ route('login-user')}}" title="User Login">
+                                            <i data-feather="log-in"></i>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="{{ route('login')}}" title="Dashboard">
                                             <i class="fa-solid fa-desktop" style="color: #ffffff;"></i>
-                                        </a>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="{{ route('login-user')}}">
-                                            <i data-feather="user"></i>
-                                        </a>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="{{ auth()->check() ? route('myprofile') : route('login-user') }}">
-                                            <i data-feather="user"></i>
                                         </a>
                                     </li>
                                     {{-- <li class="dropdown">

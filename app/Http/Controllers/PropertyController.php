@@ -28,7 +28,19 @@ class PropertyController extends Controller
     {
         $requestData = $request->validated();
 
-        $property = Property::create($requestData);
+        // Handle the 'payment_type' and 'token_amount' explicitly if needed
+        $paymentType = $request->input('payment_type', 1); // Default to 1 (Full Payment)
+        $tokenAmount = $request->input('token_amount'); // Nullable field
+
+        // If payment type is 1 (Full Payment), set token_amount to null
+        if ($paymentType == 1) {
+            $tokenAmount = null;
+        }
+
+        $property = Property::create(array_merge($requestData, [
+            'payment_type' => $paymentType,
+            'token_amount' => $tokenAmount
+        ]));
 
         // Handle Image Upload
         if ($request->hasFile('image_url')) {
@@ -44,9 +56,10 @@ class PropertyController extends Controller
             }
         }
 
-        return redirect()->route('admin.properties.index')
-                         ->with('success', 'Property created successfully with images.');
+        return redirect()->route('admin.properties.index')->with('sweet_success', 'Property created successfully with images.');
     }
+
+
 
     public function getData(Request $request)
     {
@@ -67,6 +80,9 @@ class PropertyController extends Controller
             13 => 'agent',
             14 => 'description',
             15 => 'additional_features',
+            16 => 'payment_type',  // Added column for payment_type
+            17 => 'token_amount',  // Added column for token_amount
+            18 => 'property_status', // Added column for property_status
         ];
 
         $limit = $request->input('length');
@@ -93,6 +109,9 @@ class PropertyController extends Controller
                     ->orWhere('city', 'LIKE', "%{$search}%")
                     ->orWhere('description', 'LIKE', "%{$search}%")
                     ->orWhere('additional_features', 'LIKE', "%{$search}%")
+                    ->orWhere('payment_type', 'LIKE', "%{$search}%")
+                    ->orWhere('token_amount', 'LIKE', "%{$search}%")
+                    ->orWhere('property_status', 'LIKE', "%{$search}%")
                     ->orWhereHas('agent', function ($query) use ($search) {
                         $query->where('name', 'LIKE', "%{$search}%");
                     });
@@ -119,6 +138,10 @@ class PropertyController extends Controller
             $nestedData['agent'] = $data->agent ? $data->agent->name : 'No Agent';
             $nestedData['description'] = Str::limit($data->description, 50) ?? '';
             $nestedData['additional_features'] = $data->additional_features ?? '';
+            $nestedData['payment_type'] = $data->payment_type == 1 ? '1' : '2';  // Display human-readable payment type
+            $nestedData['token_amount'] = $data->token_amount ?? 'N/A';  // Show token amount if available
+            $nestedData['property_status'] = $data->property_status == 1 ? 'Active' : 'Inactive'; // Show property status
+
             $nestedData['edit_url'] = route('admin.properties.edit', $data->id);
             $nestedData['view_url'] = route('admin.properties.view', $data->id);
             $nestedData['actions'] = $data->id;
@@ -158,18 +181,19 @@ class PropertyController extends Controller
 
         $property->delete();
 
-        return response()->json(['success' => 'Property and its images deleted successfully.']);
+        return response()->json(['sweet_success' => 'Property and its images deleted successfully.']);
     }
 
     public function propertyEdit($id)
     {
         try {
             $property = Property::findOrFail($id);
+            // dd($property);
             $agents = User::where('role_id', 2)->get();
 
             return view('admin.properties.edit', compact('property', 'agents'));
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to load property details.');
+            return redirect()->back()->with('sweet_error', 'Failed to load property details.');
         }
     }
 
@@ -177,7 +201,20 @@ class PropertyController extends Controller
     {
         $validatedData = $request->validated();
         $property = Property::findOrFail($id);
-        $property->update($validatedData);
+
+        // Handle the 'payment_type' and 'token_amount' explicitly if needed
+        $paymentType = $request->input('payment_type', 1); // Default to 1 (Full Payment)
+        $tokenAmount = $request->input('token_amount'); // Nullable field
+
+        // If payment type is 1 (Full Payment), set token_amount to null
+        if ($paymentType == 1) {
+            $tokenAmount = null;
+        }
+
+        $property->update(array_merge($validatedData, [
+            'payment_type' => $paymentType,
+            'token_amount' => $tokenAmount
+        ]));
 
         // Handle New Image Upload
         if ($request->hasFile('image_url')) {
@@ -193,8 +230,9 @@ class PropertyController extends Controller
             }
         }
 
-        return redirect()->route('admin.properties.index')->with('success', 'Property updated successfully.');
+        return redirect()->route('admin.properties.index')->with('sweet_success', 'Property updated successfully.');
     }
+
 
     public function show($id)
     {
@@ -202,7 +240,7 @@ class PropertyController extends Controller
             $property = Property::with('agent', 'images')->findOrFail($id);
             return view('admin.properties.view', compact('property'));
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Property not found.');
+            return redirect()->back()->with('sweet_error', 'Property not found.');
         }
     }
 }
