@@ -80,14 +80,21 @@
 
                 <!-- Property Details Section -->
                 <div class="row mb-4">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <h4>Customer Details</h4>
+                        <p><strong>Customer Name:</strong> {{ $user->name }} </p>  <!-- Corrected -->
+                        <p><strong>Email:</strong> {{ $user->email }}</p>        <!-- Corrected -->
+                        <p><strong>Phone No.:</strong> {{ $user->phone_number  ?? 'N/A' }}</p> <!-- Assuming there's a phone field, or you can customize this -->
+                        <p><strong>Gender:</strong> {{ $user->gender ?? 'N/A' }}</p> <!-- Assuming there's a gender field, or you can customize this -->
+                    </div>
+                    <div class="col-md-4">
                         <h4>Agent Details</h4>
                         <p><strong>Agent Name:</strong> {{ $agent->name }} </p>  <!-- Corrected -->
                         <p><strong>Email:</strong> {{ $agent->email }}</p>        <!-- Corrected -->
                         <p><strong>Phone No.:</strong> {{ $agent->phone_number  ?? 'N/A' }}</p> <!-- Assuming there's a phone field, or you can customize this -->
                         <p><strong>Gender:</strong> {{ $agent->gender ?? 'N/A' }}</p> <!-- Assuming there's a gender field, or you can customize this -->
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <h4>Property Details</h4>
                         <p><strong>Property Name:</strong> {{ $property->property_type }} </p>
                         <p><strong>Property Location:</strong> {{ $property->address }} </p>
@@ -127,60 +134,53 @@
                         <p>Thank you for booking with us!</p>
                     </div>
                     <div>
-                        <a href="javascript:void(0)" class="btn btn-gradient btn-pill color-2">
-                            <i class="fa-solid fa-credit-card"></i> Pay Now
-                        </a>
+                        <form action="{{ route('payment.process') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="property_id" value="{{ $property->id }}">
+
+                            <button type="submit" class="btn btn-gradient btn-pill color-2">
+                                <i class="fa-solid fa-credit-card"></i> Pay Now </button>
+                        </form>
+
                     </div>
                 </div>
 
             </div>
         </div>
     </div>
-@include('frontend.footer-orange')
+    @include('frontend.footer-orange')
     <!-- customizer end -->
+    {{-- @if(session('status') && session('message')) --}}
 
     @include('frontend.footer-script')
     @yield('script')
 
+    <script>
+        // Retrieve session data using Blade variables inside JavaScript
+        const status = "{{ session('status') }}";
+        const message = "{{ session('message') }}";
+
+        // Check if status and message are not empty
+        if (status && message) {
+            if (status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: message,
+                    confirmButtonText: 'OK'
+                });
+            } else if (status === 'error') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: message,
+                    confirmButtonText: 'OK'
+                });
+            }
+        }
+    </script>
+
 </body>
-<script>
-
-$.ajax({
-    url: '/process-payment',
-    type: 'POST',
-    data: {
-        // You can pass any necessary data here
-    },
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    },
-    success: function(response) {
-        console.log(response);
-        alert('Payment processed successfully');
-    },
-    error: function(error) {
-        console.log(error);
-        alert('Payment failed');
-    }
-});
-
-
-TapJS.createToken({
-    number: '4111111111111111',  // Example card number
-    exp_month: '12',
-    exp_year: '2026',
-    cvc: '123',
-}, function(response) {
-    if (response.error) {
-        console.log('Error generating token: ', response.error);
-    } else {
-        console.log('Token generated: ', response.id);
-        // Use this token in your backend request
-    }
-});
-
-
-</script>
-
+{{-- @endif --}}
 <!-- Mirrored from themes.pixelstrap.com/sheltos/main/single-property-8.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 27 Jan 2025 12:54:50 GMT -->
 </html>

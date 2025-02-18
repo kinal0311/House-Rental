@@ -67,7 +67,7 @@
                             <li class="right-menu color-6">
                                 <ul class="nav-menu">
                                     <li class="dropdown">
-                                        <a href="user-favourites.html" title="Wishlist">
+                                        <a href="{{ route('wishlist.show')}}" title="Wishlist">
                                             <i data-feather="heart"></i>
                                         </a>
                                     </li>

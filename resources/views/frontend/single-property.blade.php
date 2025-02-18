@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>House Rentak</title>
+    <title>House Rental</title>
     @include('frontend.layoutcss')
 
     <style>
@@ -151,9 +151,11 @@
                             <span class="btn btn-dashed color-2 ms-1 btn-pill">Swimming Pool</span>
                         </div>
                         <div class="mt-2">
-                            <a href="javascript:void(0)" class="btn btn-gradient btn-pill color-2" onclick="checkAuth(event)">
-                                <i class="fa-solid fa-bookmark"></i> Book Now
-                            </a>
+                            @if($property->status !== 'Sold')
+                                <a href="javascript:void(0)" class="btn btn-gradient btn-pill color-2" onclick="checkAuth(event, {{ $property->id }})">
+                                    <i class="fa-solid fa-bookmark"></i> Book Now
+                                </a>
+                            @endif
                         </div>
 
                     </div>
@@ -971,6 +973,7 @@
   });
 
 </script> --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     function changeSlide(index) {
@@ -992,17 +995,22 @@
         thumbnails[index].style.opacity = '1';
     }
 
-    function checkAuth(event) {
-        event.preventDefault(); // Prevent default anchor action
+    function checkAuth(event, propertyId) {
+    event.preventDefault(); // Prevent default anchor action
 
-        @if(auth()->check())
-            // If user is logged in, redirect to the booking page with property ID
-            window.location.href = "{{ route('booking', $property->id) }}";
-        @else
-            // If user is not logged in, redirect to login page
-            window.location.href = "{{ route('login-user') }}";
-        @endif
+    let isAuthenticated = "{{ auth()->check() }}" === "1"; // Check if the user is logged in
+
+    if (isAuthenticated) {
+        // ✅ Fix: Pass propertyId dynamically
+        window.location.href = "{{ route('booking', ':id') }}".replace(':id', propertyId);
+    } else {
+        window.location.href = "{{ route('login-user') }}";
     }
+}
+
+
+
+
 </script>
 </body>
 

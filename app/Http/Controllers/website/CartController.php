@@ -19,6 +19,7 @@ class CartController extends Controller
         try {
             $propertyId = $request->input('property.id');
             $userId = Auth::id(); // Get the authenticated user ID
+
             if (!$userId) {
                 return response()->json([
                     'status' => 'error',
@@ -26,15 +27,23 @@ class CartController extends Controller
                 ], 401);
             }
 
-            // Retrieve the property along with its images
-            $property = Property::with('images')->findOrFail($propertyId);
-                 // Check if the property status is "Sold"
-        if ($property->status === 'Sold') {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'This property is sold and cannot be added to the cart.'
-            ], 400); // Bad request
-        }
+            // Check if property exists
+            $property = Property::find($propertyId);
+            if (!$property) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Property not found.'
+                ], 404);
+            }
+
+            // Check if the property status is "Sold"
+            if ($property->status === 'Sold') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'This property is sold and cannot be added to the cart.'
+                ], 400); // Bad request
+            }
+
             // Check if the property already exists in the cart for the user
             $existingCartItem = Cart::where('user_id', $userId)
                                     ->where('property_id', $propertyId)
@@ -42,7 +51,7 @@ class CartController extends Controller
 
             // Retrieve updated cart data
             $cart = Cart::with('property.images')->where('user_id', $userId)->get();
-            // After checking for an existing cart item and adding it if necessary
+
             if (!$existingCartItem) {
                 // If it doesn't exist, add it to the cart
                 Cart::create([
@@ -55,7 +64,7 @@ class CartController extends Controller
                     'message' => 'Property added to cart successfully!',
                     'cart' => $cart,
                     'cartHTML' => view('frontend.cart', compact('cart'))->render(),
-                    'added_to_cart' => true // Indicate that the item was added
+                    'added_to_cart' => true
                 ]);
             } else {
                 return response()->json([
@@ -63,23 +72,18 @@ class CartController extends Controller
                     'message' => 'This property is already in the cart.',
                     'cart' => $cart,
                     'cartHTML' => view('frontend.cart', compact('cart'))->render(),
-                    'added_to_cart' => false // Indicate that the item was already in the cart
+                    'added_to_cart' => false
                 ]);
             }
-
-            return response()->json([
-                'status' => 'success',
-                'cart' => $cart,
-                'cartHTML' => view('frontend.cart', compact('cart'))->render()
-            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
             ], 500);
         }
-
     }
+
+
 
 
     public function showCart()
@@ -91,29 +95,32 @@ class CartController extends Controller
     }
 
     public function removeFromCart(Request $request)
-    {
-        try {
-            // Find the cart item and soft delete it
-            $cartItem = Cart::findOrFail($request->cart_item_id);
-            $cartItem->delete();  // This will soft delete (set the deleted_at column)
+{
+    try {
+        $cartItemId = $request->cart_item_id;
 
-            // Get the updated cart items for the current user
-            $cart = Cart::where('user_id', auth()->id())->get();
+        // Find the cart item and remove it
+        $cartItem = Cart::findOrFail($cartItemId);
+        $cartItem->delete();
 
-            // Return the updated cart HTML and count
-            return response()->json([
-                'status' => 'success',
-                'cartHTML' => view('frontend.cart', compact('cart'))->render(), // Render updated cart items
-                'cartCount' => $cart->count()  // Updated cart item count
-            ]);
+        // Get updated cart data
+        $cart = Cart::where('user_id', Auth::id())->get();
 
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json([
+            'status' => 'success',
+            'cartHTML' => view('frontend.cart', compact('cart'))->render(), // Only the updated cart HTML
+            'cartCount' => $cart->count()  // Updated cart item count
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Error removing property from cart'
+        ], 500);
     }
+}
+
+
+
 
 }
 

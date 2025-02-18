@@ -219,9 +219,10 @@
                                             <i data-feather="shopping-cart"></i>
                                         </a>
 
-                                        <a href="javascript:void(0);" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist">
-                                            <i data-feather="heart"></i>
+                                        <a href="javascript:void(0);" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist" onclick="addToWishlist({{ $property->id }}, event)">
+                                            <i data-feather="heart" class="heart-icon"></i>
                                         </a>
+
                                     </div>
 
                                 </div>
@@ -241,7 +242,11 @@
                                     <div class="property-btn d-flex">
                                         {{-- <span>August 4, 2022</span> --}}
                                         <a href="{{ route('single-property.show', $property->id) }}" class="btn btn-dashed btn-pill color-2" tabindex="0">Details</a>
-                                        <a href="javascript:void(0)" class="btn btn-gradient btn-pill color-2"><i class="fa-solid fa-bookmark"></i> Book Now </a>
+                                        @if($property->status !== 'Sold')
+                                            <a href="javascript:void(0)" class="btn btn-gradient btn-pill color-2" onclick="checkAuth(event, {{ $property->id }})">
+                                                <i class="fa-solid fa-bookmark"></i> Book Now
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -261,6 +266,21 @@
 @yield('script')
 <script src="https://unpkg.com/feather-icons"></script>
 <script>
+function checkAuth(event, propertyId) {
+    event.preventDefault(); // Prevent default anchor action
+
+    let isAuthenticated = "{{ auth()->check() }}" === "1"; // Check if the user is logged in
+
+    if (isAuthenticated) {
+        // ✅ Fix: Pass propertyId dynamically
+        window.location.href = "{{ route('booking', ':id') }}".replace(':id', propertyId);
+    } else {
+        window.location.href = "{{ route('login-user') }}";
+    }
+}
+
+
+
 
 
 // $('#search-btn').click(function() {
@@ -465,6 +485,8 @@ $('#search-btn').click(function(event) {
 function addToCart(propertyId, event) {
     event.preventDefault(); // Prevent default behavior (if inside a link)
 
+    console.log("Property ID: ", propertyId); // Log the property ID for debugging
+
     $.ajax({
         url: "{{ route('cart.add') }}", // Ensure this route is correctly set in web.php
         method: "POST",
@@ -473,6 +495,8 @@ function addToCart(propertyId, event) {
             property: { id: propertyId } // Send correct property ID
         },
         success: function(response) {
+            console.log(response); // Log response to see what's coming from the server
+
             if (response.status === "success") {
                 if (response.added_to_cart) {
                     // Property was successfully added to the cart
@@ -528,6 +552,123 @@ function addToCart(propertyId, event) {
         }
     });
 }
+
+
+// Handle the Wishlist toggle (heart icon)
+// $('.property-box .overlay-property-box .effect-round.like').on('click', function() {
+//     var icon = $(this).find('i'); // Get the heart icon element
+//     var isAdded = $(this).hasClass('added'); // Check if it's already added to the wishlist
+//     var propertyId = $(this).data('property-id'); // Assuming property ID is attached to the element
+
+//     if (!isAdded) {
+//         // If not added, add the filled heart and notify
+//         icon.removeClass('feather-heart').addClass('feather-heart-fill'); // Switch to filled heart icon
+//         $(this).addClass('added'); // Mark it as added
+//         addToWishlist(propertyId); // Add property to wishlist
+
+//         Swal.fire({
+//             icon: 'success',
+//             title: 'Property added to wishlist',
+//             showConfirmButton: false,
+//             timer: 3000,
+//             position: 'top-end',
+//             toast: true
+//         });
+//     } else {
+//         // If already added, change the heart back to outline and notify removal
+//         icon.removeClass('feather-heart-fill').addClass('feather-heart'); // Switch to outline heart icon
+//         $(this).removeClass('added'); // Mark it as removed
+//         removeFromWishlist(propertyId); // Remove property from wishlist
+
+//         Swal.fire({
+//             icon: 'info',
+//             title: 'Property removed from wishlist',
+//             showConfirmButton: false,
+//             timer: 3000,
+//             position: 'top-end',
+//             toast: true
+//         });
+//     }
+
+//     // Re-initialize Feather icons after modifying
+//     feather.replace();
+// });
+
+function addToWishlist(propertyId, event) {
+    event.preventDefault(); // Prevent default behavior (if inside a link)
+
+    $.ajax({
+        url: "{{ route('wishlist.add') }}", // Ensure this route is correctly set in web.php
+        method: "POST",
+        data: {
+            _token: $('meta[name="csrf-token"]').attr("content"), // CSRF Token
+            property: { id: propertyId } // Send correct property ID
+        },
+        success: function(response) {
+            if (response.status === "success") {
+                if (response.added_to_wishlist) {
+                    // Property was successfully added to the wishlist
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Property added to wishlist successfully!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    // Update heart icon to filled
+                    $(".effect-round.like[data-property-id='" + propertyId + "']").addClass('added'); // Mark as added
+                    $(".effect-round.like[data-property-id='" + propertyId + "'] i").removeClass('feather-heart').addClass('feather-heart-fill'); // Change to filled heart
+                } else {
+                    // Property is already in the wishlist
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Property already in wishlist!',
+                        text: 'This property is already added to your wishlist.',
+                        showConfirmButton: true
+                    });
+                }
+
+                // Update wishlist count dynamically (if needed)
+                $("#wishlist-count").text(response.wishlist.length);
+
+                // Update wishlist dropdown (if any)
+                $("#wishlist-container").html(response.wishlistHTML);
+            } else {
+                if (response.message === 'This property is sold and cannot be added to the wishlist.') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Property Sold',
+                        text: 'This property is sold and cannot be added to your wishlist.',
+                        showConfirmButton: true
+                    });
+                } else {
+                    // Show other errors
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response.message || 'Error occurred while adding to wishlist',
+                        showConfirmButton: true
+                    });
+                }
+            }
+        },
+        error: function(xhr) {
+            console.error(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Error occurred while adding to wishlist',
+                showConfirmButton: true
+            });
+        }
+    });
+}
+
+
+
+
+
 
 
 

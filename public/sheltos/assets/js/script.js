@@ -30,12 +30,12 @@
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
       return new bootstrap.Tooltip(tooltipTriggerEl)
     })
- 
-        $('.like').on('click', function (e) {        
+
+        $('.like').on('click', function (e) {
             $(this).toggleClass('added');
         });
 
-        $('button.add').on('click', function (e) {        
+        $('button.add').on('click', function (e) {
             $('.add-more').toggleClass('open');
         });
         // Language icon
@@ -94,7 +94,7 @@
     /*=====================
      03. Footer js
      ==========================*/
-   
+
 
     var contentwidth = $(window).width();
     $(window).on('load', function(){
@@ -110,18 +110,18 @@
                         $(this).find('span').replaceWith('<span class="according-menu"><i class="fas fa-chevron-up"></i></span>');
                         $(this).next().slideDown('normal');
                     } else {
-                        $(this).find('span').replaceWith('<span class="according-menu"><i class="fas fa-chevron-down"></i></span>');                       
+                        $(this).find('span').replaceWith('<span class="according-menu"><i class="fas fa-chevron-down"></i></span>');
                     }
                 });
                 $('.footer-content').hide();
-                
+
             } else {
                 $('.footer-content').show();
-                
+
             }
         }
     });
-  
+
     /*=====================
      04. Menu js
      ==========================*/
@@ -138,7 +138,7 @@
         $('.nav-menu').removeClass("open");
         $('.bg-overlay').removeClass("active");
     });
-    
+
     var contentwidth = $(window).width();
     if ((contentwidth) <= '1199') {
         $('<div class="bg-overlay"></div>').appendTo($('header'));
@@ -369,119 +369,53 @@
     /*=====================
     11. Add to wishlist
     ==========================*/
-    $('.property-box .overlay-property-box .effect-round.like').on('click', function() {
-        var click = $(this).data('clicks');
+    // $('.property-box .overlay-property-box .effect-round.like').on('click', function() {
+    //     var icon = $(this).find('i'); // Get the heart icon element
+    //     var isAdded = $(this).hasClass('added'); // Check if it's already added to the wishlist
 
-        
-        if(!$(this).hasClass('added')) {
-            $.notify({
-                message: 'Property Successfully added in wishlist'
-            }, {
-                element: 'body',
-                position: null,
-                type: "default",
-                allow_dismiss: true,
-                newest_on_top: false,
-                showProgressbar: false,
-                placement: {
-                    from: "top",
-                    align: "right"
-                },
-                offset: 12,
-                spacing: 10,
-                z_index: 1031,
-                delay: 4000,
-                animate: {
-                    enter: 'animated fadeInDown',
-                    exit: 'animated fadeOutUp'
-                },
-                icon_type: 'class',
-                template: '<div data-notify="container" class="col-11 col-xxl-3 col-xl-4 col-md-6 col-sm-8 alert alert-{0}" role="alert">' +
-                    '<button type="button" aria-hidden="true" class="btn-close" data-notify="dismiss"></button>' +
-                    '<span data-notify="icon"></span> ' +
-                    '<span data-notify="title">{1}</span> ' +
-                    '<span data-notify="message">{2}</span>' +
-                    '<div class="progress" data-notify="progressbar">' +
-                    '<div class="progress-bar progress-bar-info progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                    '</div>' +
-                    '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                    '</div>'
-            });
-        }
-        else{
-            $.notify({
-                message: 'Property Successfully removed from wishlist'
-            }, {
-                element: 'body',
-                position: null,
-                type: "default",
-                allow_dismiss: true,
-                newest_on_top: false,
-                showProgressbar: false,
-                placement: {
-                    from: "top",
-                    align: "right"
-                },
-                offset: 12,
-                spacing: 10,
-                z_index: 1031,
-                delay: 4000,
-                animate: {
-                    enter: 'animated fadeInDown',
-                    exit: 'animated fadeOutUp'
-                },
-                icon_type: 'class',
-                template: '<div data-notify="container" class="col-11 col-xxl-3 col-xl-4 col-md-6 col-sm-8 alert alert-{0}" role="alert">' +
-                    '<button type="button" aria-hidden="true" class="btn-close" data-notify="dismiss"></button>' +
-                    '<span data-notify="icon"></span> ' +
-                    '<span data-notify="title">{1}</span> ' +
-                    '<span data-notify="message">{2}</span>' +
-                    '<div class="progress" data-notify="progressbar">' +
-                    '<div class="progress-bar progress-bar-info progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                    '</div>' +
-                    '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                    '</div>'
-            });
-        };
+    //     if (!isAdded) {
+    //         // If not added, add the filled heart and notify
+    //         icon.removeClass('feather-heart').addClass('feather-heart-fill'); // Switch to filled heart icon
+    //         $(this).addClass('added'); // Mark it as added
+    //         Swal.fire({
+    //             icon: 'success',
+    //             title: 'Property Successfully added to wishlist',
+    //             showConfirmButton: false,
+    //             timer: 4000,
+    //             position: 'top-end',
+    //             toast: true
+    //         });
+    //     } else {
+    //         // If already added, change the heart back to outline and notify removal
+    //         icon.removeClass('feather-heart-fill').addClass('feather-heart'); // Switch to outline heart icon
+    //         $(this).removeClass('added'); // Mark it as removed
+    //         Swal.fire({
+    //             icon: 'info',
+    //             title: 'Property Successfully removed from wishlist',
+    //             showConfirmButton: false,
+    //             timer: 4000,
+    //             position: 'top-end',
+    //             toast: true
+    //         });
+    //     }
 
-    });
+    //     // Re-initialize Feather icons after modifying
+    //     feather.replace();
+    // });
 
-    $('.property-box .overlay-property-box .effect-round1').on('click', function() {
 
-        $.notify({
-            message: 'Property Successfully added in wishlist'
-        }, {
-            element: 'body',
-            position: null,
-            type: "default-2",
-            allow_dismiss: true,
-            newest_on_top: false,
-            showProgressbar: false,
-            placement: {
-                from: "top",
-                align: "right"
-            },
-            offset: 12,
-            spacing: 10,
-            z_index: 1031,
-            delay: 4000,
-            animate: {
-                enter: 'animated fadeInDown',
-                exit: 'animated fadeOutUp'
-            },
-            icon_type: 'class',
-            template: '<div data-notify="container" class="col-11 col-xxl-3 col-xl-4 col-md-6 col-sm-8 alert alert-{0}" role="alert">' +
-                '<button type="button" aria-hidden="true" class="btn-close" data-notify="dismiss"></button>' +
-                '<span data-notify="icon"></span> ' +
-                '<span data-notify="title">{1}</span> ' +
-                '<span data-notify="message">{2}</span>' +
-                '<div class="progress" data-notify="progressbar">' +
-                '<div class="progress-bar progress-bar-info progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                '</div>' +
-                '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                '</div>'
-        });
-    });
+
+    // $('.property-box .overlay-property-box .effect-round1').on('click', function() {
+    //     Swal.fire({
+    //         icon: 'success',
+    //         title: 'Property Successfully added in wishlist',
+    //         showConfirmButton: false,
+    //         timer: 4000,
+    //         position: 'top-end',
+    //         toast: true
+    //     });
+    // });
+
 
     $(".save-btn").on('click', function() {
         $('.save-btn i').toggleClass("far fa-heart").toggleClass("fas fa-heart");
@@ -505,7 +439,7 @@
             $(".property-wrapper-grid").css("opacity", "1");
         }, 500);
     });
-    
+
     $('.grid-layout-view').on('click', function (e) {
         $('.collection-grid-view').css('opacity', '1');
         $('.property-wrapper-grid').removeClass("list-view");
@@ -559,7 +493,7 @@ $('#mapmodal').on('shown.bs.modal', function () {
 });
 
 function readURL( uploader ){
-    $('.update_img').attr('src', 
+    $('.update_img').attr('src',
             window.URL.createObjectURL(uploader.files[0]) );
 };
 
@@ -573,6 +507,6 @@ $(".table-wrapper").on("click", ".remove", function ( event ) {
     $("td , th", event.delegateTarget).remove(":nth-child(" + ndx + ")");
 });
 
-$(document).on('click', '.close-circle', function () {    
+$(document).on('click', '.close-circle', function () {
     $(this).parent('li').remove()
 })

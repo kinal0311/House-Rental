@@ -7390,8 +7390,8 @@ header.header-6 .menu {
         .top-bar .header-right .right-menu ul li.cart ul.nav-submenu li .close-circle a i {
           color: #959595; }
 
-.top-bar .header-right .right-menu ul li.wishlist:hover a svg {
-  fill: #f13439; }
+/* .top-bar .header-right .right-menu ul li.wishlist:hover a svg {
+  fill: #f13439; } */
 
 .top-bar .header-right .right-menu ul .dropdown {
   position: relative;
@@ -8018,9 +8018,9 @@ header .header-right .right-menu ul li.cart ul.nav-submenu {
         padding: 3px; }
         header .header-right .right-menu ul li.cart ul.nav-submenu li .close-circle a i {
           color: #959595; }
-
+/*
 header .header-right .right-menu ul li.wishlist:hover a svg {
-  fill: #f13439; }
+  fill: #f13439; } */
 
 header .header-right .right-menu ul .dropdown {
   position: relative;

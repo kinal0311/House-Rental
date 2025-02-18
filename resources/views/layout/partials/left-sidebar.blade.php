@@ -74,7 +74,7 @@
                 </a>
             </li> --}}
             <li>
-                <a href="javascript: void(0);">
+                <a href="{{ route('admin.payment.index')}}">
                     <i class="fe-shopping-cart"></i>
                     <span> Booking Order </span>
                 </a>

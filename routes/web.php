@@ -8,6 +8,7 @@ use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\PropertyImgController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\website\LayoutController;
 use App\Http\Controllers\website\SinglePropertyController;
 use App\Http\Controllers\website\AgentProfileController;
@@ -22,7 +23,7 @@ use App\Http\Controllers\website\SignUpController;
 use App\Http\Controllers\website\CartController;
 use App\Http\Controllers\website\ProfileController;
 use App\Http\Controllers\website\BookingController;
-use App\Http\Controllers\website\PaymentController;
+use App\Http\Controllers\website\WishlistController;
 
 
 // use App\Http\Middleware\CheckPermission;
@@ -101,6 +102,10 @@ Route::group([
     Route::get('property-view/{id}', [PropertyController::class, 'show'])->name('properties.view');
     // Route::post('propertyChangeStatus/{id}', [PropertyController::class, 'propertyChangeStatus'])->name('propertyChangeStatus');
 
+    Route::get('payment', [PaymentController::class, 'index'])->name('payment.index');
+    Route::post('payment-getData', [PaymentController::class, 'paymentData'])->name('payment-getData');
+
+
 
     // Route::get('property_Img', [PropertyImgController::class, 'index'])->name('property_image.index');
     // Route::get('img_create', [PropertyImgController::class, 'create'])->name('property_image.create');
@@ -142,9 +147,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/myprofile', [ProfileController::class, 'myProfile'])->name('myprofile');
     Route::post('/myprofile-update', [ProfileController::class, 'update'])->name('update.profile');
     Route::post('logout-user', [ProfileController::class, 'logoutUser'])->name('logout-user');
-    Route::get('/property/{id}/booking', [BookingController::class, 'show'])->name('booking');
 
 });
+Route::post('/add-to-wishlist', [WishlistController::class, 'add'])->name('wishlist.add');
+Route::get('/wishlist', [WishlistController::class, 'showWishlist'])->name('wishlist.show');
+Route::post('/remove-from-wishlist', [WishlistController::class, 'remove'])->name('wishlist.remove');
 
-    Route::post('/process-payment', [PaymentController::class, 'processPayment']);
+
+Route::get('/property/{id}/booking', [BookingController::class, 'show'])->name('booking');
+// Route::get('/book/{property_id}', [PaymentController::class, 'showInvoice'])->name('booking.invoice');
+Route::post('/pay', [BookingController::class, 'processPayment'])->name('payment.process');
+Route::get('/payment/callback', [BookingController::class, 'paymentCallback'])->name('payment.callback');
 ?>

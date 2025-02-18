@@ -69,6 +69,19 @@
                             </div>
                         </div>
                     </div>
+                        {{-- @foreach ($cart as $cartItem)
+                            @php
+                                $property = $cartItem->property;
+                            @endphp
+
+                            @if ($property)
+                                <div class="col-xl-4 col-md-6 col-12 grid-item wow fadeInUp mb-4 {{ $property->status }}">
+                                    <!-- Your HTML rendering here -->
+                                </div>
+                            @else
+                                <p>Property not found or unavailable.</p>
+                            @endif
+                            @endforeach --}}
                     <div class="property-2 column-sm zoom-gallery property-label property-grid row justify-content-start" id="properties-item">
                         @if($cart->isEmpty())
                             <h3>No properties in cart.</h3>
@@ -142,8 +155,6 @@
             </div>
         </div>
     </section>
-
-
 
 {{-- <div class="container">
     <h2>Your Cart</h2>
@@ -228,29 +239,26 @@ $(document).ready(function(){
 });
 
 function removeFromCart(cartItemId) {
-    // Show confirmation dialog using SweetAlert2
     Swal.fire({
         title: 'Are you sure?',
         text: "You are about to remove this property from your cart.",
         icon: 'warning',
-        showCancelButton: true, // Show the Cancel button
-        confirmButtonColor: '#3085d6', // Color for Confirm button
-        cancelButtonColor: '#d33', // Color for Cancel button
-        confirmButtonText: 'Yes, remove it!', // Text for Confirm button
-        cancelButtonText: 'No, keep it' // Text for Cancel button
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, remove it!',
+        cancelButtonText: 'No, keep it'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Proceed with removing the property from the cart
             $.ajax({
-                url: '{{ route('cart.remove') }}', // Ensure this is the correct route for removing the item
+                url: '{{ route('cart.remove') }}',
                 method: 'POST',
                 data: {
-                    _token: '{{ csrf_token() }}', // CSRF token for security
-                    cart_item_id: cartItemId // Send the cart item ID to be removed
+                    _token: '{{ csrf_token() }}',
+                    cart_item_id: cartItemId
                 },
                 success: function(response) {
                     if (response.status === 'success') {
-                        // Show success notification with SweetAlert2
                         Swal.fire({
                             icon: 'success',
                             title: 'Removed from Cart',
@@ -259,18 +267,15 @@ function removeFromCart(cartItemId) {
                             timer: 1500
                         });
 
-                        // Dynamically remove the cart item from the UI (based on cart item ID)
-                        $('#cart-item-' + cartItemId).remove(); // Dynamically remove the specific item
+                        // Dynamically remove the specific cart item
+                        $('#cart-item-' + cartItemId).remove();
 
-                        // Update the cart count if needed
-                        $('#cart-count').text(response.cartCount); // Update the cart count
+                        // Update the cart count
+                        $('#cart-count').text(response.cartCount);
 
-                        // Optionally, update the remaining cart items
-                        if (response.cartHTML) {
-                            $('#properties-item').html(response.cartHTML);
-                        }
+                        // Update only the 'properties-item' section with the new cart items
+                        $('#properties-item').html(response.cartHTML);
                     } else {
-                        // Show error notification if there's an issue removing the property
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
@@ -280,8 +285,6 @@ function removeFromCart(cartItemId) {
                     }
                 },
                 error: function(xhr) {
-                    console.error(xhr.responseText);
-                    // Show error notification for AJAX failure
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -293,6 +296,9 @@ function removeFromCart(cartItemId) {
         }
     });
 }
+
+
+
 
 
 
