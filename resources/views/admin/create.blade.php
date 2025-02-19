@@ -88,16 +88,19 @@
                             <div class="col-md-6">
                                 <div class="form-group position-relative">
                                     <label for="password">Password<span class="text-danger">*</span></label>
-                                    <input type="password" name="password" id="password" class="form-control"
-                                           placeholder="Enter Password" required
-                                           data-parsley-minlength="6"
-                                           data-parsley-minlength-message="Password must be at least 6 characters long."
-                                           data-parsley-trigger="keyup">
-                                            <!-- Show Password Button -->
-                                            <button type="button" id="togglePassword" class="btn btn-link position-absolute"
-                                            style="top: 45%; right: 10px;">
-                                        <i class="fa fa-eye" style="color: #6c757d;"></i> <!-- Eye Icon to show/hide password -->
-                                    </button>
+                                    <div class="input-group">
+                                        <input type="password" name="password" id="password" class="form-control"
+                                               placeholder="Enter Password" required
+                                               data-parsley-minlength="6"
+                                               data-parsley-minlength-message="Password must be at least 6 characters long."
+                                               data-parsley-trigger="keyup">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <i id="pwd-icon" class="far fa-eye-slash" style="cursor: pointer;"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     @error('password')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -265,20 +268,19 @@
         });
     });
 
+    $(document).ready(function(){
+            $("#pwd-icon").click(function(){
+                var passwordField = $("#password");
+                var fieldType = passwordField.attr("type");
 
-    // Toggle password visibility when "Show Password" button is clicked
-    // document.getElementById('togglePassword').addEventListener('click', function () {
-    //     var passwordField = document.getElementById('password');
-    //     var passwordFieldType = passwordField.getAttribute('type');
-
-    //     // Toggle between text and password types
-    //     if (passwordFieldType === 'password') {
-    //         passwordField.setAttribute('type', 'text');  // Show the text
-    //         this.innerHTML = '<i class="fa fa-eye-slash"></i>';  // Change to eye-slash icon
-    //     } else {
-    //         passwordField.setAttribute('type', 'password');  // Hide the text
-    //         this.innerHTML = '<i class="fa fa-eye"></i>';  // Change to eye icon
-    //     }
-    // });
+                if (fieldType === "password") {
+                    passwordField.attr("type", "text");
+                    $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+                } else {
+                    passwordField.attr("type", "password");
+                    $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+                }
+            });
+        });
 </script>
 @endsection

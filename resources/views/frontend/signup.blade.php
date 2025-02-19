@@ -179,21 +179,25 @@
                                 <div class="col-md-6">
                                     <div class="form-group position-relative">
                                         <label for="password">Password<span class="text-danger">*</span></label>
-                                        <input type="password" name="password" id="password" class="form-control"
-                                               placeholder="Enter Password" required
-                                               data-parsley-minlength="6"
-                                               data-parsley-minlength-message="Password must be at least 6 characters long."
-                                               data-parsley-trigger="keyup">
-                                                <!-- Show Password Button -->
-                                                {{-- <button type="button" id="togglePassword" class="btn btn-link position-absolute"
-                                                style="top: 45%; right: 10px;">
-                                            <i class="fa fa-eye" style="color: #6c757d;"></i> <!-- Eye Icon to show/hide password -->
-                                        </button> --}}
+                                        <div class="input-group">
+                                            <input type="password" name="password" id="password" class="form-control"
+                                                   placeholder="Enter Password" required
+                                                   data-parsley-minlength="6"
+                                                   data-parsley-minlength-message="Password must be at least 6 characters long."
+                                                   data-parsley-trigger="keyup">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <i id="pwd-icon" class="far fa-eye-slash" style="cursor: pointer;"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         @error('password')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
+
 
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -252,7 +256,7 @@
                                     <div class="form-group">
                                         <label for="description">Description<br><span class="text-danger">*required for agents</span></label>
                                         <textarea name="description" id="description" class="form-control" rows="3"
-                                                  placeholder="Enter Description" data-parsley-trigger="keyup" required>{{ old('description') }} </textarea>
+                                                  placeholder="Enter Description" data-parsley-trigger="keyup" >{{ old('description') }} </textarea>
                                         @error('description')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -304,6 +308,20 @@
         });
     @endif
 
+    $(document).ready(function(){
+            $("#pwd-icon").click(function(){
+                var passwordField = $("#password");
+                var fieldType = passwordField.attr("type");
+
+                if (fieldType === "password") {
+                    passwordField.attr("type", "text");
+                    $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+                } else {
+                    passwordField.attr("type", "password");
+                    $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+                }
+            });
+        });
 </script>
 </body>
 

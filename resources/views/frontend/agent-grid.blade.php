@@ -131,7 +131,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-4">
+                {{-- <div class="col-xl-3 col-lg-4">
                     <div class="left-sidebar single-sidebar sticky-cls">
                         <div class="filter-cards">
                             <div class="advance-card">
@@ -229,7 +229,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>

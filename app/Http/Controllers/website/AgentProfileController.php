@@ -12,15 +12,18 @@ class AgentProfileController extends Controller
 {
     public function index(Request $request)
     {
-        $properties = Property::all();
-        $images = PropertyImg::all();
+        // Fetch all agents
         $agents = User::where('role_id', 2)->get();
-        return view('frontend.agent-profile', compact('properties','images','agents'));
+
+        return view('frontend.agent-profile', compact('agents'));
     }
 
     public function show($id)
     {
-        $agent = User::findOrFail($id);  // Get the agent by ID
-        return view('frontend.agent-profile', compact('agent'));  // Pass the agent to the view
+        $agent = User::findOrFail($id); // Get the agent
+        $properties = Property::where('agent_id', $id)->get(); // Get properties uploaded by this agent
+
+        return view('frontend.agent-profile', compact('agent', 'properties'));
     }
 }
+

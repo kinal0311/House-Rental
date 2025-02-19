@@ -158,8 +158,9 @@
                                             <div id="slider-range1" class="theme-range-2"></div>
                                         </div>
                                     </div>
-                                    <div class="col-12 text-end">
-                                        <button type="submit" class="mt-3 btn btn-gradient color-2 btn-pill" id="search-btn">Search Property</button>
+                                    <div class="col-12 d-flex justify-content-between mt-3">
+                                        <button type="submit" class="btn btn-gradient color-2 btn-pill" id="search-btn">Search</button>
+                                        <button type="button" class="btn btn-dashed color-2 btn-pill" id="reset-btn">Refresh</button>
                                     </div>
                                 </div>
                         </form>
@@ -279,82 +280,6 @@ function checkAuth(event, propertyId) {
     }
 }
 
-
-
-
-
-// $('#search-btn').click(function() {
-//     // console.log('btn click...');
-//     // Collect filter values
-//     var status = $('#status').val();
-//     var property_type = $('#property_type').val();
-//     var address = $('#address').val();
-//     var max_rooms = $('#max_rooms').val();
-//     var beds = $('#beds').val();
-//     var baths = $('#baths').val();
-//     // var price_range = $('#slider-range').slider("value"); // Assuming the slider range
-//     // var area_range = $('#slider-range1').slider("value");
-//     var searchUrl="{{ route('searchProperties') }}";
-//     // alert(searchUrl);
-//     // Send AJAX request
-//     $.ajax({
-//         url: searchUrl, // Your route
-//         method: 'GET', // Or POST if needed
-//         data: {
-//             status: status,
-//             property_type: property_type,
-//             address: address,
-//             max_rooms: max_rooms,
-//             beds: beds,
-//             baths: baths,
-//             // price_range: price_range,
-//             // area_range: area_range
-//         },
-//         success: function(response) {
-//             // Assuming `response` contains the filtered properties in HTML format
-//             $('#properties-list').html(response);
-//         },
-//         error: function(xhr, status, error) {
-//             console.log(error);
-//         }
-//     });
-// });
-/* $('#search-btn').click(function(event) {
-    event.preventDefault();  // Prevent page reload
-
-    var status = $('#status').val();
-    var property_type = $('#property_type').val();
-    var address = $('#address').val();
-    var max_rooms = $('#max_rooms').val();
-    var beds = $('#beds').val();
-    var baths = $('#baths').val();
-
-    var searchUrl = "{{ route('searchProperties') }}";  // Your route name
-
-    $.ajax({
-        url: searchUrl,
-        method: 'GET',
-        data: {
-            status: status,
-            property_type: property_type,
-            address: address,
-            max_rooms: max_rooms,
-            beds: beds,
-            baths: baths
-        },
-        success: function(response) {
-            console.log("response:::::::", response);
-            return false;
-
-            // Empty the properties list before appending new results
-            $('#properties-list').empty().append(response.html);  // Update the list with search results
-        },
-        error: function(xhr, status, error) {
-            console.log(error);
-        }
-    });
-}); */
-
 $('#search-btn').click(function(event) {
     event.preventDefault();
 
@@ -450,14 +375,14 @@ $('#search-btn').click(function(event) {
 
                                 // Append to DOM
                                 $('#properties-item').append(propertyHTML);
-
+                                // $(".property-slider").slick("unslick");
                                 // Initialize Slick after appending the new property
                                 $('.property-slider').not('.slick-initialized').slick({
                                     slidesToShow: 1,
                                 slidesToScroll: 1,
                                 dots: true,
                                 arrows: true,
-                                autoplay: true,
+                                autoplay: false,
                                 autoplaySpeed: 3000,
                                 infinite: true,
                                 prevArrow: '<button type="button" class="slick-prev">Previous</button>',
@@ -553,6 +478,28 @@ function addToCart(propertyId, event) {
     });
 }
 
+var originalContent = $("#properties-item").html(); // Store original content
+
+$("#reset-btn").click(function () {
+    $("#filter-form")[0].reset(); // Reset the filter form
+    $("#properties-item").html(originalContent); // Restore original content
+
+    // Reinitialize slider after a small delay
+    $('.property-slider').not('.slick-initialized').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: true,
+        arrows: true,
+        autoplay: false,
+        autoplaySpeed: 3000,
+        infinite: true,
+        prevArrow: '<button type="button" class="slick-prev">Previous</button>',
+        nextArrow: '<button type="button" class="slick-next">Next</button>',
+    });
+
+    feather.replace();
+
+});
 
 // Handle the Wishlist toggle (heart icon)
 // $('.property-box .overlay-property-box .effect-round.like').on('click', function() {
@@ -664,14 +611,15 @@ function addToWishlist(propertyId, event) {
         }
     });
 }
-
-
-
-
-
-
-
-
+@if (session('success'))
+Swal.fire({
+    icon: 'success',
+    title: 'Success!',
+    text: '{{ session('message') }}',
+    showConfirmButton: false,
+    timer: 1500
+});
+@endif
 </script>
 </body>
 

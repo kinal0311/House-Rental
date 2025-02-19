@@ -112,14 +112,14 @@
                             </div> --}}
                         </div>
                     </div>
-                    {{-- <div class="agent-property">
+                    <div class="agent-property">
                         <div class="filter-panel">
                             <div class="top-panel">
                                 <div>
-                                    <h3>Properties Listing</h3>
-                                    <span class="show-result">Showing <span>1-15 of 69</span> Listings</span>
+                                    <h3>Agent Properties</h3>
+                                    {{-- <span class="show-result">Showing <span>1-15 of 69</span> Listings</span> --}}
                                 </div>
-                                <ul class="grid-list-filter">
+                                {{-- <ul class="grid-list-filter">
                                     <li>
                                         <div class="dropdown">
                                             <span class="dropdown-toggle font-rubik" data-bs-toggle="dropdown"><span>Sort by
@@ -143,251 +143,71 @@
                                             <i data-feather="list"></i>
                                         </a>
                                     </li>
-                                </ul>
+                                </ul> --}}
                             </div>
 
                         </div>
-                        <div class="property-2 row column-sm zoom-gallery property-label property-grid">
-                            <div class="col-md-6 wow fadeInUp">
-                                <div class="property-box">
-                                    <div class="property-image">
-                                        <div class="property-slider">
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/10.jpg" class="bg-img" alt="">
-                                            </a>
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/5.jpg" class="bg-img" alt="">
+                        <div class="property-2 column-sm zoom-gallery property-label property-grid row grid" id="properties-item">
+                            @if($properties->isEmpty())
+                                <p>No properties found for this agent.</p>
+                            @else
+                                @foreach($properties as $property)
+                                    <div class="col-xl-4 col-md-6 grid-item wow fadeInUp {{ $property->status }}">
+                                        <div class="property-box">
+                                            <div class="property-image">
+                                                <div class="property-slider">
+                                                    @foreach($property->images as $image)
+                                                    <a href="javascript:void(0)">
+                                                        <img src="{{ URL::asset($image->image_url) }}" class="bg-img" alt="">
+                                                    </a>
+                                                    @endforeach
+                                                </div>
+                                                <div class="labels-left">
+                                                    <div>
+                                                        <span class="label label-shadow
+                                                            @if($property->status == 'Sale') bg-info
+                                                            @elseif($property->status == 'Sold') bg-danger
+                                                            @elseif($property->status == 'Rent') bg-success
+                                                            @endif
+                                                        ">{{ $property->status }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="seen-data">
+                                                    <i data-feather="camera"></i>
+                                                    <span>{{ $property->images->count() }}</span>
+                                                </div>
+                                            </div>
 
-                                            </a>
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/3.jpg" class="bg-img" alt="">
-
-                                            </a>
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/4.jpg" class="bg-img" alt="">
-
-                                            </a>
-                                        </div>
-                                        <div class="labels-left">
-                                            <div>
-                                                <span class="label label-shadow">sale</span>
+                                            <div class="property-details">
+                                                <span class="font-roboto">{{ $property->city }}</span>
+                                                <a href="#">
+                                                    <h3>{{ $property->address }}</h3>
+                                                </a>
+                                                <h6>${{ $property->price }}*</h6>
+                                                <p class="font-roboto">{{ $property->description }}</p>
+                                                <ul>
+                                                    <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/double-bed.svg" class="img-fluid" alt="">Bed : {{ $property->beds }}</li>
+                                                    <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : {{ $property->baths }}</li>
+                                                    <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : {{ $property->area }}</li>
+                                                </ul>
+                                                <div class="property-btn d-flex">
+                                                    <a href="{{ route('single-property.show', $property->id) }}" class="btn btn-dashed btn-pill color-2" tabindex="0">Details</a>
+                                                    @if($property->status !== 'Sold')
+                                                        <a href="javascript:void(0)" class="btn btn-gradient btn-pill color-2" onclick="checkAuth(event, {{ $property->id }})">
+                                                            <i class="fa-solid fa-bookmark"></i> Book Now
+                                                        </a>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="seen-data">
-                                            <i data-feather="camera"></i>
-                                            <span>14</span>
-                                        </div>
-                                        <div class="overlay-property-box">
-                                            <a href="compare.html" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Compare">
-                                                <i data-feather="shuffle"></i>
-                                            </a>
-                                            <a href="user-favourites.html" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="wishlist">
-                                                <i data-feather="heart"></i>
-                                            </a>
-                                        </div>
                                     </div>
-
-                                    <div class="property-details">
-                                        <span class="font-roboto">France</span>
-                                        <a href="single-property-8.html">
-                                            <h3>Little Acorn Farm</h3>
-                                        </a>
-                                        <h6>$6558.00*</h6>
-                                        <p class="font-roboto">Elegant retreat in a quiet Coral Gables setting. This home provides wonderful entertaining spaces with a chef
-                                            kitchen opening…</p>
-                                        <ul>
-                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/double-bed.svg" class="img-fluid" alt="">Bed : 4</li>
-                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : 4</li>
-                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : 5000</li>
-                                        </ul>
-                                        <div class="property-btn d-flex">
-                                            <span>August 4, 2022</span>
-                                            <button type="button"  onclick="document.location='single-property-8.html'" class="btn btn-dashed btn-pill color-2">Details</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 wow fadeInUp">
-                                <div class="property-box">
-                                    <div class="property-image">
-                                        <div class="property-slider">
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/14.jpg" class="bg-img" alt="">
-
-                                            </a>
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/6.jpg" class="bg-img" alt="">
-
-                                            </a>
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/10.jpg" class="bg-img" alt="">
-
-                                            </a>
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/9.jpg" class="bg-img" alt="">
-
-                                            </a>
-                                        </div>
-                                        <div class="labels-left">
-                                            <div>
-                                                <span class="label label-dark">no fees</span>
-                                            </div>
-                                            <span class="label label-success">open house</span>
-                                        </div>
-                                        <div class="seen-data">
-                                            <i data-feather="camera"></i>
-                                            <span>15</span>
-                                        </div>
-                                        <div class="overlay-property-box">
-                                            <a href="compare.html" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Compare">
-                                                <i data-feather="shuffle"></i>
-                                            </a>
-                                            <a href="user-favourites.html" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="wishlist">
-                                                <i data-feather="heart"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="property-details">
-                                        <span class="font-roboto">brazil</span>
-                                        <a href="single-property-8.html">
-                                            <h3>Hidden Spring Hideway</h3>
-                                        </a>
-                                        <h6>$9554.00*</h6>
-                                        <p class="font-roboto">This home provides wonderful entertaining spaces with a chef
-                                            kitchen opening. Elegant retreat in a quiet Coral Gables setting.</p>
-                                        <ul>
-                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/double-bed.svg" class="img-fluid" alt="">Bed : 4</li>
-                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : 4</li>
-                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : 5000</li>
-                                        </ul>
-                                        <div class="property-btn d-flex">
-                                            <span>July 18, 2022</span>
-                                            <button type="button"  onclick="document.location='single-property-8.html'" class="btn btn-dashed btn-pill color-2">Details</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 wow fadeInUp">
-                                <div class="property-box">
-                                    <div class="property-image">
-                                        <div class="property-slider">
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/12.jpg" class="bg-img" alt="">
-
-                                            </a>
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/10.jpg" class="bg-img" alt="">
-
-                                            </a>
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/6.jpg" class="bg-img" alt="">
-
-                                            </a>
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/9.jpg" class="bg-img" alt="">
-
-                                            </a>
-                                        </div>
-                                        <div class="labels-left">
-                                            <div>
-                                                <span class="label label-shadow">sale</span>
-                                            </div>
-                                        </div>
-                                        <div class="seen-data">
-                                            <i data-feather="camera"></i>
-                                            <span>16</span>
-                                        </div>
-                                        <div class="overlay-property-box">
-                                            <a href="compare.html" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Compare">
-                                                <i data-feather="shuffle"></i>
-                                            </a>
-                                            <a href="user-favourites.html" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="wishlist">
-                                                <i data-feather="heart"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="property-details">
-                                        <span class="font-roboto">usa</span>
-                                        <a href="single-property-8.html">
-                                            <h3>Home in Merrick Way</h3>
-                                        </a>
-                                        <h6>$4513.00*</h6>
-                                        <p class="font-roboto">How they are connected to neighbouring residences and land. Residences can be classified in flat or apartment.</p>
-                                        <ul>
-                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/double-bed.svg" class="img-fluid" alt="">Bed : 4</li>
-                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : 4</li>
-                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : 5000</li>
-                                        </ul>
-                                        <div class="property-btn d-flex">
-                                            <span>January 6, 2022</span>
-                                            <button type="button"  onclick="document.location='single-property-8.html'" class="btn btn-dashed btn-pill color-2">Details</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 wow fadeInUp">
-                                <div class="property-box">
-                                    <div class="property-image">
-                                        <div class="property-slider">
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/16.jpg" class="bg-img" alt="">
-
-                                            </a>
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/5.jpg" class="bg-img" alt="">
-
-                                            </a>
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/4.jpg" class="bg-img" alt="">
-
-                                            </a>
-                                            <a href="javascript:void(0)">
-                                                <img src="../assets/images/property/3.jpg" class="bg-img" alt="">
-
-                                            </a>
-                                        </div>
-                                        <div class="labels-left">
-                                            <div>
-                                                <span class="label label-dark">no fees</span>
-                                            </div>
-                                            <span class="label label-success">open house</span>
-                                        </div>
-                                        <div class="seen-data">
-                                            <i data-feather="camera"></i>
-                                            <span>18</span>
-                                        </div>
-                                        <div class="overlay-property-box">
-                                            <a href="compare.html" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Compare">
-                                                <i data-feather="shuffle"></i>
-                                            </a>
-                                            <a href="user-favourites.html" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="wishlist">
-                                                <i data-feather="heart"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="property-details">
-                                        <span class="font-roboto">brazil</span>
-                                        <a href="single-property-8.html">
-                                            <h3>Magnolia Ranch</h3>
-                                        </a>
-                                        <h6>$9554.00*</h6>
-                                        <p class="font-roboto">An interior designer is someone who plans,researches,coordinates,management and manages such enhancement projects.</p>
-                                        <ul>
-                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/double-bed.svg" class="img-fluid" alt="">Bed : 4</li>
-                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : 4</li>
-                                            <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : 5000</li>
-                                        </ul>
-                                        <div class="property-btn d-flex">
-                                            <span>May 14, 2022</span>
-                                            <button type="button"  onclick="document.location='single-property-8.html'" class="btn btn-dashed btn-pill color-2">Details</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                @endforeach
+                            @endif
                         </div>
-                    </div> --}}
+
+                    </div>
                 </div>
-                <div class="col-xl-3 col-lg-4">
+                {{-- <div class="col-xl-3 col-lg-4">
                     <div class="left-sidebar single-sidebar sticky-cls">
                         <div class="filter-cards">
                             <div class="advance-card">
@@ -419,7 +239,7 @@
                                             Request</button>
                                     </form>
                                 </div>
-                            </div>
+                            </div> --}}
                             {{-- <div class="advance-card">
                                 <h6>filter</h6>
                                 <div class="row gx-2">
@@ -573,9 +393,9 @@
                                     </ul>
                                 </div>
                             </div> --}}
-                        </div>
+                        {{-- </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>

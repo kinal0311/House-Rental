@@ -56,9 +56,9 @@
                                         {{-- <li class="dropdown">
                                             <a href="javascript:void(0)" class="nav-link menu-title">agent</a>
                                         </li> --}}
-                                        <li class="dropdown">
+                                        {{-- <li class="dropdown">
                                             <a href="{{ route('contect') }}" class="nav-link menu-title">Contact</a>
-                                        </li>
+                                        </li> --}}
                                     </ul>
                                 </div>
                             </div>

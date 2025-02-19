@@ -67,7 +67,6 @@
     </section>
     <!-- slider section end -->
 
-
     <div class="container mt-5 mb-5 p-3">
         <div class="card shadow-sm">
             <div class="card-body">
@@ -133,21 +132,28 @@
                         <p>If you have any questions, please contact us at <strong>support@example.com</strong></p>
                         <p>Thank you for booking with us!</p>
                     </div>
-                    <div>
-                        <form action="{{ route('payment.process') }}" method="POST">
+                    <div class="m-5">
+                        <!-- Back Button -->
+                        <button onclick="history.back()" class="btn btn-dashed btn-pill color-6">
+                            <i class="fa-solid fa-arrow-left"></i> Back
+                        </button>
+
+                        <!-- Payment Button -->
+                        <form action="{{ route('payment.process') }}" method="POST" class="d-inline">
                             @csrf
                             <input type="hidden" name="property_id" value="{{ $property->id }}">
 
                             <button type="submit" class="btn btn-gradient btn-pill color-2">
-                                <i class="fa-solid fa-credit-card"></i> Pay Now </button>
+                                <i class="fa-solid fa-credit-card"></i> Pay Now
+                            </button>
                         </form>
-
                     </div>
                 </div>
 
             </div>
         </div>
     </div>
+
     @include('frontend.footer-orange')
     <!-- customizer end -->
     {{-- @if(session('status') && session('message')) --}}

@@ -158,4 +158,5 @@ Route::get('/property/{id}/booking', [BookingController::class, 'show'])->name('
 // Route::get('/book/{property_id}', [PaymentController::class, 'showInvoice'])->name('booking.invoice');
 Route::post('/pay', [BookingController::class, 'processPayment'])->name('payment.process');
 Route::get('/payment/callback', [BookingController::class, 'paymentCallback'])->name('payment.callback');
+
 ?>

@@ -143,7 +143,7 @@
                                             <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt=""> Sq Ft: {{ $property->area ?? 0 }}</li>
                                         </ul>
                                         <div class="property-btn d-flex">
-                                            <button type="button" class="btn btn-dashed btn-pill color-2" onclick="removeFromCart({{ $item->id }})">Remove</button>
+                                            <button type="button" class="btn btn-dashed btn-pill color-2" id="removeBtn" onclick="removeFromCart({{ $item->id }})">Remove</button>
                                         </div>
                                     </div>
                                 </div>
@@ -238,6 +238,7 @@ $(document).ready(function(){
     });
 });
 
+
 function removeFromCart(cartItemId) {
     Swal.fire({
         title: 'Are you sure?',
@@ -259,22 +260,20 @@ function removeFromCart(cartItemId) {
                 },
                 success: function(response) {
                     if (response.status === 'success') {
+                        // Show success message
                         Swal.fire({
                             icon: 'success',
-                            title: 'Removed from Cart',
-                            text: 'Property successfully removed from your cart!',
+                            title: 'Removed!',
+                            text: 'Property successfully removed from your cart.',
                             showConfirmButton: false,
-                            timer: 1500
+                            timer: 1000
+                        }).then(() => {
+                            // Redirect to listing page
+                            window.location.href = response.redirect;
                         });
 
-                        // Dynamically remove the specific cart item
-                        $('#cart-item-' + cartItemId).remove();
-
-                        // Update the cart count
+                        // Update cart count
                         $('#cart-count').text(response.cartCount);
-
-                        // Update only the 'properties-item' section with the new cart items
-                        $('#properties-item').html(response.cartHTML);
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -296,12 +295,6 @@ function removeFromCart(cartItemId) {
         }
     });
 }
-
-
-
-
-
-
 
 
 

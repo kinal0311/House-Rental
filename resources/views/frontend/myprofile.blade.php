@@ -171,7 +171,15 @@
                                     <!-- Form Group (last name)-->
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="Password">Password</label>
-                                        <input class="form-control" id="password" type="text" name="password" placeholder="Enter your password" value="">
+                                        {{-- <input class="form-control" id="password" type="text" name="password" placeholder="Enter your password" value=""> --}}
+                                        <div class="input-group">
+                                            <input type="password" name="password" id="password" class="form-control" value="">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <i id="pwd-icon" class="far fa-eye-slash" style="cursor: pointer;"></i>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- Form Row -->
@@ -259,6 +267,18 @@
         reader.readAsDataURL(event.target.files[0]);
     });
 
+        $("#pwd-icon").click(function(){
+            var passwordField = $("#password");
+            var fieldType = passwordField.attr("type");
+
+            if (fieldType === "password") {
+                passwordField.attr("type", "text");
+                $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+            } else {
+                passwordField.attr("type", "password");
+                $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+            }
+        });
 
     });
 </script>

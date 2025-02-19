@@ -109,7 +109,7 @@ class BookingController extends Controller
                 $property->save();
             }
 
-            return redirect()->route('booking', ['id' => $booking->property_id])
+            return redirect()->route('listing', ['id' => $booking->property_id])
                 ->with('status', 'success')
                 ->with('message', 'Payment successful, booking confirmed!');
         } else {

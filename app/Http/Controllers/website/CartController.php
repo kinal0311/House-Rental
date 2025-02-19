@@ -83,9 +83,6 @@ class CartController extends Controller
         }
     }
 
-
-
-
     public function showCart()
     {
         $userId = Auth::id();
@@ -95,29 +92,32 @@ class CartController extends Controller
     }
 
     public function removeFromCart(Request $request)
-{
-    try {
-        $cartItemId = $request->cart_item_id;
+    {
+        try {
+            $cartItemId = $request->cart_item_id;
 
-        // Find the cart item and remove it
-        $cartItem = Cart::findOrFail($cartItemId);
-        $cartItem->delete();
+            // Find and remove the cart item
+            $cartItem = Cart::findOrFail($cartItemId);
+            $cartItem->delete();
 
-        // Get updated cart data
-        $cart = Cart::where('user_id', Auth::id())->get();
+            // Get updated cart count
+            $cartCount = Cart::where('user_id', Auth::id())->count();
 
-        return response()->json([
-            'status' => 'success',
-            'cartHTML' => view('frontend.cart', compact('cart'))->render(), // Only the updated cart HTML
-            'cartCount' => $cart->count()  // Updated cart item count
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Error removing property from cart'
-        ], 500);
+            return response()->json([
+                'status' => 'success',
+                'cartCount' => $cartCount,
+                'redirect' => route('listing') // ✅ Redirect URL
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error removing property from cart'
+            ], 500);
+        }
     }
-}
+
+
+
 
 
 

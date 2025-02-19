@@ -7,6 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>House Rental</title>
 
@@ -109,8 +110,8 @@
                                         </div>
                                         <div class="overlay-property-box">
 
-                                            <a  class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist">
-                                                <i data-feather="heart"></i>
+                                            <a href="javascript:void(0);" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist" onclick="addToWishlist({{ $property->id }}, event)">
+                                                <i data-feather="heart" class="heart-icon"></i>
                                             </a>
                                         </div>
                                     </div>
@@ -263,13 +264,14 @@
                                                 <div id="slider-range1" class="theme-range-2"></div>
                                             </div>
                                         </div>
-                                        <div class="col-12">
-                                            <button type="submit" class="mt-3 btn btn-gradient color-2 btn-pill" id="search-btn3">Search</button>
+                                        <div class="col-12 d-flex justify-content-between mt-3">
+                                            <button type="submit" class="btn btn-gradient color-2 btn-pill" id="search-btn3">Search</button>
+                                            <button type="button" class="btn btn-dashed color-2 btn-pill" id="reset-btn">Refresh</button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
-                            <div class="advance-card">
+                            {{-- <div class="advance-card">
                                 <h6>Category</h6>
                                 <div class="category-property">
                                     <ul>
@@ -337,7 +339,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 
@@ -477,6 +479,100 @@
                 console.log(error);
             }
         });
+    });
+
+    function addToWishlist(propertyId, event) {
+        event.preventDefault(); // Prevent default behavior (if inside a link)
+
+        $.ajax({
+            url: "{{ route('wishlist.add') }}", // Ensure this route is correctly set in web.php
+            method: "POST",
+            data: {
+                _token: $('meta[name="csrf-token"]').attr("content"), // CSRF Token
+                property: { id: propertyId } // Send correct property ID
+            },
+            success: function(response) {
+                if (response.status === "success") {
+                    if (response.added_to_wishlist) {
+                        // Property was successfully added to the wishlist
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Property added to wishlist successfully!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+
+                        // Update heart icon to filled
+                        $(".effect-round.like[data-property-id='" + propertyId + "']").addClass('added'); // Mark as added
+                        $(".effect-round.like[data-property-id='" + propertyId + "'] i").removeClass('feather-heart').addClass('feather-heart-fill'); // Change to filled heart
+                    } else {
+                        // Property is already in the wishlist
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Property already in wishlist!',
+                            text: 'This property is already added to your wishlist.',
+                            showConfirmButton: true
+                        });
+                    }
+
+                    // Update wishlist count dynamically (if needed)
+                    $("#wishlist-count").text(response.wishlist.length);
+
+                    // Update wishlist dropdown (if any)
+                    $("#wishlist-container").html(response.wishlistHTML);
+                } else {
+                    if (response.message === 'This property is sold and cannot be added to the wishlist.') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Property Sold',
+                            text: 'This property is sold and cannot be added to your wishlist.',
+                            showConfirmButton: true
+                        });
+                    } else {
+                        // Show other errors
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response.message || 'Error occurred while adding to wishlist',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Error occurred while adding to wishlist',
+                    showConfirmButton: true
+                });
+            }
+        });
+    }
+
+    var originalContent = $("#saleProperties-item").html(); // Store original content
+
+    $("#reset-btn").click(function () {
+        $("#filter-form")[0].reset(); // Reset the filter form
+        $("#saleProperties-item").html(originalContent); // Restore original content
+
+        // Reinitialize slider after a small delay
+        $('.property-slider').not('.slick-initialized').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            dots: true,
+            arrows: true,
+            autoplay: true,
+            autoplaySpeed: 3000,
+            infinite: true,
+            prevArrow: '<button type="button" class="slick-prev">Previous</button>',
+            nextArrow: '<button type="button" class="slick-next">Next</button>',
+        });
+
+        feather.replace();
+
     });
 </script>
 </body>

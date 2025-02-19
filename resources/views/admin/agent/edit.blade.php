@@ -64,11 +64,14 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="password">Password (Leave blank to keep current password)</label>
-                                    <input type="password" name="password" id="password" class="form-control">
-                                    <button type="button" id="togglePassword" class="btn btn-link position-absolute"
-                                            style="top: 55%; right: 10px; transform: translateY(-50%);">
-                                        <i class="fa fa-eye"></i>
-                                    </button>
+                                    <div class="input-group">
+                                        <input type="password" name="password" id="password" class="form-control">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <i id="pwd-icon" class="far fa-eye-slash" style="cursor: pointer;"></i>
+                                            </div>
+                                        </div>
+                                    </div>
                                     @error('password')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -257,19 +260,19 @@ $('#img').on('change', function () {
         Notiflix.Notify.Warning('Please upload a valid image file.');
     }
 });
-    // Toggle password visibility when "Show Password" button is clicked
-    document.getElementById('togglePassword').addEventListener('click', function () {
-        var passwordField = document.getElementById('password');
-        var passwordFieldType = passwordField.getAttribute('type');
+    $(document).ready(function(){
+        $("#pwd-icon").click(function(){
+            var passwordField = $("#password");
+            var fieldType = passwordField.attr("type");
 
-        // Toggle between text and password types
-        if (passwordFieldType === 'password') {
-            passwordField.setAttribute('type', 'text');  // Show the text
-            this.innerHTML = '<i class="fa fa-eye-slash"></i>';  // Change to eye-slash icon
-        } else {
-            passwordField.setAttribute('type', 'password');  // Hide the text
-            this.innerHTML = '<i class="fa fa-eye"></i>';  // Change to eye icon
-        }
+            if (fieldType === "password") {
+                passwordField.attr("type", "text");
+                $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+            } else {
+                passwordField.attr("type", "password");
+                $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+            }
+        });
     });
 </script>
 @endsection

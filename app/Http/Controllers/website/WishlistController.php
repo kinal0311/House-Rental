@@ -82,17 +82,17 @@ class WishlistController extends Controller
         try {
             $wishlistItemId = $request->wishlist_item_id;
 
-            // Find the wishlist item and remove it
+            // Find and remove the wishlist item
             $wishlistItem = Wishlist::findOrFail($wishlistItemId);
             $wishlistItem->delete();
 
-            // Get updated wishlist data
-            $wishlist = Wishlist::where('user_id', Auth::id())->get();
+            // Get updated wishlist count
+            $wishlistCount = Wishlist::where('user_id', Auth::id())->count();
 
             return response()->json([
                 'status' => 'success',
-                'wishlistHTML' => view('frontend.wishlist', compact('wishlist'))->render(), // Only the updated wishlist HTML
-                'wishlistCount' => $wishlist->count()  // Updated wishlist item count
+                'wishlistCount' => $wishlistCount,
+                'redirect' => route('listing') // ✅ Redirect URL after removing item
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -101,4 +101,5 @@ class WishlistController extends Controller
             ], 500);
         }
     }
+
 }

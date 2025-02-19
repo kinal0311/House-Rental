@@ -51,7 +51,14 @@
 
                                     <div class="form-group mb-3">
                                         <label for="password">Password</label>
-                                        <input class="form-control" type="password" name='password' required="" id="password" placeholder="Enter your password" data-parsley-minlength="6" autocomplete="off">
+                                        <div class="input-group">
+                                            <input type="password" name="password" id="password" required="" class="form-control">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <i id="pwd-icon" class="far fa-eye-slash" style="cursor: pointer;"></i>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -148,6 +155,21 @@
                     // If the form is invalid, show a failure notification
                     Notiflix.Notify.Failure('Please fix the errors in the form.');
                 }
+            });
+
+            $(document).ready(function(){
+                $("#pwd-icon").click(function(){
+                    var passwordField = $("#password");
+                    var fieldType = passwordField.attr("type");
+
+                    if (fieldType === "password") {
+                        passwordField.attr("type", "text");
+                        $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+                    } else {
+                        passwordField.attr("type", "password");
+                        $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+                    }
+                });
             });
         </script>
     </body>

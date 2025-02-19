@@ -50,9 +50,9 @@
                                         {{-- <li class="dropdown">
                                             <a href="javascript:void(0)" class="nav-link menu-title">agent</a>
                                         </li> --}}
-                                        <li class="dropdown">
+                                        {{-- <li class="dropdown">
                                             <a href="{{ route('contect') }}" class="nav-link menu-title">Contact</a>
-                                        </li>
+                                        </li> --}}
                                     </ul>
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
                             <li class="right-menu">
                                 <ul class="nav-menu">
                                     <li class="dropdown">
-                                        <a href="{{ route('wishlist.show')}}" title="Wishlist">
+                                        <a href="{{ auth()->check() ? route('wishlist.show') : route('login-user')}}" title="Wishlist">
                                             <i data-feather="heart"></i>
                                         </a>
                                     </li>

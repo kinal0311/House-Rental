@@ -196,22 +196,20 @@ function removeFromWishlist(wishlistItemId) {
                 },
                 success: function(response) {
                     if (response.status === 'success') {
+                        // Show success message
                         Swal.fire({
                             icon: 'success',
-                            title: 'Removed from Wishlist',
-                            text: 'Property successfully removed from your wishlist!',
+                            title: 'Removed!',
+                            text: 'Property successfully removed from your wishlist.',
                             showConfirmButton: false,
-                            timer: 1500
+                            timer: 1000
+                        }).then(() => {
+                            // Redirect to wishlist page
+                            window.location.href = response.redirect;
                         });
 
-                        // Dynamically remove the specific wishlist item
-                        $('#wishlist-item-' + wishlistItemId).remove();
-
-                        // Update the wishlist count
+                        // Update wishlist count
                         $('#wishlist-count').text(response.wishlistCount);
-
-                        // Update only the 'properties-item' section with the new wishlist items
-                        $('#properties-wishlist').html(response.wishlistHTML);
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -233,12 +231,6 @@ function removeFromWishlist(wishlistItemId) {
         }
     });
 }
-
-
-
-
-
-
 
 </script>
 </body>

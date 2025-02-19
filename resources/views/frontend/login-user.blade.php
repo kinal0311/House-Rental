@@ -90,7 +90,7 @@
                                             <i data-feather="lock"></i>
                                         </div>
                                     </div>
-                                    <input type="password" id="pwd-input" name="password" class="form-control" placeholder="Password" maxlength="8" required
+                                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" maxlength="8" required
                                         data-parsley-required-message="Password is incorrect">
                                     <div class="input-group-append">
                                         <div class="input-group-text">
@@ -107,12 +107,12 @@
                             </div>
 
                             <!-- Remember Me and Forgot Password -->
-                            <div class="d-flex">
+                            {{-- <div class="d-flex">
                                 <label class="d-block mb-0" for="chk-ani">
                                     <input class="checkbox_animated color-2" id="chk-ani" type="checkbox"> <span>Remember me</span>
                                 </label>
                                 <a href="#" class="font-rubik text-color-2">Forgot password?</a>
-                            </div>
+                            </div> --}}
 
                             <!-- Submit Button -->
                             <div>
@@ -165,6 +165,21 @@ $(document).ready(function() {
             confirmButtonText: 'Try Again'
         });
     @endif
+
+    $(document).ready(function(){
+        $("#pwd-icon").click(function(){
+            var passwordField = $("#password");
+            var fieldType = passwordField.attr("type");
+
+            if (fieldType === "password") {
+                passwordField.attr("type", "text");
+                $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+            } else {
+                passwordField.attr("type", "password");
+                $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+            }
+        });
+    });
 });
 
 </script>

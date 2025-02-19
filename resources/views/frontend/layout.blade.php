@@ -4,6 +4,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     {{-- <meta name="description" content="Sheltos - Filter search with slider home page">
     <meta name="keywords" content="sheltos">
     <meta name="author" content="sheltos"> --}}
@@ -431,11 +433,15 @@
                                                             <li><img src="https://themes.pixelstrap.com/sheltos/assets2/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : {{ $property->baths }}</li>
                                                             <li><img src="https://themes.pixelstrap.com/sheltos/assets2/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : {{ $property->area }}</li>
                                                         </ul>
-                                                        <a href="user-favourites.html">
+                                                        {{-- <a href="user-favourites.html"> --}}
+                                                            <a href="javascript:void(0);" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" onclick="addToWishlist({{ $property->id }}, event)">
                                                             <span class="round-half color-6">
                                                                 <i data-feather="heart"></i>
                                                             </span>
                                                         </a>
+
+                                            {{-- <i data-feather="heart" class="heart-icon"></i>
+                                        </a> --}}
                                                         <div class="property-btn">
                                                             <a href="{{ route('single-property.show', $property->id) }}" class="btn btn-dashed btn-pill color-6" tabindex="0">Details</a>
                                                         </div>
@@ -515,8 +521,9 @@
                                         <span>{{ $property->images->count() }}</span>
                                     </div>
                                     <div class="overlay-property-box">
-                                        <a class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist">
-                                            <i data-feather="heart"></i>
+
+                                        <a href="javascript:void(0);" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist" onclick="addToWishlist({{ $property->id }}, event)">
+                                            <i data-feather="heart" class="heart-icon"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -708,9 +715,11 @@
                                             <div class="our-details text-center p-4" style="height: 300px; width: 500px;">
                                                 <a href="agent-profile.html">
                                                     <h6 class="d-flex justify-content-center">{{ $agent->name }}
-                                                        <span class="label-heart color-6 ms-2">
-                                                            <i data-feather="heart"></i>
-                                                        </span>
+                                                        <a href="{{ route('agent-profile', $agent->id) }}" >
+                                                            <span class="label-heart color-6 ms-2">
+                                                                    <i data-feather="heart"></i>
+                                                            </span>
+                                                        </a>
                                                     </h6>
                                                 </a>
                                                 <h3>Communicating with..</h3>
@@ -852,7 +861,7 @@
 </body>
 @yield('script')
 
-<script src="{{asset('assets/js/pages/frontend/layout.js')}}"></script>
+{{-- <script src="{{asset('assets/js/pages/frontend/layout.js')}}"></script> --}}
 <script>
 @if (session('success'))
 Swal.fire({
@@ -863,6 +872,117 @@ Swal.fire({
     timer: 1500
 });
 @endif
+
+
+$(document).ready(function(){
+
+    // Initialize Slick Slider for Property Images
+    $('.slider-for').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: true,
+        dots: true,
+        autoplay: true,
+        autoplaySpeed: 4000,
+        fade: true,
+        adaptiveHeight: true,
+    });
+
+    $('.agent-slider').slick({
+        slidesToShow: 2,  // Number of agents shown at once
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        arrows: true,
+        dots: true,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 2
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 1
+                }
+            }
+        ]
+    });
+});
+
+function addToWishlist(propertyId, event) {
+    event.preventDefault(); // Prevent default behavior (if inside a link)
+
+    $.ajax({
+        url: "{{ route('wishlist.add') }}", // Ensure this route is correctly set in web.php
+        method: "POST",
+        data: {
+            _token: $('meta[name="csrf-token"]').attr("content"), // CSRF Token
+            property: { id: propertyId } // Send correct property ID
+        },
+        success: function(response) {
+            if (response.status === "success") {
+                if (response.added_to_wishlist) {
+                    // Property was successfully added to the wishlist
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Property added to wishlist successfully!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    // Update heart icon to filled
+                    $(".effect-round.like[data-property-id='" + propertyId + "']").addClass('added'); // Mark as added
+                    $(".effect-round.like[data-property-id='" + propertyId + "'] i").removeClass('feather-heart').addClass('feather-heart-fill'); // Change to filled heart
+                } else {
+                    // Property is already in the wishlist
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Property already in wishlist!',
+                        text: 'This property is already added to your wishlist.',
+                        showConfirmButton: true
+                    });
+                }
+
+                // Update wishlist count dynamically (if needed)
+                $("#wishlist-count").text(response.wishlist.length);
+
+                // Update wishlist dropdown (if any)
+                $("#wishlist-container").html(response.wishlistHTML);
+            } else {
+                if (response.message === 'This property is sold and cannot be added to the wishlist.') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Property Sold',
+                        text: 'This property is sold and cannot be added to your wishlist.',
+                        showConfirmButton: true
+                    });
+                } else {
+                    // Show other errors
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response.message || 'Error occurred while adding to wishlist',
+                        showConfirmButton: true
+                    });
+                }
+            }
+        },
+        error: function(xhr) {
+            console.error(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Error occurred while adding to wishlist',
+                showConfirmButton: true
+            });
+        }
+    });
+}
+
 </script>
 
 <!-- Mirrored from themes.pixelstrap.com/sheltos/main/layout-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 27 Jan 2025 12:54:02 GMT -->

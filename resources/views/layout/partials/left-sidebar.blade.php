@@ -87,10 +87,10 @@
                 </a>
             </li>
 
-            <li>
+            {{-- <li>
                 <a href="javascript: void(0);">
                     <i class="fe-sidebar"></i>
-                    {{-- <span class="badge badge-pink float-right">New</span> --}}
+                    <span class="badge badge-pink float-right">New</span>
                     <span> Portfolio </span>
                 </a>
             </li>
@@ -100,7 +100,7 @@
                     <i class="fe-file-text"></i>
                     <span> Settings </span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
 
     </div>
