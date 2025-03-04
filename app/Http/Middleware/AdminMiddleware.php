@@ -21,14 +21,11 @@ class AdminMiddleware
     {
         // Check if the user is authenticated and has role_id 1 or 2
         if (Auth::guard('admin')->check() && in_array(Auth::guard('admin')->user()->role_id, [1, 2])) {
-            // For debugging purposes, you can log or print if needed
-            // Log::info('Admin user accessed');
-
             return $next($request); // Allow access to the admin panel
         }
 
         // Redirect non-admins to the frontend home page
-        return redirect()->route('home')->with('error', 'Access Denied!');
+        return redirect()->route('login')->with('error', 'Access Denied!');
     }
 
 }

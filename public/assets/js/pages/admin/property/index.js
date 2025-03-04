@@ -35,26 +35,15 @@ var tableVar = $('#propertyDataTable').DataTable({
                 }
             }
         },
-        { data: "alt_text" },
-        { data: "max_rooms" },
-        { data: "beds" },
-        { data: "baths" },
-        { data: "price" },
         { data: "status" },
-        { data: "area" },
-        { data: "zip_code" },
         { data: "address" },
-        { data: "city" },
-        { data: "agent" },
-        { data: "description" },
-        // { data: "media" },
-        { data: "additional_features" },
+        { data: "property_status" },
         { data: "actions", sClass: "text-end" } // Actions column
     ],
     columnDefs: [
         {
             width: "100px",
-            targets: 8, // Status column
+            targets: 3, // Status column
             render: function (data, type, full, meta) {
                 // Define the status options and their corresponding styles
                 var status = {
@@ -75,6 +64,25 @@ var tableVar = $('#propertyDataTable').DataTable({
                 return '<span class="badge badge-' + status[statusKey].type + '">' + status[statusKey].title + '</span>';
             }
         },
+
+        {
+            width: "100px",
+            targets: 5, // Assuming property_status is at index 5
+            render: function (data, type, full, meta) {
+                console.log("Property Status Data:", data); // Debugging log
+
+                // Ensure data is treated correctly
+                var statusText = (data.toLowerCase() === "active") ? "Active" : "Inactive";
+                var btnClass = (data.toLowerCase() === "active") ? "btn-success" : "btn-danger";
+
+                return `<button class="btn ${btnClass} btn-sm"
+                                onclick="confirmPropertyStatusChange(${full.id}, '${data}')">
+                            ${statusText}
+                        </button>`;
+            }
+
+        },
+
 
         {
             width: "100px",
@@ -132,57 +140,58 @@ function deleteProperty(id) {
     });
 }
 
+function confirmPropertyStatusChange(id, currentStatus) {
+    currentStatus = currentStatus.toString().toLowerCase();
+    var newStatus = (currentStatus === "1" || currentStatus === "active") ? "0" : "1";
 
-// function confirmStatusChange(id, currentStatus) {
-//     currentStatus = currentStatus.toString();
-//     var newStatus = (currentStatus === '0') ? '1' : '0'; // Toggle between active/inactive
+    var url = changePropertyStatusUrl.replace(':id', id);
 
-//     var url = changeStatusUrl.replace(':id', id);  // Replace the placeholder with actual ID
+    // Show the confirmation dialog using SweetAlert2
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You are about to change the status of this property.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6', // Blue for confirm
+        cancelButtonColor: '#d33', // Red for cancel
+        confirmButtonText: 'Yes, change it!', // Text for confirm button
+        cancelButtonText: 'No, keep it' // Text for cancel button
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Send AJAX request to update the status
+            $.ajax({
+                url: url,  // URL with property ID
+                type: 'POST',
+                data: {
+                    _token: csrfToken,  // CSRF token for security
+                    property_status: newStatus,   // New status (either 0 or 1)
+                },
+                success: function(response) {
+                    console.log("Property Status Updated:", response);
 
-//     // Show the confirmation dialog using SweetAlert2
-//     Swal.fire({
-//         title: 'Are you sure?',
-//         text: 'You are about to change the status of this user.',
-//         icon: 'warning',
-//         showCancelButton: true,
-//         confirmButtonColor: '#3085d6', // Blue for confirm
-//         cancelButtonColor: '#d33', // Red for cancel
-//         confirmButtonText: 'Yes, change it!', // Text for confirm button
-//         cancelButtonText: 'No, keep it' // Text for cancel button
-//     }).then((result) => {
-//         if (result.isConfirmed) {
-//             // Send AJAX request to update the status
-//             $.ajax({
-//                 url: url,  // URL with user ID
-//                 type: 'POST',
-//                 data: {
-//                     _token: csrfToken,  // CSRF token for security
-//                     status: newStatus,   // New status (either 0 or 1)
-//                 },
-//                 success: function(response) {
-//                     // Reload the DataTable to reflect the change
-//                     tableVar.ajax.reload();
+                    // Reload the DataTable to reflect the change
+                    tableVar.ajax.reload();
 
-//                     // Show success notification with SweetAlert2
-//                     Swal.fire({
-//                         icon: 'success',
-//                         title: 'Status Updated',
-//                         text: 'The status has been updated successfully.',
-//                         showConfirmButton: false,
-//                         timer: 1500
-//                     });
-//                 },
-//                 error: function(jqXHR, ajaxOptions, thrownError) {
-//                     // Handle any errors from the AJAX request
-//                     console.error(jqXHR.responseJSON);
-//                     Swal.fire({
-//                         icon: 'error',
-//                         title: 'Error',
-//                         text: 'There was an error updating the status.',
-//                         showConfirmButton: true
-//                     });
-//                 }
-//             });
-//         }
-//     });
-// }
+                    // Show success notification with SweetAlert2
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Status Updated',
+                        text: 'The property status has been updated successfully.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                },
+                error: function(jqXHR, ajaxOptions, thrownError) {
+                    // Handle any errors from the AJAX request
+                    console.error("Error Updating Status:", jqXHR.responseJSON);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'There was an error updating the property status.',
+                        showConfirmButton: true
+                    });
+                }
+            });
+        }
+    });
+}

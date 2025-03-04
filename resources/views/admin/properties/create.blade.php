@@ -197,24 +197,16 @@
 
                         <div class="row">
                             <!-- Agent -->
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="agent_id">Agent<span class="text-danger">*</span></label>
-                                    <select name="agent_id" id="agent_id" class="form-control" required data-parsley-required-message="Please select an agent.">
-                                        <option value="" disabled selected>Select Agent</option>
-                                        @foreach($agents as $agent)
-                                            <option value="{{ $agent->id }}" {{ old('agent_id') == $agent->id ? 'selected' : '' }}>
-                                                {{ $agent->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <p class="form-control ">{{Auth::guard('admin')->user()->name ?? ""}}</p>
+                                    <input type="hidden" name="agent_id" value="{{ Auth::id() }}">
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row">
                             <!-- Payment Type (Radio Buttons) -->
-                            <div class="col-md-6" id="payment_type_section">
+                            <div class="col-md-4" id="payment_type_section">
                                 <div class="form-group">
                                     <label>Payment Type<span class="text-danger">*</span></label>
                                     <div class="d-flex">
@@ -231,7 +223,7 @@
                             </div>
 
                             <!-- Property Status (Radio Buttons) -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Property Status<span class="text-danger">*</span></label>
                                     <div class="d-flex">
@@ -341,6 +333,7 @@
 
 @section('script')
 <script src="{{asset('assets/js/pages/admin/property/property_image/index.js')}}"></script>
+
 
 <script>
     $(document).ready(function () {

@@ -67,6 +67,11 @@ class Property extends Model
         return $this->hasMany(Booking::class, 'property_id');
     }
 
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class, 'property_id');
+    }
+
     /**
      * Optionally, you can create an accessor to return the payment type as a string.
      */

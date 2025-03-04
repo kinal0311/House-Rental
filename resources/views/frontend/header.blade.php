@@ -23,6 +23,8 @@
                         <div class="brand-logo">
                             <a href="{{ route('home') }}">
                                 <img src="{{ URL::asset('sheltos/assets/images/logo/6.png')}}" alt="" class="img-fluid">
+                                {{-- <img src="{{ URL::asset('sheltos/assets/images/logo/13.png')}}" alt="" height="100" width="100" class=""> --}}
+
                             </a>
                         </div>
                         <nav>

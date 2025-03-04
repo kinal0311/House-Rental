@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -17,10 +19,15 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'agent' => \App\Http\Middleware\AgentMiddleware::class,
             'web' => \App\Http\Middleware\Web::class,
+            'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
+            'auth:api' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
+            'auth.admin' => \App\Http\Middleware\AdminMiddleware::class,
 
             // 'check.permission' => \App\Http\Middleware\CheckPermission::class
         ]);
+        $middleware->append(\App\Http\Middleware\TrackVisits::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (AuthenticationException $e, Request $request) {

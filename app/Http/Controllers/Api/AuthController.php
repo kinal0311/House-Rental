@@ -2,44 +2,69 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\BaseController as APIBaseController;
+use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Models\User;
 use Validator;
+use App\Http\Resources\AuthResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
-
-class AuthController extends APIBaseController
+class AuthController extends BaseController
 {
      /**
      * Register a User.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request) {
-
+    public function register(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email',
-            'gender'=> 'required',
-            'phone_number' => 'required',
-            'dob' => 'required',
-            'password' => 'required',
-            'description' => 'required',
-            'address' => 'required',
-            'zip_code' => 'required',
+            'name' => 'required|string|max:255',
+            'role_id' => 'required|integer',
+            'email' => 'required|email|unique:users,email',
+            'gender' => 'required|string|in:Male,Female,Other',
+            'phone_number' => 'required|string|max:15',
+            'dob' => 'required|date',
+            'password' => 'required|string|min:6',
+            'status' => 'required|boolean',
+            'description' => 'required|string',
+            'address' => 'required|string',
+            'zip_code' => 'required|string|max:10'
         ]);
 
-        if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation Error.',
+                'errors' => $validator->errors()
+            ], 422);
         }
 
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
-        $success['user'] =  $user;
+        $input = $request->only([
+            'name', 'role_id', 'email', 'gender', 'phone_number',
+            'dob', 'status', 'description', 'address', 'zip_code'
+        ]);
 
-        return $this->sendResponse($success, 'User register successfully.');
+        // Hash password before storing
+        $input['password'] = Hash::make($request->password);
+
+        if ($request->hasFile('img')) {
+            $imageName = time() . '_' . uniqid() . '.' . $request->img->extension();
+            $request->img->move(public_path('assets/images/users'), $imageName);
+            $input['img'] = 'assets/images/users/' . $imageName;
+        }
+
+        $user = User::create($input);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User registered successfully.',
+            'user' => new AuthResource($user)
+        ], 201);
     }
+
+
 
 
     /**
@@ -47,16 +72,14 @@ class AuthController extends APIBaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
-        $credentials = request(['email', 'password']);
-
-        if (! $token = auth()->attempt($credentials)) {
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+        $credentials = $request->only('email', 'password');
+        $token = Auth::guard('api')->attempt($credentials);
+        if (!$token) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
-
         $success = $this->respondWithToken($token);
-
         return $this->sendResponse($success, 'User login successfully.');
     }
 
@@ -67,27 +90,29 @@ class AuthController extends APIBaseController
      */
     public function profile()
     {
-        $success = auth()->user();
-
-        return $this->sendResponse($success, 'Refresh token return successfully.');
+        return $this->sendResponse(new AuthResource(auth()->user()), 'User profile retrieved successfully.');
     }
 
     public function updateProfile(Request $request)
     {
+        $user = auth()->user();
+
         try {
-            // Get the authenticated user
-            $user = auth()->user();
-            // Validate the input data
+
+
             $validator = Validator::make($request->all(), [
-                'name' => 'string|max:255',
-                'email' => 'string|email|max:255|unique:users,email,' . $user->id,
-                'gender'=> 'string|max:255',
-                'phone_number' => 'string|max:20',
-                'dob' => 'date',
-                'password' => 'nullable|string|min:6',
-                'description' => 'string',
-                'address' => 'string|max:255',
-                'zip_code' => 'string|max:10',
+                'name' => 'required|string|max:255',
+                'role_id' => 'required|integer', // Ensure role_id is valid
+                'email' => 'required|email|unique:users,email,' . $user->id,
+                'gender' => 'required|string|in:Male,Female,Other',
+                'phone_number' => 'required|string|max:15',
+                'dob' => 'required|date',
+                'password' => 'nullable|string|min:6', // Password should be nullable
+                'status' => 'required|boolean',
+                'description' => 'required|string',
+                'address' => 'required|string',
+                'zip_code' => 'required|string|max:10'
+                // 'img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             ]);
 
             if ($validator->fails()) {
@@ -98,16 +123,31 @@ class AuthController extends APIBaseController
                 ], 422);
             }
 
-            // Update the user profile
-            // dd($request->only(['name', 'email', 'password']));
-            $user->update($request->only(['name','email','gender','phone_number','dob','password','confirm_password','description','address','zip_code']));
+            // Prepare update data
+            $updateData = $request->only([
+                'name', 'role_id', 'email', 'gender', 'phone_number',
+                'dob', 'status', 'description', 'address', 'zip_code'
+            ]);
+
+            // Hash password if provided
+            if ($request->filled('password')) {
+                $updateData['password'] = Hash::make($request->password);
+            }
+
+            if ($request->hasFile('img')) {
+                $imageName = time() . '_' . uniqid() . '.' . $request->img->extension();
+                $request->img->move(public_path('assets/images/users'), $imageName);
+                $updateData['img'] = 'assets/images/users/' . $imageName;
+            }
+
+            $user->update($updateData);
+            dd($updateData);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Profile updated successfully',
-                'user' => $user,
+                'user' => new AuthResource($user->fresh()),
             ], 200);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -116,6 +156,7 @@ class AuthController extends APIBaseController
             ], 500);
         }
     }
+
 
     /**
      * Log the user out (Invalidate the token).
@@ -150,10 +191,11 @@ class AuthController extends APIBaseController
      */
     protected function respondWithToken($token)
     {
+
         return [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => Auth::guard('api')->factory()->getTTL() * 60
         ];
     }
 }

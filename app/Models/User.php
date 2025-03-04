@@ -2,10 +2,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -39,6 +39,11 @@ class User extends Authenticatable implements JWTSubject
     }
 
 
+    public function feedback()
+    {
+        return $this->hasMany(Feedback::class);
+    }
+
     // Relationships
     public function role()
     {
@@ -50,13 +55,13 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Property::class, 'agent_id');
     }
 
-    // Ensure the password is hashed before saving
-    public function setPasswordAttribute($value)
-    {
-        if (!empty($value)) {
-            $this->attributes['password'] = bcrypt($value);
-        }
-    }
+    // // Ensure the password is hashed before saving
+    // public function setPasswordAttribute($value)
+    // {
+    //     if (!empty($value)) {
+    //         $this->attributes['password'] = bcrypt($value);
+    //     }
+    // }
 
     protected $hidden = [
         'password',

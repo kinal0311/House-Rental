@@ -40,19 +40,9 @@
                                 <th>Id</th>
                                 <th>Property Type</th>
                                 <th>Image_url</th>
-                                <th>Alt_text</th>
-                                <th>Max Rooms</th>
-                                <th>Beds</th>
-                                <th>Baths</th>
-                                <th>Price</th>
                                 <th>Status</th>
-                                <th>Area</th>
-                                <th>ZIP Code</th>
                                 <th>Address</th>
-                                <th>City</th>
-                                <th>Agent</th>
-                                <th>Description</th>
-                                <th>Additional Features</th>
+                                <th>Property Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -97,6 +87,7 @@
 <script>
     var dateTableUrl = "{{ route('admin.properties.getData') }}";
     var deleteRowUrl = "{{ route('admin.properties.destroy', ':id') }}";
+    var changePropertyStatusUrl = "{{ route('admin.propertyChangeData',':id')}}";
 
 </script>
 <script src="{{asset('assets/js/pages/admin/property/index.js')}}"></script>

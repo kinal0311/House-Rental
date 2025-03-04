@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,11 +7,10 @@
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
         <meta http-equiv="Pragma" content="no-cache">
         <meta http-equiv="Expires" content="0">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-            <!-- Notiflix -->
-            <link href="{{asset('assets\libs\notiflix\notiflix-2.1.2.css')}}" rel="stylesheet" type="text/css" />
-
-
+        <!-- Notiflix -->
+        <link href="{{asset('assets\libs\notiflix\notiflix-2.1.2.css')}}" rel="stylesheet" type="text/css" />
 
         <!-- App css -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -22,7 +20,21 @@
     </head>
 
     <body class="authentication-bg">
-
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    <!-- Back Button -->
+    <div class="text-left m-3">
+        <a href="{{ route('home') }}" class="btn btn-outline-blue btn-sm ml-2">
+            <i class="mdi mdi-arrow-left"></i>
+        </a>
+    </div>
         <div class="account-pages mt-5 mb-5">
             <div class="container">
                 <div class="row justify-content-center">
@@ -32,35 +44,37 @@
                             <div class="card-body p-4">
 
                                 <div class="text-center w-75 m-auto">
-                                    <a href="index.html">
-                                        <span><img src="assets/images/logo-dark.png" alt="" height="22"></span>
+                                    <a href="{{ route('home') }}">
+                                        <img src="{{ URL::asset('sheltos/assets/images/logo/10.png')}}" alt="" class="img-fluid">
+                                        {{-- <img src="{{ URL::asset('sheltos/assets/images/logo/13.png')}}" alt="" height="100" width="100" class=""> --}}
                                     </a>
                                     <p class="text-muted mb-4 mt-3">Enter your email address and password to access admin panel.</p>
                                 </div>
-
                                     @if(session('error'))
                                     <p style="color: red;">{{ session('error') }}</p>
                                     @endif
 
-                                    <form method="POST" action="{{ route('login.post') }}" id="loginForm" data-parsley-validate>
+                                <form method="POST" action="{{ route('login.post') }}" id="loginForm" data-parsley-validate>
 
                                     @csrf
 
                                     <div class="form-group mb-3">
                                         <label for="emailaddress">Email address</label>
-                                        <input class="form-control" type="email" name='email' id="emailaddress" required="" placeholder="Enter your email" data-parsley-type="email" autocomplete="off">
+                                        <input class="form-control" type="email" name='email' id="emailaddress" required="" placeholder="Enter your email" data-parsley-required-message="Please enter email" data-parsley-type="email" autocomplete="off">
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label for="password">Password</label>
                                         <div class="input-group">
-                                            <input type="password" name="password" id="password" class="form-control" required="">
+                                            <input type="password" name="password" id="password" class="form-control"  data-parsley-required-message="Please enter password"
+                                            data-parsley-errors-container="#passwordError" required="">
                                             <div class="input-group-append">
                                                 <div class="input-group-text">
                                                     <i id="pwd-icon" class="far fa-eye-slash" style="cursor: pointer;"></i>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div id="passwordError"></div>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -70,12 +84,23 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group mb-0 text-center">
-                                        <button class="btn btn-primary btn-block" type="submit"> Log In </button>
+                                    <div class="row mt-3 justify-content-center">
+                                        <div class="col-md-auto">
+                                            <button class="btn btn-primary rounded " type="submit"> Log In </button>
+                                        </div>
+                                        <div class="col-md-auto">
+                                            <a href="{{ route('register') }}" class="btn btn-outline-primary rounded ">Register</a>
+                                        </div>
+
                                     </div>
 
                                 </form>
 
+                                <div class="row mt-3">
+                                    <div class="col-12 text-center">
+                                        <p> <a href="{{ route('forget.password.get') }}" class="text-50 ml-1">Forgot your password?</a></p>
+                                    </div> <!-- end col -->
+                                </div>
                                 <div class="text-center">
                                     <h5 class="mt-3 text-muted">Sign in with</h5>
                                     <ul class="social-list list-inline mt-3 mb-0">
@@ -98,12 +123,6 @@
                         </div>
                         <!-- end card -->
 
-                        <div class="row mt-3">
-                            <div class="col-12 text-center">
-                                <p> <a href="pages-recoverpw.html" class="text-white-50 ml-1">Forgot your password?</a></p>
-                                <p class="text-white-50">Don't have an account? <a href="pages-register.html" class="text-white ml-1"><b>Sign Up</b></a></p>
-                            </div> <!-- end col -->
-                        </div>
                         <!-- end row -->
 
                     </div> <!-- end col -->
@@ -114,11 +133,11 @@
         </div>
         <!-- end page -->
 
-
-        <footer class="footer footer-alt">
-            2015 - 2019 &copy; UBold theme by <a href="" class="text-white-50">Coderthemes</a>
-        </footer>
-
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
         <!-- Vendor js -->
         <script src="assets/js/vendor.min.js"></script>
 

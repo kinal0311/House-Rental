@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Session;
+use App\Models\Role;
 use App\Http\Requests\AdminStoreRequest;
 
 class AuthController extends Controller
@@ -24,13 +25,14 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    /**
-     * Show registration form.
-     */
-    // public function registration()
-    // {
-    //     return view('auth.registration');
-    // }
+//     public function index()
+// {
+//     if (Auth::guard('admin')->check()) {
+//         return redirect()->route('admin.master'); // Redirect to master page if logged in
+//     }
+
+//     return view('auth.login');
+// }
 
     /**
      * Handle login request.
@@ -41,7 +43,6 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard('admin')->attempt($credentials)) {
@@ -67,6 +68,38 @@ class AuthController extends Controller
         // If credentials are invalid
         return response()->json(['success' => false, 'message' => 'Invalid email or password.'], 401);
     }
+
+    public function registration()
+    {
+        $roles = Role::where('id', '!=', 3)->get(); // Exclude role_id 3
+        return view('auth.register', compact('roles'));
+    }
+
+    public function postRegistration(AdminStoreRequest $request)
+    {
+        // dd($request->all());
+        try {
+            $requestData = $request->safe()->all();
+
+            // Check if there's an image in the request
+            if ($request->hasFile('img')) {
+                $imageName = time() . '_' . $request->img->getClientOriginalName(); // Prevent duplicate names
+                $request->img->move(public_path('assets/images/users'), $imageName);
+                $requestData['img'] = 'assets/images/users/' . $imageName;
+            }
+
+            // Create a new admin user
+            User::create($requestData);
+            // dd($user);
+            // Redirect to login page with success message
+            return redirect()->route('login')->with('success', 'Admin created successfully.');
+
+        } catch (\Exception $e) {
+            // Redirect back to registration page with error message & old input
+            return redirect()->route('register')->with('error', $e->getMessage())->withInput();
+        }
+    }
+
 
     public function master()
     {
@@ -113,7 +146,7 @@ class AuthController extends Controller
             'role_id' => 'required|integer|in:1,2,3',
             'email' => 'required|email|unique:users,email,' . Auth::guard('admin')->id(),
             'gender' => 'required|in:male,female,other',
-            'phone_number' => 'required|string|max:15',
+            'phone_number' => 'required|string|max:20',
             'dob' => 'required|date',
             'password' => 'nullable|min:6',
             'status' => 'required|in:1,0',

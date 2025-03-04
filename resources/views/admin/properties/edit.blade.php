@@ -26,6 +26,15 @@
 
 </style>
 @section('content')
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 <div class="container-fluid">
     <div class="row mt-2">
         <div class="col-lg-6 col-md-8 col-sm-8 my-2">
@@ -230,27 +239,16 @@
 
                         <div class="row">
                             <!-- Agent -->
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="agent_id">Agent<span class="text-danger">*</span></label>
-                                    <select name="agent_id" id="agent_id" class="form-control" required>
-                                        <option value="" disabled>Select Agent</option>
-                                        @foreach($agents as $agent)
-                                            <option value="{{ $agent->id }}" {{ $property->agent_id == $agent->id ? 'selected' : '' }}>
-                                                {{ $agent->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('agent_id')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
+                                    <p class="form-control ">{{Auth::guard('admin')->user()->name ?? ""}}</p>
+                                    <input type="hidden" name="agent_id" value="{{ Auth::guard('admin')->id() }}">
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row">
                             <!-- Payment Type (Radio Buttons) -->
-                            <div class="col-md-6" id="payment_type_section" style="display: {{ old('status', $property->status) === 'Sold' ? 'none' : 'block' }};">
+                            <div class="col-md-4" id="payment_type_section" style="display: {{ old('status', $property->status) === 'Sold' ? 'none' : 'block' }};">
                                 <div class="form-group">
                                     <label>Payment Type<span class="text-danger">*</span></label>
                                     <div class="d-flex">
@@ -270,7 +268,7 @@
                             </div>
 
                             <!-- Property Status (Radio Buttons) -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Property Status<span class="text-danger">*</span></label>
                                     <div class="d-flex">
@@ -343,6 +341,7 @@
                             </div>
                         </div>
 
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="image_url">Image_url<span class="text-danger">*</span></label>
@@ -367,6 +366,14 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="alt_text">Alt Text</label>
+                                    <input type="text" class="form-control" id="alt_text" name="alt_text" value="{{ old('alt_text') }}">
+                                </div>
+                            </div>
+                        </div>
 
 
                         <!-- Submit Button -->

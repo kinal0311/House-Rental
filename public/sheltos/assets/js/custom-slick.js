@@ -835,15 +835,15 @@ $(document).ready(function(){
         slidesToScroll: 1,
     });
 
-    $('.feature-slider').slick({
-        dots: false,
-        infinite: true,
-        speed: 800,
-        fade: true,
-        arrows: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-    });
+    // $('.feature-slider').slick({
+    //     dots: false,
+    //     infinite: true,
+    //     speed: 800,
+    //     fade: true,
+    //     arrows: true,
+    //     slidesToShow: 1,
+    //     slidesToScroll: 1,
+    // });
 
     // thumbnail slider
     $('.slider-for').each(function (key, item) {

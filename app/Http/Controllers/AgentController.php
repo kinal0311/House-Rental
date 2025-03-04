@@ -179,7 +179,7 @@ class AgentController extends Controller
         return view('admin.agent.view', compact('user','roles'));
     }
 
-    public function agentChangeData($id, Request $request)
+    public function agentChangeStatus($id, Request $request)
     {
         $user = User::findOrFail($id);
         $user->status = $request->status;

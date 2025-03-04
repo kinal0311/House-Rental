@@ -181,7 +181,7 @@
                         <div class="home-search-6">
                             <div class="vertical-search">
                                 <div class="left-sidebar">
-                                    <div class="row gx-3">
+                                    {{-- <div class="row gx-3">
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label>Property Status</label>
@@ -305,7 +305,7 @@
                                         <div class="col-lg-12">
                                             <a href="{{ route('listing') }}" id="search-btn" class="btn btn-gradient color-6 mt-3">Search</a>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>

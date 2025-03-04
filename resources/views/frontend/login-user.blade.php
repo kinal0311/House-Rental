@@ -90,7 +90,7 @@
                                             <i data-feather="lock"></i>
                                         </div>
                                     </div>
-                                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" maxlength="8" required
+                                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" maxlength="10" required
                                         data-parsley-required-message="Password is incorrect">
                                     <div class="input-group-append">
                                         <div class="input-group-text">

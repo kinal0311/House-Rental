@@ -133,35 +133,40 @@ class AdminController extends Controller
 
     public function update(AdminStoreRequest $request, $id)
     {
-        // dd($request->all());
         $user = User::findOrFail($id);
 
         $validatedData = $request->all();
+        $updateData = []; // Correct spelling from "upadeData"
 
+        // Handle Image Upload
         if ($request->hasFile('img')) {
             $image = $request->file('img');
-
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-
             $image->move(public_path('assets/images/users/'), $imageName);
-
-            $upadeData['img'] = 'assets/images/users/' . $imageName;
+            $updateData['img'] = 'assets/images/users/' . $imageName;
         }
-        $upadeData['name'] = $request['name'];
-        $upadeData['role_id'] = $request['role_id'];
-        $upadeData['email'] = $request['email'];
-        $upadeData['phone_number'] = $request['phone_number'];
-        $upadeData['dob'] = $request['dob'];
-        $upadeData['address'] = $request['address'];
-        $upadeData['zip_code'] = $request['zip_code'];
-        $upadeData['gender'] = $request['gender'];
-        $upadeData['description'] = $request['description'];
-        $upadeData['status'] = $request['status'];
 
-        $user->update($upadeData);
+        // Handle Password (Only Update If Provided)
+        if ($request->filled('password')) {
+            $updateData['password'] = bcrypt($request->password);
+        }
+        // Update Other Fields
+        $updateData['name'] = $request->name;
+        $updateData['role_id'] = $request->role_id;
+        $updateData['email'] = $request->email;
+        $updateData['phone_number'] = $request->phone_number;
+        $updateData['dob'] = $request->dob;
+        $updateData['address'] = $request->address;
+        $updateData['zip_code'] = $request->zip_code;
+        $updateData['gender'] = $request->gender;
+        $updateData['description'] = $request->description;
+        $updateData['status'] = $request->status;
 
+        // Update User
+        $user->update($updateData);
         return redirect()->route('admin.admin.index')->with('success', 'User updated successfully.');
     }
+
 
     public function show($id)
     {

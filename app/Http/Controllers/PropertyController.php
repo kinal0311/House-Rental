@@ -10,13 +10,34 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\PropertyStoreRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+
 
 class PropertyController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        return view('admin.properties.index');
+        // $user = auth()->user();
+        $user = Auth::guard('admin')->user();
+
+        if (!$user) {
+            abort(403, 'Unauthorized access');
+        }
+
+        if ($user->role_id == 1) {
+            // Admin sees all properties
+            $properties = Property::with('images')->get();
+        } elseif ($user->role_id == 2) {
+            // Agent sees only their uploaded properties
+            $properties = Property::with('images')->where('agent_id', $user->id)->get();
+        } else {
+            abort(403, 'Unauthorized access');
+        }
+// dd($user->id);
+        return view('admin.properties.index', compact('properties'));
     }
+
+
 
     public function create()
     {
@@ -67,22 +88,9 @@ class PropertyController extends Controller
             0 => 'id',
             1 => 'property_type',
             2 => 'image_url',
-            3 => 'alt_text',
-            4 => 'max_rooms',
-            5 => 'beds',
-            6 => 'baths',
-            7 => 'price',
-            8 => 'status',
-            9 => 'area',
-            10 => 'zip_code',
-            11 => 'address',
-            12 => 'city',
-            13 => 'agent',
-            14 => 'description',
-            15 => 'additional_features',
-            16 => 'payment_type',  // Added column for payment_type
-            17 => 'token_amount',  // Added column for token_amount
-            18 => 'property_status', // Added column for property_status
+            3 => 'status',
+            4 => 'address',
+            5 => 'property_status',
         ];
 
         $limit = $request->input('length');
@@ -90,7 +98,17 @@ class PropertyController extends Controller
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
 
-        $query = Property::with(['agent', 'images'])->orderBy($order, $dir);
+        $user = Auth::guard('admin')->user();
+
+        $query = Property::with(['agent', 'images']);
+
+        if ($user->role_id == 2) {
+            // Show only properties where the agent is the logged-in user
+            $query->where('agent_id', $user->id);
+        }
+
+        $query->orderBy($order, $dir);
+
         $totalData = $query->count();
         $totalFiltered = $totalData;
 
@@ -233,7 +251,6 @@ class PropertyController extends Controller
         return redirect()->route('admin.properties.index')->with('sweet_success', 'Property updated successfully.');
     }
 
-
     public function show($id)
     {
         try {
@@ -243,4 +260,17 @@ class PropertyController extends Controller
             return redirect()->back()->with('sweet_error', 'Property not found.');
         }
     }
+
+    public function propertyChangeData($id, Request $request)
+    {
+        $property = Property::findOrFail($id);
+        $property->property_status = $request->property_status;
+        $property->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Status updated successfully.',
+        ]);
+    }
+
 }

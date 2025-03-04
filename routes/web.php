@@ -9,6 +9,8 @@ use App\Http\Controllers\PropertyImgController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\website\LayoutController;
 use App\Http\Controllers\website\SinglePropertyController;
 use App\Http\Controllers\website\AgentProfileController;
@@ -24,28 +26,28 @@ use App\Http\Controllers\website\CartController;
 use App\Http\Controllers\website\ProfileController;
 use App\Http\Controllers\website\BookingController;
 use App\Http\Controllers\website\WishlistController;
+use App\Http\Controllers\website\FeedbackController;
 
 
 // use App\Http\Middleware\CheckPermission;
 
 Route::get('/', [LayoutController::class, 'index'])->name('home');
 
-// Route::get('admin/profile', function () {
-//     return view('admin.profile');
-// })->middleware(CheckPermission::class);
-
-// Route::get('admin/dashboard', function () {
-//     return view('admin.dashboard');
-// })->middleware('check.permission');
-
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('login', [AuthController::class, 'postLogin'])->name('login.post');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
+Route::get('register', [AuthController::class, 'registration'])->name('register');
+Route::post('register', [AuthController::class, 'postRegistration'])->name('register.post');
 
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
+
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('register', [AuthController::class, 'registration'])->name('register');
-    Route::post('register', [AuthController::class, 'postRegistration'])->name('register.post');
 });
 
 // Route::get('master', [MasterController::class, 'index'])->name('master');
@@ -55,12 +57,13 @@ Route::group([
     'namespace' => 'App\Http\Controllers',
     'prefix' => 'admin',
     'as' => 'admin.',
-    'middleware' => ['admin']
+    'middleware' => ['auth:admin']
 ], function () {
 
     Route::get('master', [AuthController::class, 'master'])->name('master');
     Route::get('account', [AuthController::class, 'myAccount'])->name('account');
     Route::post('update-account', [AuthController::class, 'updateAccount'])->name('account.update');
+    Route::get('dashboard', [MasterController::class, 'show'])->name('dashboard');
     Route::get('admin', [AdminController::class, 'index'])->name('admin.index');
     Route::post('get-data', [AdminController::class, 'getData'])->name('admin.get.data');
     Route::get('admin-create', [AdminController::class, 'create'])->name('admin.create');
@@ -100,11 +103,15 @@ Route::group([
     Route::get('edit/{id}', [PropertyController::class, 'propertyEdit'])->name('properties.edit');
     Route::post('update/{id}', [PropertyController::class, 'update'])->name('properties.update');
     Route::get('property-view/{id}', [PropertyController::class, 'show'])->name('properties.view');
-    // Route::post('propertyChangeStatus/{id}', [PropertyController::class, 'propertyChangeStatus'])->name('propertyChangeStatus');
+    Route::post('propertyChangeStatus/{id}', [PropertyController::class, 'propertyChangeData'])->name('propertyChangeData');
+
 
     Route::get('payment', [PaymentController::class, 'index'])->name('payment.index');
     Route::post('payment-getData', [PaymentController::class, 'paymentData'])->name('payment-getData');
 
+    Route::get('review', [ReviewController::class, 'index'])->name('review.index');
+    Route::post('review-getData', [ReviewController::class, 'reviewData'])->name('review-getData');
+    Route::delete('review/{id}', [ReviewController::class, 'destroy'])->name('review.destroy');
 
 
     // Route::get('property_Img', [PropertyImgController::class, 'index'])->name('property_image.index');
@@ -140,14 +147,15 @@ Route::post('login-user', [LoginController::class, 'postLogin'])->name('login-us
 Route::get('signup-user', [SignUpController::class, 'index'])->name('signup-user');
 Route::post('signup-user', [SignUpController::class, 'store'])->name('user.store');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth:web')->group(function () {
     Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
     Route::post('/cart', [CartController::class, 'removeFromCart'])->name('cart.remove');
     Route::get('/myprofile', [ProfileController::class, 'myProfile'])->name('myprofile');
     Route::post('/myprofile-update', [ProfileController::class, 'update'])->name('update.profile');
     Route::post('logout-user', [ProfileController::class, 'logoutUser'])->name('logout-user');
-
+    Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+    // Route::get('/feedback/{property_id}', [FeedbackController::class, 'index']);
 });
 Route::post('/add-to-wishlist', [WishlistController::class, 'add'])->name('wishlist.add');
 Route::get('/wishlist', [WishlistController::class, 'showWishlist'])->name('wishlist.show');

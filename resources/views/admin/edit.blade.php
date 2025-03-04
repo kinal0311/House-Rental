@@ -246,32 +246,30 @@
     $(document).ready(function() {
         // Initialize Parsley validation
         $('#editForm').parsley();
-    });
-</script>
-<script>
-$('#img').on('change', function () {
 
-    var file = this.files[0];
-    if (file && file.type.match('image.*')) {
-        $('#existing-img').hide();  // Hide the existing image preview
 
-        var reader = new FileReader();
-        reader.onload = function (event) {
-            // Log to check if the file is read correctly
-            console.log(event);
+    $('#img').on('change', function () {
 
-            // Update the new image's source and show it
-            $('#new-img').attr('src', event.target.result).show();
+        var file = this.files[0];
+        if (file && file.type.match('image.*')) {
+            $('#existing-img').hide();  // Hide the existing image preview
+
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                // Log to check if the file is read correctly
+                console.log(event);
+
+                // Update the new image's source and show it
+                $('#new-img').attr('src', event.target.result).show();
+            }
+
+            reader.readAsDataURL(file);  // Trigger reading the file as a data URL
+            $('#upload-result').show();  // Show the upload result (if needed)
+        } else {
+            Notiflix.Notify.Warning('Please upload a valid image file.');
         }
+    });
 
-        reader.readAsDataURL(file);  // Trigger reading the file as a data URL
-        $('#upload-result').show();  // Show the upload result (if needed)
-    } else {
-        Notiflix.Notify.Warning('Please upload a valid image file.');
-    }
-});
-
-    $(document).ready(function(){
         $("#pwd-icon").click(function(){
             var passwordField = $("#password");
             var fieldType = passwordField.attr("type");

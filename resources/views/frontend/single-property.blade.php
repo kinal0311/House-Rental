@@ -27,6 +27,40 @@
             overflow: hidden;
         }
 
+        .rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: left;
+            gap: 10px;
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            font-size: 30px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .rating input:checked ~ label,
+        .rating label:hover,
+        .rating label:hover ~ label {
+            color: gold;
+        }
+
+        /* Hover effect for text */
+        .feature-item:hover .bottom-feature {
+            opacity: 0.7 !important;
+        }
+
+        /* Smooth transition effect */
+        .transition-opacity {
+            transition: opacity 0.4s ease-in-out;
+        }
+
 
     </style>
 
@@ -330,328 +364,71 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- <div class="desc-box">
+                            <div class="desc-box">
                                 <div class="page-section">
                                     <h4 class="content-title">Reviews</h4>
                                     <div class="review">
-                                        <div class="review-box">
-                                            <div class="media">
-                                                <img src="../assets/images/avatar/3.jpg" class="img-70" alt="">
-                                                <div class="media-body">
-                                                    <h6>Olive Yew</h6>
-                                                    <p>Sep 13, 2022</p>
-                                                    <p class="mb-0">The location, view from the rooms are just awesome. Very cool landscaping has been done Around the hotel.
-                                                        There are small activities that you can indulge with your family.</p>
+                                        @if ($property->feedbacks && $property->feedbacks->count() > 0)
+                                            @foreach ($property->feedbacks as $feedback)
+                                                <div class="review-box">
+                                                    <div class="media">
+                                                        <img src="{{ asset($feedback->user->img) }}" class="img-70" alt="">
+                                                        <div class="media-body">
+                                                            <h6>{{ $feedback->user->name ?? 'Anonymous' }}</h6>
+                                                            <p>{{ $feedback->created_at->format('M d, Y') }}</p>
+                                                            <p class="mb-0">{{ $feedback->comment }}</p>
+                                                        </div>
+                                                        <div class="rating">
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                @if ($i <= $feedback->rating)
+                                                                    <i class="fas fa-star"></i>
+                                                                @else
+                                                                    <i class="far fa-star"></i>
+                                                                @endif
+                                                            @endfor
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="rating">
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="review-box review-child">
-                                            <div class="media">
-                                                <img src="../assets/images/avatar/4.jpg" class="img-70" alt="">
-                                                <div class="media-body">
-                                                    <h6>Allie Grater</h6>
-                                                    <p>Sep 25, 2022</p>
-                                                    <p class="mb-0">We were there for 3 nights and hotel was too good. Greenery was flaunting everywhere. There were games kept for our
-                                                        entertainment.</p>
-                                                </div>
-                                                <div class="rating">
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="review-box">
-                                            <div class="media">
-                                                <img src="../assets/images/avatar/2.jpg" class="img-70" alt="">
-                                                <div class="media-body">
-                                                    <h6>Walter Melon</h6>
-                                                    <p>Oct 20, 2022</p>
-                                                    <p class="mb-0">There are small activities that you can indulge with your family. Very cool landscaping has been done Around the hotel. The location, view from the rooms are just awesome.</p>
-                                                </div>
-                                                <div class="rating">
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            @endforeach
+                                        @else
+                                            <p>No reviews yet. Be the first to leave a review!</p>
+                                        @endif
                                     </div>
                                     <hr />
                                     <h4 class="content-title">Write a Review</h4>
-                                    <form class="review-form">
+                                    <form class="review-form" action="{{ route('feedback.store') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="property_id" value="{{ $property->id }}">
+
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Name" required>
+                                            <input type="text" class="form-control" name="name" value="{{ auth('web')->check() ? auth('web')->user()->name : '' }}" readonly required>
                                         </div>
+
                                         <div class="form-group">
-                                            <input type="email" class="form-control" placeholder="Email" required>
+                                            <input type="email" class="form-control" name="email" value="{{ auth('web')->check() ? auth('web')->user()->email : '' }}" readonly required>
                                         </div>
+
                                         <div class="form-group">
-                                            <textarea class="form-control" placeholder="Comment"></textarea>
+                                            <label>Rating:</label>
+                                            <div class="rating">
+                                                <input type="radio" name="rating" id="star5" value="5"><label for="star5">&#9733;</label>
+                                                <input type="radio" name="rating" id="star4" value="4"><label for="star4">&#9733;</label>
+                                                <input type="radio" name="rating" id="star3" value="3"><label for="star3">&#9733;</label>
+                                                <input type="radio" name="rating" id="star2" value="2"><label for="star2">&#9733;</label>
+                                                <input type="radio" name="rating" id="star1" value="1"><label for="star1">&#9733;</label>
+                                            </div>
                                         </div>
-                                        <button type="submit" onclick="document.location='submit-property.html'" class="btn btn-gradient color-2 btn-pill">Submit</button>
+
+                                        <div class="form-group">
+                                            <textarea class="form-control" name="comment" placeholder="Comment" required></textarea>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-gradient color-2 btn-pill">Submit</button>
                                     </form>
-                                </div>
-                            </div> --}}
-                        </div>
-                    </div>
-                    {{-- <div class="property-section p-t-40">
-                        <div class="title-3 text-start inner-title">
-                            <h2>Related Properties</h2>
-                        </div>
-                        <div class="row ratio_65">
-                            <div class="col-12 property-grid-2">
-                                <div class="property-2 row column-sm zoom-gallery property-label property-grid">
-                                    <div class="col-md-6">
-                                        <div class="property-box">
-                                            <div class="property-image">
-                                                <div class="property-slider">
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/10.jpg" class="bg-img" alt="">
-                                                    </a>
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/5.jpg" class="bg-img" alt="">
-
-                                                    </a>
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/3.jpg" class="bg-img" alt="">
-
-                                                    </a>
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/4.jpg" class="bg-img" alt="">
-
-                                                    </a>
-                                                </div>
-                                                <div class="labels-left">
-                                                    <div>
-                                                        <span class="label label-shadow">sale</span>
-                                                    </div>
-                                                </div>
-                                                <div class="seen-data">
-                                                    <i data-feather="camera"></i>
-                                                    <span>25</span>
-                                                </div>
-                                                <div class="overlay-property-box">
-                                                    <a href="compare.html" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Compare">
-                                                        <i data-feather="shuffle"></i>
-                                                    </a>
-                                                    <a href="user-favourites.html" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="wishlist">
-                                                        <i data-feather="heart"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-
-                                            <div class="property-details">
-                                                <span class="font-roboto">France</span>
-                                                <a href="single-property-8.html">
-                                                    <h3>Little Acorn Farm</h3>
-                                                </a>
-                                                <h6>$6558.00*</h6>
-                                                <p class="font-roboto">Real estate is divided into several categories, including residential property, commercial property and industrial property.</p>
-                                                <ul>
-                                                    <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/double-bed.svg" class="img-fluid" alt="">Bed : 4</li>
-                                                    <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : 4</li>
-                                                    <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : 5000</li>
-                                                </ul>
-                                                <div class="property-btn d-flex">
-                                                    <span>August 4, 2022</span>
-                                                    <button type="button"  onclick="document.location='single-property-8.html'" class="btn btn-dashed btn-pill color-2">Details</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="property-box">
-                                            <div class="property-image">
-                                                <div class="property-slider">
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/14.jpg" class="bg-img" alt="">
-
-                                                    </a>
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/6.jpg" class="bg-img" alt="">
-
-                                                    </a>
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/10.jpg" class="bg-img" alt="">
-
-                                                    </a>
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/9.jpg" class="bg-img" alt="">
-
-                                                    </a>
-                                                </div>
-                                                <div class="labels-left">
-                                                    <div>
-                                                        <span class="label label-dark">no fees</span>
-                                                    </div>
-                                                    <span class="label label-success">open house</span>
-                                                </div>
-                                                <div class="seen-data">
-                                                    <i data-feather="camera"></i>
-                                                    <span>42</span>
-                                                </div>
-                                                <div class="overlay-property-box">
-                                                    <a href="compare.html" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Compare">
-                                                        <i data-feather="shuffle"></i>
-                                                    </a>
-                                                    <a href="user-favourites.html" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="wishlist">
-                                                        <i data-feather="heart"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="property-details">
-                                                <span class="font-roboto">brazil</span>
-                                                <a href="single-property-8.html">
-                                                    <h3>Hidden Spring Hideway</h3>
-                                                </a>
-                                                <h6>$9554.00*</h6>
-                                                <p class="font-roboto">An interior designer is someone who plans,researches,coordinates,management and manages such enhancement projects.</p>
-                                                <ul>
-                                                    <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/double-bed.svg" class="img-fluid" alt="">Bed : 4</li>
-                                                    <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : 4</li>
-                                                    <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : 5000</li>
-                                                </ul>
-                                                <div class="property-btn d-flex">
-                                                    <span>July 18, 2022</span>
-                                                    <button type="button"  onclick="document.location='single-property-8.html'" class="btn btn-dashed btn-pill color-2">Details</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="property-box">
-                                            <div class="property-image">
-                                                <div class="property-slider">
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/12.jpg" class="bg-img" alt="">
-
-                                                    </a>
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/10.jpg" class="bg-img" alt="">
-
-                                                    </a>
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/6.jpg" class="bg-img" alt="">
-
-                                                    </a>
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/9.jpg" class="bg-img" alt="">
-
-                                                    </a>
-                                                </div>
-                                                <div class="labels-left">
-                                                    <div>
-                                                        <span class="label label-shadow">sale</span>
-                                                    </div>
-                                                </div>
-                                                <div class="seen-data">
-                                                    <i data-feather="camera"></i>
-                                                    <span>10</span>
-                                                </div>
-                                                <div class="overlay-property-box">
-                                                    <a href="compare.html" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Compare">
-                                                        <i data-feather="shuffle"></i>
-                                                    </a>
-                                                    <a href="user-favourites.html" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="wishlist">
-                                                        <i data-feather="heart"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="property-details">
-                                                <span class="font-roboto">usa</span>
-                                                <a href="single-property-8.html">
-                                                    <h3>Home in Merrick Way</h3>
-                                                </a>
-                                                <h6>$4513.00*</h6>
-                                                <p class="font-roboto">The most common and most absolute type of estate, the tenant enjoys the greatest discretion over the disposal of the property.</p>
-                                                <ul>
-                                                    <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/double-bed.svg" class="img-fluid" alt="">Bed : 4</li>
-                                                    <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : 4</li>
-                                                    <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : 5000</li>
-                                                </ul>
-                                                <div class="property-btn d-flex">
-                                                    <span>January 6, 2022</span>
-                                                    <button type="button"  onclick="document.location='single-property-8.html'" class="btn btn-dashed btn-pill color-2">Details</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="property-box">
-                                            <div class="property-image">
-                                                <div class="property-slider">
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/16.jpg" class="bg-img" alt="">
-
-                                                    </a>
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/5.jpg" class="bg-img" alt="">
-
-                                                    </a>
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/4.jpg" class="bg-img" alt="">
-
-                                                    </a>
-                                                    <a href="javascript:void(0)">
-                                                        <img src="../assets/images/property/3.jpg" class="bg-img" alt="">
-
-                                                    </a>
-                                                </div>
-                                                <div class="labels-left">
-                                                    <div>
-                                                        <span class="label label-dark">no fees</span>
-                                                    </div>
-                                                    <span class="label label-success">open house</span>
-                                                </div>
-                                                <div class="seen-data">
-                                                    <i data-feather="camera"></i>
-                                                    <span>25</span>
-                                                </div>
-                                                <div class="overlay-property-box">
-                                                    <a href="compare.html" class="effect-round" data-bs-toggle="tooltip" data-bs-placement="left" title="Compare">
-                                                        <i data-feather="shuffle"></i>
-                                                    </a>
-                                                    <a href="user-favourites.html" class="effect-round like" data-bs-toggle="tooltip" data-bs-placement="left" title="wishlist">
-                                                        <i data-feather="heart"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="property-details">
-                                                <span class="font-roboto">brazil</span>
-                                                <a href="single-property-8.html">
-                                                    <h3>Magnolia Ranch</h3>
-                                                </a>
-                                                <h6>$9554.00*</h6>
-                                                <p class="font-roboto">Elegant retreat in a quiet Coral Gables setting. This home provides wonderful entertaining spaces with a chef
-                                                    kitchen opening…</p>
-                                                <ul>
-                                                    <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/double-bed.svg" class="img-fluid" alt="">Bed : 4</li>
-                                                    <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/bathroom.svg" class="img-fluid" alt="">Baths : 4</li>
-                                                    <li><img src="https://themes.pixelstrap.com/sheltos/assets/images/svg/icon/square-ruler-tool.svg" class="img-fluid ruler-tool" alt="">Sq Ft : 5000</li>
-                                                </ul>
-                                                <div class="property-btn d-flex">
-                                                    <span>May 14, 2022</span>
-                                                    <button type="button"  onclick="document.location='single-property-8.html'" class="btn btn-dashed btn-pill color-2">Details</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
                 <div class="col-xl-3 col-lg-4">
                     <div class="left-sidebar sticky-cls single-sidebar">
@@ -682,242 +459,100 @@
                                 </div>
                             </div>
 
-                            <div class="advance-card">
-                                <h6>Request exploration</h6>
+                            {{-- <div class="advance-card">
+                                <h6>Submit Your Feedback</h6>
                                 <div class="category-property">
-                                    <form>
+                                    <form id="feedbackForm" action="{{ route('feedback.store')}}" method="POST">
+                                        @csrf
+                                         <!-- Hidden field to send property_id -->
+                                        <input type="hidden" name="property_id" value="{{ $property->id ?? '' }}">
+
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Your Name" required>
+                                            <input type="text" class="form-control" id="name" name="name"
+                                            value="{{ auth('web')->check() ? auth('web')->user()->name : '' }}" readonly required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" id="email" name="email"
+                                            value="{{ auth('web')->check() ? auth('web')->user()->email : '' }}" readonly required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Rating:</label>
+                                            <div class="rating">
+                                                <input type="radio" name="rating" id="star5" value="5"><label for="star5">&#9733;</label>
+                                                <input type="radio" name="rating" id="star4" value="4"><label for="star4">&#9733;</label>
+                                                <input type="radio" name="rating" id="star3" value="3"><label for="star3">&#9733;</label>
+                                                <input type="radio" name="rating" id="star2" value="2"><label for="star2">&#9733;</label>
+                                                <input type="radio" name="rating" id="star1" value="1"><label for="star1">&#9733;</label>
+                                            </div>
                                         </div>
                                         <div class="form-group">
-                                            <input type="email" class="form-control" placeholder="Email Address" required>
+                                            <textarea id="comment" placeholder="Your Feedback" name="comment" class="form-control" rows="3" required></textarea>
                                         </div>
-                                        <div class="form-group">
-                                            <input
-                                            placeholder="phone number"
-                                            class="form-control"
-                                            name="mobnumber"
-                                            id="tbNumbers"
-                                            oninput="maxLengthCheck(this)"
-                                            type = "tel"
-                                            onkeypress="javascript:return isNumber(event)"
-                                            maxlength = "9"
-                                            required="">
-                                        </div>
-                                        <div class="form-group">
-                                            <textarea placeholder="Message" class="form-control" rows="3"></textarea>
-                                        </div>
-                                        <button type="submit" onclick="document.location='#'" class="btn btn-gradient color-2 btn-block btn-pill">Submit
-                                            Request</button>
+                                        <button type="submit" class="btn btn-gradient color-2 btn-block btn-pill">Submit Feedback</button>
                                     </form>
                                 </div>
-                            </div>
-                            {{-- <div class="advance-card">
-                                <h6>filter</h6>
-                                <div class="row gx-2">
-                                    <div class="col-12">
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle font-rubik"
-                                                data-bs-toggle="dropdown"><span>Property
-                                                    Status</span> <i class="fas fa-angle-down"></i></span>
-                                            <div class="dropdown-menu text-start">
-                                                <a class="dropdown-item" href="javascript:void(0)">Property Status</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">For Rent</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">For Sale</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle font-rubik"
-                                                data-bs-toggle="dropdown"><span>Property
-                                                    Type</span> <i class="fas fa-angle-down"></i></span>
-                                            <div class="dropdown-menu text-start">
-                                                <a class="dropdown-item" href="javascript:void(0)">Property Type</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Apartment</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Family House</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Cottage</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Condominium</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle font-rubik"
-                                                data-bs-toggle="dropdown"><span>Property
-                                                    Location</span> <i class="fas fa-angle-down"></i></span>
-                                            <div class="dropdown-menu text-start">
-                                                <a class="dropdown-item" href="javascript:void(0)">Property Location</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Austria</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Brazil</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">New york</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">USA</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle font-rubik" data-bs-toggle="dropdown"><span>Max
-                                                    Rooms</span> <i class="fas fa-angle-down"></i></span>
-                                            <div class="dropdown-menu text-start">
-                                                <a class="dropdown-item" href="javascript:void(0)">Max Rooms</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">1</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">2</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">3</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">4</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">5</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">6</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle font-rubik"
-                                                data-bs-toggle="dropdown"><span>Bed</span>
-                                                <i class="fas fa-angle-down"></i></span>
-                                            <div class="dropdown-menu text-start">
-                                                <a class="dropdown-item" href="javascript:void(0)">Bed</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">1</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">2</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">3</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">4</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle font-rubik"
-                                                data-bs-toggle="dropdown"><span>Bath</span> <i
-                                                    class="fas fa-angle-down"></i></span>
-                                            <div class="dropdown-menu text-start">
-                                                <a class="dropdown-item" href="javascript:void(0)">Bath</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">1</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">2</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">3</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">4</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="dropdown">
-                                            <span class="dropdown-toggle font-rubik"
-                                                data-bs-toggle="dropdown"><span>Agencies</span> <i
-                                                    class="fas fa-angle-down"></i></span>
-                                            <div class="dropdown-menu text-start">
-                                                <a class="dropdown-item" href="javascript:void(0)">Agencies</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Lincoln</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Blue Sky</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Zephyr</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Premiere</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="price-range">
-                                            <label for="amount">Price : </label>
-                                            <input type="text" id="amount" readonly>
-                                            <div id="slider-range" class="theme-range-2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="price-range">
-                                            <label for="amount">Area : </label>
-                                            <input type="text" id="amount1" readonly>
-                                            <div id="slider-range1" class="theme-range-2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <a href="#" class="btn btn-gradient color-2 btn-block btn-pill mt-2">Search </a>
-                                    </div>
-                                </div>
                             </div> --}}
-                           <div class="advance-card feature-card">
+
+                            <div class="advance-card feature-card">
                                 <h6>Featured</h6>
                                 <div class="feature-slider">
-                                    <div>
-                                        <img src="{{ URL::asset('sheltos/assets/images/property/4.jpg')}}" class="bg-img" alt="">
-                                        <div class="bottom-feature">
-                                            <h5>Neverland</h5>
-                                            <h6>$13,000 <small>/ start from</small></h6>
+                                    @php
+                                        // Get only one latest featured property
+                                        $property = \App\Models\Property::where('property_status', 'featured')
+                                            ->latest()
+                                            ->first();
+
+                                        // Fetch first image for that property
+                                        $firstImage = $property ? \App\Models\PropertyImg::where('property_id', $property->id)->first() : null;
+                                    @endphp
+
+                                    @if($property)
+                                        <div class="feature-item position-relative overflow-hidden">
+                                            <a href="javascript:void(0)">
+                                                <img src="{{ asset($firstImage?->image_url ?? 'assets/images/default.jpg') }}" class="bg-img w-100" alt="Property Image">
+                                            </a>
+                                            <div class="bottom-feature position-absolute bottom-0 start-0 w-100 bg-dark text-white text-center p-3 opacity-0 transition-opacity">
+                                                <h5 class="mb-1">{{ $property->name }}</h5>
+                                                <h6 class="mb-0">${{ number_format($property->price, 2) }} <small>/ start from</small></h6>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <img src="{{ URL::asset('sheltos/assets/images/property/16.jpg')}}" class="bg-img" alt="">
-                                        <div class="bottom-feature">
-                                            <h5>Neverland</h5>
-                                            <h6>$13,000 <small>/ start from</small></h6>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <img src="{{ URL::asset('sheltos/assets/images/property/14.jpg')}}" class="bg-img" alt="">
-                                        <div class="bottom-feature">
-                                            <h5>Neverland</h5>
-                                            <h6>$13,000 <small>/ start from</small></h6>
-                                        </div>
-                                    </div>
+                                    @else
+                                        <p>No featured property available.</p>
+                                    @endif
                                 </div>
                                 <div class="labels-left">
                                     <span class="label label-success">featured</span>
                                 </div>
                             </div>
+
                             <div class="advance-card">
                                 <h6>Recently Added</h6>
                                 <div class="recent-property">
                                     <ul>
-                                        <li>
-                                            <div class="media">
-                                                <img src="{{ URL::asset('sheltos/assets/images/property/9.jpg')}}" class="img-fluid" alt="">
-                                                <div class="media-body">
-                                                    <h5>Sea Breezes</h5>
-                                                    <span>$9800 / <span>Month</span></span>
+                                        @php
+                                            $latestProperties = \App\Models\Property::latest()->take(3)->with('images')->get();
+                                        @endphp
+
+                                        @foreach($latestProperties as $property)
+                                            @php
+                                                $firstImage = $property->images->first();
+                                            @endphp
+                                            <li>
+                                                <div class="media">
+                                                    <img src="{{ asset($firstImage?->image_url ?? 'assets/images/default.jpg') }}" class="img-fluid" alt="Property Image">
+                                                    <div class="media-body">
+                                                        <h5>{{ $property->property_type }}</h5>
+                                                        <span>${{ number_format($property->price, 2) }} / <span>Month</span></span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="media">
-                                                <img src="{{ URL::asset('sheltos/assets/images/property/10.jpg')}}" class="img-fluid" alt="">
-                                                <div class="media-body">
-                                                    <h5>Orchard House</h5>
-                                                    <span>$7500 / <span>Month</span></span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="media">
-                                                <img src="{{ URL::asset('sheltos/assets/images/property/11.jpg')}}" class="img-fluid" alt="">
-                                                <div class="media-body">
-                                                    <h5>Neverland</h5>
-                                                    <span>$5000 / <span>Month</span></span>
-                                                </div>
-                                            </div>
-                                        </li>
+                                            </li>
+                                        @endforeach
                                     </ul>
                                 </div>
                             </div>
-                            <div class="advance-card">
-                                <h6>Mortgage</h6>
-                                <div class="category-property">
-                                    <form>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text">$</span>
-                                            <input type="number" class="form-control" placeholder="Loan Amount" required>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text">$</span>
-                                            <input type="number" class="form-control" placeholder="Down Payment" required>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text">%</span>
-                                            <input type="number" class="form-control" placeholder="Rate of Interest" required>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text">$</span>
-                                            <input type="number" class="form-control" placeholder="Number Of years" required>
-                                        </div>
-                                        <button type="submit" class="btn btn-gradient color-2 btn-block btn-pill">Calculate</button>
-                                    </form>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
 
@@ -927,55 +562,25 @@
     </section>
     <!-- single property end -->
 
-
-
-    <!-- video modal start -->
-    {{-- <div class="modal fade video-modal" id="videomodal">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">×gffgd</span></button>
-                    <iframe title="realestate" src="https://www.youtube.com/embed/Sz_1tkcU0Co" allowfullscreen></iframe>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    <!-- video modal end -->
-
-@include('frontend.footer-orange')
+    @include('frontend.footer-orange')
     <!-- customizer end -->
 
     @include('frontend.footer-script')
     @yield('script')
-{{-- <script>
-  $(document).ready(function(){
-    // Initialize Slick for large image slider
-    $('.gallery-for').slick({
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      arrows: false,
-      fade: true, // For fade effect between images
-      asNavFor: '.gallery-nav' // Sync with the thumbnail slider
-    });
-
-    // Initialize Slick for thumbnail images slider
-    $('.gallery-nav').slick({
-      slidesToShow: 4,
-      slidesToScroll: 1,
-      asNavFor: '.gallery-for',
-      dots: false,
-      centerMode: true,
-      focusOnSelect: true,
-      centerPadding: '0',
-      arrows: true
-    });
-  });
-
-</script> --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+//     $(document).ready(function(){
+//     $('.feature-slider').slick({
+//         slidesToShow: 1,
+//         slidesToScroll: 1,
+//         autoplay: true,
+//         autoplaySpeed: 3000,
+//         arrows: false,
+//         dots: true
+//     });
+// });
+
     function changeSlide(index) {
         let carousel = document.querySelector('#propertyGallery');
         let items = carousel.querySelectorAll('.carousel-item');
@@ -1007,9 +612,6 @@
         window.location.href = "{{ route('login-user') }}";
     }
 }
-
-
-
 
 </script>
 </body>

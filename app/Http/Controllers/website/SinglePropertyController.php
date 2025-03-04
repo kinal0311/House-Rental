@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyImg;
 use App\Models\User;
+use App\Models\Feedback;
 use Illuminate\Support\Facades\DB;
 
 class SinglePropertyController extends Controller
@@ -21,10 +22,11 @@ class SinglePropertyController extends Controller
 
     public function show($id)
     {
-        $property = Property::with('agent')->findOrFail($id);
+        $property = Property::with(['agent', 'feedbacks.user'])->findOrFail($id);
         $images = PropertyImg::where('property_id', $id)->get();
 
         return view('frontend.single-property', compact('property', 'images'));
     }
+
 
 }

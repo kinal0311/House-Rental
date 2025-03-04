@@ -1,8 +1,8 @@
-{{-- @php
+@php
     if (!auth()->check() || !in_array(auth()->user()->role_id, [1, 2])) {
         abort(403, 'Unauthorized access');
     }
-@endphp --}}
+@endphp
 
 <!DOCTYPE html>
 <html lang="en">
@@ -95,6 +95,9 @@
 
                     <!-- start page title -->
                     @yield('content')
+
+                    {{-- @include('layout.partials.dashboard') --}}
+
                     <!-- end row -->
 
                 </div> <!-- content -->
@@ -166,25 +169,14 @@
 <script>
     var csrfToken = "{{ csrf_token() }}";
 </script>
-{{-- <script type="text/javascript">
-     // Prevent the user from going back
-    window.history.forward();
-
-    // When the back button is pressed, keep the user on the current page
-    window.onload = function () {
-        setTimeout(function () {
-            window.history.forward();
-        }, 0);
-    }
-
-    // Optionally, listen for the 'popstate' event (this is triggered when the back button is pressed)
-    window.onpopstate = function () {
-        window.history.forward();
-    }
-</script> --}}
 
 @yield('script')
 
+<script>
+    document.getElementById('logoutBtn').addEventListener('click', function () {
+        document.getElementById('logoutForm').submit();
+    });
+</script>
 
-    </body>
+</body>
 </html>
